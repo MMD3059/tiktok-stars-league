@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" fill="none" stroke="#d1aa5f" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+  <!-- كؤوس - Cups/Medal -->
+  <path d="M30 14h40v8c0 16-20 28-20 28s-20-12-20-28v-8z"/>
+  <path d="M25 14h-4c-3 0-5-2-5-5V6c0-3 2-5 5-5h4M75 14h4c3 0 5-2 5-5V6c0-3-2-5-5-5h-4"/>
+  <!-- Star on cup -->
+  <polygon points="50,20 54,32 66,32 56,40 60,52 50,44 40,52 44,40 34,32 46,32" fill="#d1aa5f" stroke="none"/>
+  <!-- Medal ribbon -->
+  <path d="M36 46c6 8 14 12 14 12s8-4 14-12"/>
+  <path d="M50 58v24"/>
+  <path d="M44 76h12"/>
+</svg>

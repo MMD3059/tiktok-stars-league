@@ -1,0 +1,7 @@
+-- AlterTable
+ALTER TABLE "Team" ADD COLUMN "manualDrawn" INTEGER;
+ALTER TABLE "Team" ADD COLUMN "manualGoalsAgainst" INTEGER;
+ALTER TABLE "Team" ADD COLUMN "manualGoalsFor" INTEGER;
+ALTER TABLE "Team" ADD COLUMN "manualLost" INTEGER;
+ALTER TABLE "Team" ADD COLUMN "manualPoints" INTEGER;
+ALTER TABLE "Team" ADD COLUMN "manualWon" INTEGER;

@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" fill="none" stroke="#d1aa5f" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+  <!-- ملعب - Stadium -->
+  <path d="M16 44c0-18 68-18 68 0"/>
+  <path d="M16 44h8v36h-8zM76 44h8v36h-8z"/>
+  <path d="M28 56h12v24H28zM60 56h12v24H60z"/>
+  <path d="M44 50h12v30H44z"/>
+  <path d="M38 32h24M44 24h12"/>
+  <!-- Pitch lines -->
+  <path d="M50 50v8M44 54h12" stroke-width="1.5" opacity="0.6"/>
+</svg>

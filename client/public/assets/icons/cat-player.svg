@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" fill="none" stroke="#d1aa5f" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+  <!-- لاعب - Football Player -->
+  <circle cx="50" cy="28" r="14"/>
+  <path d="M28 54c0-14 44-14 44 0v8l-8 6v22H36V68l-8-6v-8z"/>
+  <path d="M28 62l-8 6M72 62l8 6"/>
+  <circle cx="50" cy="28" r="6" fill="#d1aa5f" stroke="none"/>
+</svg>

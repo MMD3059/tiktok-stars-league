@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <defs>
+    <linearGradient id="goldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FFD700"/>
+      <stop offset="50%" stop-color="#D4AF37"/>
+      <stop offset="100%" stop-color="#B8860B"/>
+    </linearGradient>
+  </defs>
+  <!-- Shield -->
+  <path d="M50 5 L85 20 L85 55 Q85 80 50 95 Q15 80 15 55 L15 20 Z" fill="#0B0B0B" stroke="url(#goldGrad)" stroke-width="3"/>
+  <!-- Football -->
+  <circle cx="50" cy="48" r="16" fill="white"/>
+  <path d="M34 48 Q42 38 50 42 Q58 38 66 48 Q58 58 50 54 Q42 58 34 48Z" fill="#0B0B0B"/>
+  <path d="M42 36 L50 42 L58 36" stroke="#0B0B0B" stroke-width="1.5" fill="none"/>
+  <path d="M42 60 L50 54 L58 60" stroke="#0B0B0B" stroke-width="1.5" fill="none"/>
+  <line x1="34" y1="48" x2="66" y2="48" stroke="#0B0B0B" stroke-width="1.5"/>
+  <!-- 3 Stars above -->
+  <text x="28" y="28" font-size="12" fill="#FFD700">★</text>
+  <text x="42" y="22" font-size="16" fill="#FFD700">★</text>
+  <text x="60" y="28" font-size="12" fill="#FFD700">★</text>
+</svg>

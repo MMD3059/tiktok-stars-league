@@ -1,0 +1,392 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1920 1080" width="1920" height="1080">
+  <defs>
+    <!-- Background gradient - dark center with warm golden glow -->
+    <radialGradient id="bgGlow" cx="50%" cy="40%" r="60%">
+      <stop offset="0%" stop-color="#1a1208"/>
+      <stop offset="25%" stop-color="#0d0a06"/>
+      <stop offset="50%" stop-color="#060403"/>
+      <stop offset="100%" stop-color="#030c13"/>
+    </radialGradient>
+
+    <!-- Center stage golden glow -->
+    <radialGradient id="stageGlow" cx="50%" cy="50%" r="35%">
+      <stop offset="0%" stop-color="rgba(209,170,95,0.15)"/>
+      <stop offset="40%" stop-color="rgba(209,170,95,0.05)"/>
+      <stop offset="100%" stop-color="rgba(209,170,95,0)"/>
+    </radialGradient>
+
+    <!-- Floodlight warm beam -->
+    <linearGradient id="beamLeft" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="rgba(209,170,95,0.12)"/>
+      <stop offset="50%" stop-color="rgba(209,170,95,0.03)"/>
+      <stop offset="100%" stop-color="rgba(209,170,95,0)"/>
+    </linearGradient>
+
+    <linearGradient id="beamRight" x1="100%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="rgba(209,170,95,0.12)"/>
+      <stop offset="50%" stop-color="rgba(209,170,95,0.03)"/>
+      <stop offset="100%" stop-color="rgba(209,170,95,0)"/>
+    </linearGradient>
+
+    <!-- Vertical floodlight beam -->
+    <linearGradient id="beamVertical" x1="50%" y1="0%" x2="50%" y2="100%">
+      <stop offset="0%" stop-color="rgba(209,170,95,0.2)"/>
+      <stop offset="30%" stop-color="rgba(209,170,95,0.06)"/>
+      <stop offset="100%" stop-color="rgba(209,170,95,0)"/>
+    </linearGradient>
+
+    <!-- Floor reflection gradient -->
+    <linearGradient id="floorGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#05080c"/>
+      <stop offset="30%" stop-color="#080c12"/>
+      <stop offset="100%" stop-color="#030c13"/>
+    </linearGradient>
+
+    <!-- Fog gradient -->
+    <linearGradient id="fogGrad" x1="0%" y1="100%" x2="0%" y2="0%">
+      <stop offset="0%" stop-color="rgba(180,160,100,0.08)"/>
+      <stop offset="40%" stop-color="rgba(180,160,100,0.03)"/>
+      <stop offset="100%" stop-color="rgba(180,160,100,0)"/>
+    </linearGradient>
+
+    <!-- Glow filter for floodlights -->
+    <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="8" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+
+    <filter id="glowSoft" x="-100%" y="-100%" width="300%" height="300%">
+      <feGaussianBlur stdDeviation="15"/>
+    </filter>
+
+    <filter id="glowStrong" x="-100%" y="-100%" width="300%" height="300%">
+      <feGaussianBlur stdDeviation="30"/>
+    </filter>
+
+    <filter id="particleGlow" x="-200%" y="-200%" width="500%" height="500%">
+      <feGaussianBlur stdDeviation="3"/>
+    </filter>
+
+    <filter id="lightRay" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="4"/>
+    </filter>
+
+    <!-- Stadium gradient overlay -->
+    <linearGradient id="stadiumSide" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="rgba(3,12,19,0)"/>
+      <stop offset="50%" stop-color="rgba(209,170,95,0.03)"/>
+      <stop offset="100%" stop-color="rgba(3,12,19,0)"/>
+    </linearGradient>
+
+    <!-- Stadium roof gradient -->
+    <linearGradient id="roofGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#080e14"/>
+      <stop offset="50%" stop-color="#0a1018"/>
+      <stop offset="100%" stop-color="#060c12"/>
+    </linearGradient>
+
+    <!-- Metallic gold for stadium accents -->
+    <linearGradient id="goldAccent" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#d1aa5f"/>
+      <stop offset="30%" stop-color="#c89b3c"/>
+      <stop offset="50%" stop-color="#e8c97a"/>
+      <stop offset="70%" stop-color="#c89b3c"/>
+      <stop offset="100%" stop-color="#a07d30"/>
+    </linearGradient>
+
+    <!-- Subtle gold gradient for stadium structure -->
+    <linearGradient id="goldStructure" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="rgba(209,170,95,0.15)"/>
+      <stop offset="100%" stop-color="rgba(209,170,95,0.02)"/>
+    </linearGradient>
+
+    <!-- Floor reflection of stage glow -->
+    <linearGradient id="floorReflection" x1="50%" y1="100%" x2="50%" y2="90%">
+      <stop offset="0%" stop-color="rgba(209,170,95,0.01)"/>
+      <stop offset="100%" stop-color="rgba(209,170,95,0)"/>
+    </linearGradient>
+  </defs>
+
+  <!-- ===== BACKGROUND ===== -->
+  <rect width="1920" height="1080" fill="url(#bgGlow)"/>
+
+  <!-- ===== STADIUM BACKGROUND GLOW ===== -->
+  <ellipse cx="960" cy="500" rx="800" ry="500" fill="url(#stageGlow)"/>
+
+  <!-- ===== STADIUM STRUCTURE ===== -->
+
+  <!-- Far stands - back row -->
+  <g opacity="0.06">
+    <!-- Distant upper tier -->
+    <path d="M200 350 L400 280 L1520 280 L1720 350 L1720 400 L1520 330 L400 330 L200 400 Z" fill="#d1aa5f"/>
+    <!-- Distant middle tier -->
+    <path d="M250 400 L420 340 L1500 340 L1670 400 L1670 450 L1500 380 L420 380 L250 450 Z" fill="#c89b3c"/>
+    <!-- Distant lower tier -->
+    <path d="M300 450 L440 400 L1480 400 L1620 450 L1620 500 L1480 440 L440 440 L300 500 Z" fill="#b8913a"/>
+  </g>
+
+  <!-- Near stands - structural elements -->
+  <g opacity="0.08">
+    <!-- Left stand curve -->
+    <path d="M0 600 Q100 350 300 280 Q350 270 380 300 Q250 380 180 550 Q160 600 0 650 Z" fill="url(#goldStructure)"/>
+    <!-- Right stand curve -->
+    <path d="M1920 600 Q1820 350 1620 280 Q1570 270 1540 300 Q1670 380 1740 550 Q1760 600 1920 650 Z" fill="url(#goldStructure)"/>
+  </g>
+
+  <!-- Stadium arch framework - left -->
+  <g opacity="0.04">
+    <path d="M100 650 Q120 400 250 300" stroke="#d1aa5f" stroke-width="2" fill="none"/>
+    <path d="M200 650 Q220 420 320 320" stroke="#d1aa5f" stroke-width="1.5" fill="none"/>
+    <path d="M300 650 Q320 440 400 350" stroke="#d1aa5f" stroke-width="1" fill="none"/>
+  </g>
+
+  <!-- Stadium arch framework - right -->
+  <g opacity="0.04">
+    <path d="M1820 650 Q1800 400 1670 300" stroke="#d1aa5f" stroke-width="2" fill="none"/>
+    <path d="M1720 650 Q1700 420 1600 320" stroke="#d1aa5f" stroke-width="1.5" fill="none"/>
+    <path d="M1620 650 Q1600 440 1520 350" stroke="#d1aa5f" stroke-width="1" fill="none"/>
+  </g>
+
+  <!-- Stadium roof ellipse -->
+  <ellipse cx="960" cy="280" rx="720" ry="60" fill="url(#roofGrad)" stroke="rgba(209,170,95,0.06)" stroke-width="1"/>
+  <!-- Roof inner rim -->
+  <ellipse cx="960" cy="278" rx="680" ry="50" fill="none" stroke="rgba(209,170,95,0.04)" stroke-width="0.5"/>
+
+  <!-- Roof structural lines -->
+  <g opacity="0.03">
+    <line x1="240" y1="280" x2="1680" y2="280" stroke="#d1aa5f" stroke-width="1"/>
+    <line x1="340" y1="290" x2="1580" y2="290" stroke="#d1aa5f" stroke-width="0.8"/>
+    <line x1="440" y1="300" x2="1480" y2="300" stroke="#d1aa5f" stroke-width="0.5"/>
+  </g>
+
+  <!-- Suspension cables - left -->
+  <g opacity="0.03">
+    <path d="M240 280 Q300 250 400 270" stroke="#d1aa5f" stroke-width="0.8" fill="none"/>
+    <path d="M240 280 Q350 240 500 265" stroke="#d1aa5f" stroke-width="0.6" fill="none"/>
+    <path d="M240 280 Q400 235 600 260" stroke="#d1aa5f" stroke-width="0.5" fill="none"/>
+  </g>
+
+  <!-- Suspension cables - right -->
+  <g opacity="0.03">
+    <path d="M1680 280 Q1620 250 1520 270" stroke="#d1aa5f" stroke-width="0.8" fill="none"/>
+    <path d="M1680 280 Q1570 240 1420 265" stroke="#d1aa5f" stroke-width="0.6" fill="none"/>
+    <path d="M1680 280 Q1520 235 1320 260" stroke="#d1aa5f" stroke-width="0.5" fill="none"/>
+  </g>
+
+  <!-- Main stadium canopy arch -->
+  <path d="M100 450 Q200 250 960 200 Q1720 250 1820 450" stroke="rgba(209,170,95,0.06)" stroke-width="3" fill="none"/>
+  <path d="M150 480 Q250 280 960 230 Q1670 280 1770 480" stroke="rgba(209,170,95,0.04)" stroke-width="2" fill="none"/>
+
+  <!-- Horizontal stadium band - gold accent -->
+  <rect x="200" y="400" width="1520" height="1" fill="rgba(209,170,95,0.04)" rx="0.5"/>
+  <rect x="220" y="420" width="1480" height="0.5" fill="rgba(209,170,95,0.02)"/>
+
+  <!-- ===== FLOODLIGHTS ===== -->
+
+  <!-- Left floodlight cluster -->
+  <g>
+    <!-- Light fixture housing -->
+    <rect x="150" y="230" width="30" height="15" rx="2" fill="#111" stroke="rgba(209,170,95,0.15)" stroke-width="0.5"/>
+    <rect x="155" y="245" width="20" height="5" rx="1" fill="#0a0a0a"/>
+    <!-- Light glow -->
+    <ellipse cx="165" cy="260" rx="80" ry="120" fill="rgba(209,170,95,0.06)" filter="url(#glowStrong)"/>
+    <!-- Beam -->
+    <path d="M155 250 L50 600 L10 700 L120 250 Z" fill="url(#beamLeft)" opacity="0.6"/>
+    <path d="M175 250 L280 600 L320 700 L200 250 Z" fill="url(#beamLeft)" opacity="0.4"/>
+    <!-- Core light -->
+    <ellipse cx="165" cy="250" rx="12" ry="6" fill="rgba(255,230,180,0.3)" filter="url(#glow)"/>
+    <ellipse cx="165" cy="250" rx="5" ry="3" fill="rgba(255,240,200,0.5)"/>
+  </g>
+
+  <!-- Center-left floodlight -->
+  <g>
+    <rect x="350" y="200" width="30" height="15" rx="2" fill="#111" stroke="rgba(209,170,95,0.15)" stroke-width="0.5"/>
+    <ellipse cx="365" cy="230" rx="100" ry="150" fill="rgba(209,170,95,0.04)" filter="url(#glowStrong)"/>
+    <path d="M355 215 L200 550 L160 650 L320 215 Z" fill="url(#beamLeft)" opacity="0.5"/>
+    <path d="M375 215 L530 550 L570 650 L410 215 Z" fill="url(#beamLeft)" opacity="0.3"/>
+    <ellipse cx="365" cy="215" rx="12" ry="6" fill="rgba(255,230,180,0.25)" filter="url(#glow)"/>
+    <ellipse cx="365" cy="215" rx="5" ry="3" fill="rgba(255,240,200,0.4)"/>
+  </g>
+
+  <!-- Center-right floodlight -->
+  <g>
+    <rect x="1540" y="200" width="30" height="15" rx="2" fill="#111" stroke="rgba(209,170,95,0.15)" stroke-width="0.5"/>
+    <ellipse cx="1555" cy="230" rx="100" ry="150" fill="rgba(209,170,95,0.04)" filter="url(#glowStrong)"/>
+    <path d="M1565 215 L1720 550 L1760 650 L1600 215 Z" fill="url(#beamRight)" opacity="0.5"/>
+    <path d="M1545 215 L1390 550 L1350 650 L1510 215 Z" fill="url(#beamRight)" opacity="0.3"/>
+    <ellipse cx="1555" cy="215" rx="12" ry="6" fill="rgba(255,230,180,0.25)" filter="url(#glow)"/>
+    <ellipse cx="1555" cy="215" rx="5" ry="3" fill="rgba(255,240,200,0.4)"/>
+  </g>
+
+  <!-- Right floodlight cluster -->
+  <g>
+    <rect x="1740" y="230" width="30" height="15" rx="2" fill="#111" stroke="rgba(209,170,95,0.15)" stroke-width="0.5"/>
+    <ellipse cx="1755" cy="260" rx="80" ry="120" fill="rgba(209,170,95,0.06)" filter="url(#glowStrong)"/>
+    <path d="M1765 250 L1870 600 L1910 700 L1800 250 Z" fill="url(#beamRight)" opacity="0.6"/>
+    <path d="M1745 250 L1640 600 L1600 700 L1720 250 Z" fill="url(#beamRight)" opacity="0.4"/>
+    <ellipse cx="1755" cy="250" rx="12" ry="6" fill="rgba(255,230,180,0.3)" filter="url(#glow)"/>
+    <ellipse cx="1755" cy="250" rx="5" ry="3" fill="rgba(255,240,200,0.5)"/>
+  </g>
+
+  <!-- Center overhead floodlight -->
+  <g>
+    <rect x="940" y="185" width="40" height="18" rx="3" fill="#111" stroke="rgba(209,170,95,0.2)" stroke-width="0.5"/>
+    <ellipse cx="960" cy="220" rx="200" ry="200" fill="rgba(209,170,95,0.03)" filter="url(#glowStrong)"/>
+    <path d="M945 203 L700 600 L650 700 L880 203 Z" fill="url(#beamLeft)" opacity="0.3"/>
+    <path d="M975 203 L1220 600 L1270 700 L1040 203 Z" fill="url(#beamRight)" opacity="0.3"/>
+    <path d="M950 203 L960 700 L970 203 Z" fill="url(#beamVertical)" opacity="0.5"/>
+    <ellipse cx="960" cy="203" rx="18" ry="8" fill="rgba(255,230,180,0.35)" filter="url(#glow)"/>
+    <ellipse cx="960" cy="203" rx="8" ry="4" fill="rgba(255,240,200,0.6)"/>
+  </g>
+
+  <!-- ===== LIGHT BEAMS CROSSING ===== -->
+
+  <!-- Wide beam from left to right -->
+  <path d="M0 300 L1920 500 L1920 520 L0 320 Z" fill="url(#beamLeft)" opacity="0.15"/>
+  <path d="M0 350 L1920 550 L1920 570 L0 370 Z" fill="url(#beamRight)" opacity="0.1"/>
+
+  <!-- Cross beams -->
+  <path d="M200 250 L1700 550 L1680 580 L180 270 Z" fill="rgba(209,170,95,0.02)"/>
+  <path d="M1720 250 L220 550 L200 580 L1700 270 Z" fill="rgba(209,170,95,0.015)"/>
+
+  <!-- Volumetric light shafts -->
+  <path d="M300 200 L200 650 L250 650 L350 200 Z" fill="rgba(209,170,95,0.04)"/>
+  <path d="M1620 200 L1720 650 L1670 650 L1570 200 Z" fill="rgba(209,170,95,0.04)"/>
+
+  <!-- ===== FLOOR ===== -->
+
+  <!-- Glossy black reflective floor -->
+  <rect x="0" y="700" width="1920" height="380" fill="url(#floorGrad)"/>
+
+  <!-- Floor reflection of light -->
+  <ellipse cx="960" cy="750" rx="500" ry="40" fill="rgba(209,170,95,0.04)"/>
+  <ellipse cx="960" cy="740" rx="300" ry="20" fill="rgba(209,170,95,0.03)"/>
+
+  <!-- Floor reflection lines (polished surface) -->
+  <g opacity="0.02">
+    <line x1="100" y1="730" x2="1820" y2="730" stroke="#d1aa5f" stroke-width="0.5"/>
+    <line x1="200" y1="760" x2="1720" y2="760" stroke="#d1aa5f" stroke-width="0.3"/>
+    <line x1="300" y1="790" x2="1620" y2="790" stroke="#d1aa5f" stroke-width="0.2"/>
+    <line x1="400" y1="820" x2="1520" y2="820" stroke="#d1aa5f" stroke-width="0.2"/>
+    <line x1="500" y1="850" x2="1420" y2="850" stroke="#d1aa5f" stroke-width="0.1"/>
+  </g>
+
+  <!-- Floor gradient sheen -->
+  <rect x="0" y="700" width="1920" height="40" fill="url(#floorReflection)"/>
+
+  <!-- Floor edge glow -->
+  <line x1="0" y1="700" x2="1920" y2="700" stroke="rgba(209,170,95,0.04)" stroke-width="1"/>
+
+  <!-- Subtle grid pattern on floor -->
+  <g opacity="0.015">
+    <line x1="400" y1="700" x2="350" y2="1080" stroke="#d1aa5f" stroke-width="0.3"/>
+    <line x1="600" y1="700" x2="580" y2="1080" stroke="#d1aa5f" stroke-width="0.3"/>
+    <line x1="800" y1="700" x2="810" y2="1080" stroke="#d1aa5f" stroke-width="0.3"/>
+    <line x1="1000" y1="700" x2="1040" y2="1080" stroke="#d1aa5f" stroke-width="0.3"/>
+    <line x1="1200" y1="700" x2="1270" y2="1080" stroke="#d1aa5f" stroke-width="0.3"/>
+    <line x1="1400" y1="700" x2="1500" y2="1080" stroke="#d1aa5f" stroke-width="0.3"/>
+    <line x1="1600" y1="700" x2="1730" y2="1080" stroke="#d1aa5f" stroke-width="0.3"/>
+  </g>
+
+  <!-- ===== FLOATING GOLD DUST PARTICLES ===== -->
+
+  <!-- Small particles -->
+  <g filter="url(#particleGlow)">
+    <circle cx="320" cy="420" r="1.5" fill="#d1aa5f" opacity="0.6"/>
+    <circle cx="520" cy="350" r="1.2" fill="#d1aa5f" opacity="0.5"/>
+    <circle cx="780" cy="380" r="2" fill="#d1aa5f" opacity="0.4"/>
+    <circle cx="1050" cy="340" r="1.5" fill="#d1aa5f" opacity="0.5"/>
+    <circle cx="1350" cy="390" r="1.8" fill="#d1aa5f" opacity="0.6"/>
+    <circle cx="1580" cy="440" r="1.2" fill="#d1aa5f" opacity="0.4"/>
+    <circle cx="420" cy="500" r="1" fill="#d1aa5f" opacity="0.5"/>
+    <circle cx="680" cy="550" r="1.5" fill="#d1aa5f" opacity="0.3"/>
+    <circle cx="900" cy="480" r="2" fill="#d1aa5f" opacity="0.5"/>
+    <circle cx="1150" cy="520" r="1.3" fill="#d1aa5f" opacity="0.4"/>
+    <circle cx="1450" cy="480" r="1.7" fill="#d1aa5f" opacity="0.5"/>
+    <circle cx="1700" cy="530" r="1" fill="#d1aa5f" opacity="0.3"/>
+    <circle cx="250" cy="580" r="1.2" fill="#d1aa5f" opacity="0.4"/>
+    <circle cx="550" cy="620" r="1.8" fill="#d1aa5f" opacity="0.5"/>
+    <circle cx="820" cy="600" r="1" fill="#d1aa5f" opacity="0.3"/>
+    <circle cx="1100" cy="640" r="1.5" fill="#d1aa5f" opacity="0.4"/>
+    <circle cx="1400" cy="590" r="1.2" fill="#d1aa5f" opacity="0.5"/>
+    <circle cx="1650" cy="610" r="1.8" fill="#d1aa5f" opacity="0.3"/>
+    <circle cx="380" cy="660" r="1" fill="#d1aa5f" opacity="0.4"/>
+    <circle cx="720" cy="680" r="1.5" fill="#d1aa5f" opacity="0.3"/>
+    <circle cx="960" cy="650" r="2" fill="#d1aa5f" opacity="0.5"/>
+    <circle cx="1200" cy="670" r="1.2" fill="#d1aa5f" opacity="0.4"/>
+    <circle cx="1500" cy="650" r="1.5" fill="#d1aa5f" opacity="0.3"/>
+    <circle cx="1800" cy="680" r="1" fill="#d1aa5f" opacity="0.4"/>
+  </g>
+
+  <!-- Brighter particles -->
+  <g>
+    <circle cx="450" cy="400" r="1.5" fill="#ffe8a0" opacity="0.6" filter="url(#glowSoft)"/>
+    <circle cx="750" cy="320" r="2" fill="#ffe8a0" opacity="0.5" filter="url(#glowSoft)"/>
+    <circle cx="1150" cy="360" r="1.5" fill="#ffe8a0" opacity="0.7" filter="url(#glowSoft)"/>
+    <circle cx="1500" cy="420" r="1.8" fill="#ffe8a0" opacity="0.5" filter="url(#glowSoft)"/>
+    <circle cx="600" cy="500" r="1.2" fill="#ffe8a0" opacity="0.6" filter="url(#glowSoft)"/>
+    <circle cx="1300" cy="550" r="2" fill="#ffe8a0" opacity="0.4" filter="url(#glowSoft)"/>
+    <circle cx="400" cy="600" r="1.5" fill="#ffe8a0" opacity="0.5" filter="url(#glowSoft)"/>
+    <circle cx="1000" cy="580" r="1.8" fill="#ffe8a0" opacity="0.6" filter="url(#glowSoft)"/>
+    <circle cx="1600" cy="600" r="1.3" fill="#ffe8a0" opacity="0.5" filter="url(#glowSoft)"/>
+  </g>
+
+  <!-- Floating sparkles (diamond shapes) -->
+  <g opacity="0.3">
+    <rect x="497" y="397" width="6" height="6" rx="1" transform="rotate(45 500 400)" fill="#d1aa5f" stroke="none"/>
+    <rect x="1397" y="447" width="4" height="4" rx="0.5" transform="rotate(45 1399 449)" fill="#e8c97a" stroke="none"/>
+    <rect x="797" y="347" width="5" height="5" rx="0.5" transform="rotate(45 799 349)" fill="#d1aa5f" stroke="none"/>
+    <rect x="1097" y="597" width="4" height="4" rx="0.5" transform="rotate(45 1099 599)" fill="#e8c97a" stroke="none"/>
+    <rect x="347" y="547" width="3" height="3" rx="0.5" transform="rotate(45 348 548)" fill="#ffe8a0" stroke="none"/>
+    <rect x="1597" y="527" width="5" height="5" rx="0.5" transform="rotate(45 1599 529)" fill="#d1aa5f" stroke="none"/>
+  </g>
+
+  <!-- ===== VOLUMETRIC FOG ===== -->
+
+  <!-- Bottom fog layer -->
+  <rect x="0" y="600" width="1920" height="480" fill="url(#fogGrad)"/>
+
+  <!-- Fog wisps -->
+  <ellipse cx="400" cy="720" rx="350" ry="60" fill="rgba(180,160,100,0.03)"/>
+  <ellipse cx="1400" cy="750" rx="300" ry="50" fill="rgba(180,160,100,0.025)"/>
+  <ellipse cx="960" cy="780" rx="400" ry="70" fill="rgba(200,180,120,0.02)"/>
+  <ellipse cx="200" cy="820" rx="250" ry="40" fill="rgba(180,160,100,0.02)"/>
+  <ellipse cx="1700" cy="850" rx="280" ry="45" fill="rgba(180,160,100,0.02)"/>
+  <ellipse cx="600" cy="880" rx="200" ry="35" fill="rgba(160,140,80,0.015)"/>
+  <ellipse cx="1300" cy="900" rx="220" ry="35" fill="rgba(160,140,80,0.015)"/>
+
+  <!-- ===== VIGNETTE ===== -->
+
+  <radialGradient id="vignette" cx="50%" cy="50%" r="65%">
+    <stop offset="0%" stop-color="rgba(3,12,19,0)"/>
+    <stop offset="70%" stop-color="rgba(3,12,19,0)"/>
+    <stop offset="85%" stop-color="rgba(3,12,19,0.3)"/>
+    <stop offset="95%" stop-color="rgba(3,12,19,0.6)"/>
+    <stop offset="100%" stop-color="rgba(3,12,19,0.9)"/>
+  </radialGradient>
+  <rect width="1920" height="1080" fill="url(#vignette)"/>
+
+  <!-- ===== DRAMATIC OVERLAYS ===== -->
+
+  <!-- Top gradient fade -->
+  <linearGradient id="topFade" x1="0%" y1="0%" x2="0%" y2="100%">
+    <stop offset="0%" stop-color="rgba(3,12,19,0.6)"/>
+    <stop offset="20%" stop-color="rgba(3,12,19,0)"/>
+  </linearGradient>
+  <rect width="1920" height="300" fill="url(#topFade)"/>
+
+  <!-- Bottom dramatic shadow -->
+  <linearGradient id="bottomShadow" x1="0%" y1="0%" x2="0%" y2="100%">
+    <stop offset="0%" stop-color="rgba(3,12,19,0)"/>
+    <stop offset="50%" stop-color="rgba(3,12,19,0.3)"/>
+    <stop offset="100%" stop-color="rgba(3,12,19,0.7)"/>
+  </linearGradient>
+  <rect y="800" width="1920" height="280" fill="url(#bottomShadow)"/>
+
+  <!-- Center spotlight on stage -->
+  <ellipse cx="960" cy="550" rx="250" ry="100" fill="rgba(209,170,95,0.02)"/>
+  <ellipse cx="960" cy="550" rx="150" ry="60" fill="rgba(209,170,95,0.015)"/>
+</svg>

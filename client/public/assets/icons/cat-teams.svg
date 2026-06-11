@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" fill="none" stroke="#d1aa5f" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+  <!-- فرق - Teams/Group -->
+  <circle cx="34" cy="28" r="10"/>
+  <circle cx="66" cy="28" r="10"/>
+  <circle cx="50" cy="46" r="10"/>
+  <path d="M18 58c0-8 8-14 16-14"/>
+  <path d="M82 58c0-8-8-14-16-14"/>
+  <path d="M34 58c0-8 8-12 16-12s16 4 16 12"/>
+  <path d="M10 80c0-10 10-14 24-14"/>
+  <path d="M90 80c0-10-10-14-24-14"/>
+  <path d="M26 80c0-8 8-10 24-10s24 2 24 10"/>
+</svg>
