@@ -69,7 +69,7 @@ export default function StandingsPage() {
                   )}
                   <TeamBadge src={team.logo} alt={team.shortName} size={i === 0 ? 14 : 10} />
                 </div>
-                <div className={`font-bold text-sm ${medalColors[i].color}`}>{team.shortName}</div>
+                <div className={`font-bold text-sm ${medalColors[i].color} truncate max-w-20 md:max-w-28`}>{team.shortName}</div>
                 {/* Podium bar */}
                 <motion.div
                   className="w-20 md:w-28 rounded-t-xl flex items-center justify-center"

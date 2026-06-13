@@ -262,7 +262,7 @@ export default function AdminTeams() {
         {teams.map((team, i) => (
           <motion.div
             key={team.id}
-            className="glass-card p-4 flex items-center justify-between"
+            className="glass-card p-4 flex items-center justify-between gap-2 flex-wrap"
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: i * 0.03 }}
@@ -282,10 +282,10 @@ export default function AdminTeams() {
                 )}
               </div>
             </div>
-            <div className="flex gap-2">
+            <div className="flex gap-1 sm:gap-2 flex-wrap justify-end">
               <motion.button
                 onClick={() => openStats(team)}
-                className="px-3 py-1 text-xs bg-[rgba(16,185,129,0.1)] text-emerald-400 rounded-lg border border-emerald-500/20"
+                className="px-2 sm:px-3 py-1 text-[10px] sm:text-xs bg-[rgba(16,185,129,0.1)] text-emerald-400 rounded-lg border border-emerald-500/20"
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
               >
@@ -293,7 +293,7 @@ export default function AdminTeams() {
               </motion.button>
               <motion.button
                 onClick={() => edit(team)}
-                className="px-3 py-1 text-xs bg-[rgba(212,175,55,0.1)] text-[#D4AF37] rounded-lg border border-[rgba(212,175,55,0.2)]"
+                className="px-2 sm:px-3 py-1 text-[10px] sm:text-xs bg-[rgba(212,175,55,0.1)] text-[#D4AF37] rounded-lg border border-[rgba(212,175,55,0.2)]"
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
               >
@@ -301,7 +301,7 @@ export default function AdminTeams() {
               </motion.button>
               <motion.button
                 onClick={() => remove(team.id)}
-                className="px-3 py-1 text-xs bg-red-500/10 text-red-400 rounded-lg border border-red-500/20"
+                className="px-2 sm:px-3 py-1 text-[10px] sm:text-xs bg-red-500/10 text-red-400 rounded-lg border border-red-500/20"
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
               >

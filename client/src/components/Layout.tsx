@@ -12,6 +12,7 @@ const navLinks = [
   { to: "/questions", label: "الفئات" },
   { to: "/committee", label: "اللجنة" },
   { to: "/transfers", label: "الانتقالات" },
+  { to: "/admin/login", label: "الإدارة" },
 ];
 
 const tickerMessages = [
@@ -122,6 +123,9 @@ export default function Layout({ children }: { children: React.ReactNode }) {
               دوري نجوم تيك توك
             </span>
           </div>
+          <Link to="/admin/login" className="text-[#D4AF37]/60 hover:text-[#D4AF37] text-xs transition-colors">
+            لوحة الإدارة
+          </Link>
           <p className="text-gray-500 text-sm">
             جميع الحقوق محفوظة © {new Date().getFullYear()}
           </p>
@@ -165,6 +169,7 @@ function MobileNav({ currentPath }: { currentPath: string }) {
               { to: "/questions", label: "الفئات" },
               { to: "/committee", label: "اللجنة" },
               { to: "/transfers", label: "الانتقالات" },
+              { to: "/admin/login", label: "الإدارة" },
             ].map((link) => {
               const isActive = currentPath === link.to;
               return (

@@ -203,10 +203,10 @@ export default function HomePage() {
             <span className="text-gold-gradient">التتويج</span>
           </motion.h2>
 
-          <div className="flex items-end justify-center gap-4 flex-wrap">
+          <div className="flex items-end justify-center gap-1 sm:gap-4">
             {/* 2nd */}
             <motion.div
-              className="glass-card p-3 sm:p-6 text-center w-28 sm:w-36 md:w-48 hover-lift"
+              className="glass-card p-2 sm:p-6 text-center w-20 sm:w-36 md:w-48 hover-lift"
               initial={{ opacity: 0, y: 50 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
@@ -217,7 +217,7 @@ export default function HomePage() {
               </div>
               <TeamBadge src={top3[1].logo} alt={top3[1].shortName} size={10} />
               <div className="text-sm text-gray-400 mt-1">الوصيف</div>
-              <div className="font-bold text-white text-xs sm:text-sm">{top3[1].shortName}</div>
+              <div className="font-bold text-white text-xs sm:text-sm truncate max-w-full">{top3[1].shortName}</div>
               <motion.div
                 className="text-xl sm:text-2xl font-black text-[#D4AF37] mt-2 score-flip"
                 initial={{ scale: 0 }}
@@ -231,7 +231,7 @@ export default function HomePage() {
 
             {/* 1st */}
             <motion.div
-              className="glass-card p-4 sm:p-8 text-center w-32 sm:w-40 md:w-56 -mt-8 hover-lift"
+              className="glass-card p-3 sm:p-8 text-center w-28 sm:w-40 md:w-56 -mt-8 hover-lift"
               initial={{ opacity: 0, y: 50 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
@@ -243,7 +243,7 @@ export default function HomePage() {
               </div>
               <div className="text-base sm:text-lg font-bold text-gold-gradient mb-1">البطل</div>
               <TeamBadge src={top3[0].logo} alt={top3[0].shortName} size={12} />
-              <div className="font-bold text-white text-sm sm:text-lg mt-1">{top3[0].shortName}</div>
+              <div className="font-bold text-white text-sm sm:text-lg mt-1 truncate max-w-full">{top3[0].shortName}</div>
               <motion.div
                 className="text-2xl sm:text-4xl font-black text-gold-gradient mt-2 score-flip"
                 initial={{ scale: 0 }}
@@ -257,7 +257,7 @@ export default function HomePage() {
 
             {/* 3rd */}
             <motion.div
-              className="glass-card p-3 sm:p-6 text-center w-28 sm:w-36 md:w-48 hover-lift"
+              className="glass-card p-2 sm:p-6 text-center w-20 sm:w-36 md:w-48 hover-lift"
               initial={{ opacity: 0, y: 50 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
@@ -268,7 +268,7 @@ export default function HomePage() {
               </div>
               <TeamBadge src={top3[2].logo} alt={top3[2].shortName} size={10} />
               <div className="text-sm text-amber-600 mt-1">الثالث</div>
-              <div className="font-bold text-white text-xs sm:text-sm">{top3[2].shortName}</div>
+              <div className="font-bold text-white text-xs sm:text-sm truncate max-w-full">{top3[2].shortName}</div>
               <motion.div
                 className="text-xl sm:text-2xl font-black text-amber-600 mt-2 score-flip"
                 initial={{ scale: 0 }}
@@ -478,16 +478,16 @@ export default function HomePage() {
             return (
               <Link key={cat.name} to="/questions">
                 <motion.div
-                  className="glass-card p-4 text-center cursor-pointer hover-lift"
+                  className="glass-card p-2 sm:p-4 text-center cursor-pointer hover-lift"
                   initial={{ opacity: 0, scale: 0.8 }}
                   whileInView={{ opacity: 1, scale: 1 }}
                   viewport={{ once: true }}
                   transition={{ delay: i * 0.03 }}
                 >
                   <div className="flex justify-center mb-1">
-                    <Icon name={iconMap[cat.icon] || "help-circle"} className="text-[#D4AF37]" size={24} />
+                    <Icon name={iconMap[cat.icon] || "help-circle"} className="text-[#D4AF37]" size={20} />
                   </div>
-                  <div className="text-xs font-bold text-white">{cat.name}</div>
+                  <div className="text-[10px] sm:text-xs font-bold text-white truncate">{cat.name}</div>
                 </motion.div>
               </Link>
             );
