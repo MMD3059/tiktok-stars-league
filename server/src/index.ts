@@ -127,6 +127,12 @@ app.put("/api/admin/standings/:teamId", adminAuth, async (req, res) => {
   res.json(team);
 });
 
+// Debug: capture client errors
+app.post("/api/debug-error", express.json({ limit: "100kb" }), (req, res) => {
+  console.error("CLIENT ERROR:", JSON.stringify(req.body, null, 2));
+  res.json({ ok: true });
+});
+
 app.listen(PORT, () => {
   console.log(`Server running on http://localhost:${PORT}`);
 });

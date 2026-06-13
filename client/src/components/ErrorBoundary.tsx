@@ -23,6 +23,13 @@ export default class ErrorBoundary extends Component<Props, State> {
 
   componentDidCatch(error: Error, errorInfo: ErrorInfo) {
     console.error("ErrorBoundary caught:", error, errorInfo);
+    document.title = `ERROR: ${error.message || String(error)}`;
+    try {
+      fetch("/api/debug-error", {
+        method: "POST",
+        body: JSON.stringify({ message: error.message, stack: error.stack, componentStack: errorInfo.componentStack }),
+      });
+    } catch {}
   }
 
   render() {
