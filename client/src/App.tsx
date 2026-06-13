@@ -53,6 +53,6 @@ export default function App() {
           </Routes>
         </PageTransition>
       </Layout>
-    </BrowserRouter>
+    </HashRouter>
   );
 }
