@@ -83,16 +83,6 @@ export default function HomePage() {
 
   return (
     <div className="relative">
-      {confettiActive && (
-        <Confetti
-          colors={["#D4AF37", "#FFD700", "#B8860B", "#FFF8DC"]}
-          numberOfPieces={40}
-          recycle={false}
-          tweenDuration={2000}
-          style={{ position: "fixed", top: 0, left: 0, width: "100%", height: "100%", zIndex: 100 }}
-          confettiSource={{ x: window.innerWidth / 2, y: window.innerHeight * 0.3, w: 0, h: 0 }}
-        />
-      )}
 
       {/* ====== HERO SECTION ====== */}
       <section className="relative min-h-[85vh] flex items-center justify-center overflow-hidden">
