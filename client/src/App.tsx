@@ -1,5 +1,5 @@
-import { BrowserRouter, Routes, Route, ScrollRestoration } from "react-router-dom";
-import { Suspense, lazy } from "react";
+import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
+import { Suspense, lazy, useEffect } from "react";
 import Layout from "./components/Layout";
 import PageTransition from "./components/PageTransition";
 import { SkeletonTable } from "./components/Skeleton";
@@ -16,6 +16,12 @@ const CommitteePage = lazy(() => import("./pages/CommitteePage"));
 const AdminLayout = lazy(() => import("./pages/admin/AdminLayout"));
 const AdminLogin = lazy(() => import("./pages/admin/AdminLogin"));
 
+function ScrollToTop() {
+  const { pathname } = useLocation();
+  useEffect(() => { window.scrollTo(0, 0); }, [pathname]);
+  return null;
+}
+
 const LazyLoad = ({ children }: { children: React.ReactNode }) => (
   <Suspense fallback={
     <div className="max-w-7xl mx-auto px-4 py-8">
@@ -30,7 +36,7 @@ export default function App() {
   return (
     <BrowserRouter>
       <Layout>
-        <ScrollRestoration />
+        <ScrollToTop />
         <PageTransition>
           <Routes>
             <Route path="/" element={<LazyLoad><HomePage /></LazyLoad>} />
