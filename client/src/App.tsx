@@ -1,4 +1,4 @@
-import { HashRouter, Routes, Route, useLocation } from "react-router-dom";
+import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 import { Suspense, lazy, useEffect } from "react";
 import Layout from "./components/Layout";
 import PageTransition from "./components/PageTransition";
@@ -34,7 +34,7 @@ const LazyLoad = ({ children }: { children: React.ReactNode }) => (
 
 export default function App() {
   return (
-    <HashRouter>
+    <BrowserRouter>
       <Layout>
         <ScrollToTop />
         <PageTransition>
@@ -53,6 +53,6 @@ export default function App() {
           </Routes>
         </PageTransition>
       </Layout>
-    </HashRouter>
+    </BrowserRouter>
   );
 }
