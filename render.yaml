@@ -1,0 +1,26 @@
+services:
+  - type: web
+    name: tiktok-stars-league-api
+    env: node
+    buildCommand: npm install && npm run build
+    startCommand: npm start
+    envVars:
+      - key: NODE_VERSION
+        value: 20
+      - key: ADMIN_USERNAME
+        value: admin
+      - key: ADMIN_PASSWORD
+        value: admin
+
+  - type: static
+    name: tiktok-stars-league-client
+    env: static
+    buildCommand: npm run build
+    staticPublishPath: ./dist
+    envVars:
+      - key: VITE_API_URL
+        value: https://tiktok-stars-league-api.onrender.com/api
+    routes:
+      - type: rewrite
+        source: /*
+        destination: /index.html
