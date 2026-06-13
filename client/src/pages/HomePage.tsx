@@ -8,7 +8,6 @@ import TiltCard from "../components/TiltCard";
 import GoldDivider from "../components/GoldDivider";
 import FlipCountdown from "../components/FlipCountdown";
 import TeamBadge from "../components/TeamBadge";
-import Confetti from "react-confetti";
 import type { Team, Standing } from "../types";
 
 const categories = [
@@ -55,7 +54,6 @@ export default function HomePage() {
   const [standings, setStandings] = useState<Standing[]>([]);
   const [teams, setTeams] = useState<Team[]>([]);
   const [loading, setLoading] = useState(true);
-  const [confettiActive, setConfettiActive] = useState(true);
 
   useEffect(() => {
     Promise.all([api.getStandings(), api.getTeams()]).then(([s, t]) => {
@@ -63,11 +61,6 @@ export default function HomePage() {
       setTeams(t);
       setLoading(false);
     });
-  }, []);
-
-  useEffect(() => {
-    const id = setTimeout(() => setConfettiActive(false), 8000);
-    return () => clearTimeout(id);
   }, []);
 
   const top3 = standings.slice(0, 3);
