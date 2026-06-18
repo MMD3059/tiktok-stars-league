@@ -127,20 +127,6 @@ app.put("/api/admin/standings/:teamId", adminAuth, async (req, res) => {
   res.json(team);
 });
 
-// Serve client build (after API routes so they take priority)
-const clientDist = path.join(__dirname, "..", "..", "client", "dist");
-app.use(express.static(clientDist));
-
-// SPA fallback: serve index.html for any non-API, non-file request
-const clientIndex = path.join(clientDist, "index.html");
-app.get("*", (req, res) => {
-  if (!req.path.startsWith("/api") && !req.path.startsWith("/uploads")) {
-    res.sendFile(clientIndex);
-  } else {
-    res.status(404).json({ error: "Not found" });
-  }
-});
-
 app.listen(PORT, () => {
   console.log(`Server running on http://localhost:${PORT}`);
 });
