@@ -6,7 +6,7 @@ const categories = [
   { name: "لاعب", icon: "cat-player", desc: "أسئلة عن اللاعبين — تاريخهم، إنجازاتهم، أرقامهم القياسية", color: "#D4AF37" },
   { name: "مدرب", icon: "cat-coach", desc: "أسئلة عن المدربين — مسيرتهم، بطولاتهم، فلسفتهم", color: "#C0A030" },
   { name: "ملعب", icon: "cat-stadium", desc: "أسئلة عن الملاعب — سعتها، مواقعها، تاريخها", color: "#B8962C" },
-  { name: "مزاد", icon: "cat-auction", desc: "أسئلة المزاد — إجابة سريعة في 10 ثوانٍ", color: "#A08020" },
+  { name: "مزاد", icon: "cat-auction", desc: "أسئلة المزاد — إجابة سريعة", color: "#A08020" },
   { name: "فرق", icon: "cat-teams", desc: "أسئلة عن الأندية — تاريخها، تشكيلاتها، بطولاتها", color: "#D4AF37" },
   { name: "منتخبات", icon: "cat-national", desc: "أسئلة عن المنتخبات — كأس العالم، البطولات القارية", color: "#C0A030" },
   { name: "دوريات", icon: "cat-leagues", desc: "أسئلة عن الدوريات — أبطالها، ترتيبها، إحصائياتها", color: "#B8962C" },
@@ -30,7 +30,7 @@ export default function QuestionsPage() {
           <span className="text-gold-gradient">الأسئلة</span>
         </h1>
         <p className="text-gray-400 max-w-xl mx-auto">
-          كل مباراة تتكون من 20 سؤالاً من 9 فئات مختلفة — استراحة بعد السؤال العاشر
+          كل مباراة تتكون من 20 سؤالاً من 9 فئات مختلفة
         </p>
       </motion.div>
 
@@ -81,13 +81,9 @@ export default function QuestionsPage() {
             <div className="text-3xl font-black text-gold-gradient mb-1">20</div>
             <div className="text-sm text-gray-400">سؤالاً لكل مباراة</div>
           </div>
-          <div className="p-4 border-x border-[rgba(212,175,55,0.1)]">
-            <div className="text-3xl font-black text-gold-gradient mb-1">10</div>
-            <div className="text-sm text-gray-400">استراحة بعد السؤال</div>
-          </div>
           <div className="p-4">
             <div className="text-3xl font-black text-gold-gradient mb-1">10s</div>
-            <div className="text-sm text-gray-400">وقت الإجابة للمزاد</div>
+            <div className="text-sm text-gray-400">وقت الإجابة</div>
           </div>
         </div>
       </motion.div>
