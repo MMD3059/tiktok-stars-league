@@ -92,56 +92,61 @@ export default function TopScorersPage() {
 
       {/* Full list */}
       <motion.div
-        className="glass-card overflow-x-auto"
+        className="glass-card overflow-hidden"
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.3 }}
       >
-        <div className="grid grid-cols-[40px_1fr_120px_80px] gap-2 px-4 py-3 border-b border-[rgba(212,175,55,0.12)] text-xs text-gray-500 font-bold uppercase tracking-wider">
-          <span>#</span>
-          <span>اللاعب</span>
-          <span>الفريق</span>
-          <span className="text-center">الأهداف</span>
+        <div className="flex items-center px-4 py-3 border-b border-[rgba(212,175,55,0.12)] text-xs text-gray-500 font-bold tracking-wider gap-1">
+          <span style={{ width: 40 }}>#</span>
+          <span style={{ width: 60, textAlign: 'center' }}>المركز</span>
+          <span style={{ width: 90 }}>الفريق</span>
+          <span className="flex-1 min-w-0">اللاعب</span>
+          <span style={{ width: 60, textAlign: 'center' }}>الأهداف</span>
         </div>
 
         {scorers.map((scorer, i) => (
           <motion.div
             key={scorer.id}
-            className="grid grid-cols-[40px_1fr_120px_80px] gap-2 px-4 py-3 border-b border-[rgba(212,175,55,0.06)] items-center hover:bg-card-hover transition-all duration-200 hover:translate-x-1"
+            className="flex items-center px-4 py-3 border-b border-[rgba(212,175,55,0.06)] hover:bg-card-hover transition-all duration-200 hover:translate-x-1 gap-1"
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: 0.4 + i * 0.03 }}
           >
-            <span className={`font-bold text-lg ${i < 3 ? "text-[#D4AF37]" : "text-gray-400"}`}>
+            <span style={{ width: 40 }} className={`font-bold text-sm ${i < 3 ? "text-[#D4AF37]" : "text-gray-400"}`}>
               {i < 3 ? (
                 <Icon
                   name="medal"
-                  size={20}
+                  size={18}
                   className={i === 0 ? "text-[#FFD700]" : i === 1 ? "text-gray-300" : "text-amber-600"}
                 />
               ) : (
                 i + 1
               )}
             </span>
-            <div className="flex items-center gap-2">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#D4AF37" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+            <span style={{ width: 60, textAlign: 'center' }} className="text-xs text-gray-500 font-bold">
+              {scorer.position}
+            </span>
+            <div style={{ width: 90 }} className="flex items-center gap-1">
+              {scorer.team && <TeamBadge src={scorer.team.logo} alt={scorer.team.shortName} size={5} />}
+              <span className="text-xs text-gray-400 truncate">{scorer.team?.shortName}</span>
+            </div>
+            <div className="flex-1 min-w-0 flex items-center gap-1.5">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#D4AF37" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="shrink-0">
                 <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
               </svg>
-              <span className="font-bold text-white">
+              <span className="font-bold text-white text-sm truncate">
                 {scorer.name}
                 {scorer.isCaptain && (
-                  <svg className="inline mr-1 text-[#D4AF37]" width="12" height="12" viewBox="0 0 24 24" fill="currentColor" stroke="none">
+                  <svg className="inline mr-1 text-[#D4AF37] shrink-0" width="10" height="10" viewBox="0 0 24 24" fill="currentColor" stroke="none">
                     <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
                   </svg>
                 )}
               </span>
             </div>
-            <div className="flex items-center gap-1">
-              {scorer.team && <TeamBadge src={scorer.team.logo} alt={scorer.team.shortName} size={6} />}
-              <span className="text-sm text-gray-400">{scorer.team?.shortName}</span>
-            </div>
             <motion.span
-              className="text-center font-black text-xl text-[#D4AF37]"
+              className="text-center font-black text-base text-[#D4AF37]"
+              style={{ width: 60 }}
               initial={{ scale: 0 }}
               animate={{ scale: 1 }}
               transition={{ type: "spring", delay: 0.5 + i * 0.03 }}
