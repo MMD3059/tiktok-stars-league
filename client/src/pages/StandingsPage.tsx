@@ -146,7 +146,7 @@ export default function StandingsPage() {
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.3 }}
       >
-        <div className="grid grid-cols-[32px_1fr_40px_40px_40px_40px_40px_40px_40px_40px_40px] gap-1 px-4 py-3 border-b border-[rgba(212,175,55,0.12)] text-xs text-gray-500 font-bold uppercase tracking-wider">
+        <div className="grid grid-cols-[32px_1fr_40px_40px_40px_40px_40px_40px_40px] gap-1 px-4 py-3 border-b border-[rgba(212,175,55,0.12)] text-xs text-gray-500 font-bold uppercase tracking-wider">
           <span>#</span>
           <span>الفريق</span>
           <span className="text-center">ل</span>
@@ -155,15 +155,13 @@ export default function StandingsPage() {
           <span className="text-center">خ</span>
           <span className="text-center">له</span>
           <span className="text-center">ع</span>
-          <span className="text-center" title="بطاقات صفراء">🌙</span>
-          <span className="text-center" title="بطاقات حمراء">🚫</span>
           <span className="text-center">نقاط</span>
         </div>
 
         {standings.map((team, i) => (
           <Link key={team.id} to={`/team/${team.id}`}>
             <motion.div
-              className="grid grid-cols-[32px_1fr_40px_40px_40px_40px_40px_40px_40px_40px_40px] gap-1 px-4 py-3 border-b border-[rgba(212,175,55,0.06)] items-center hover:bg-card-hover transition-colors cursor-pointer group hover:translate-x-1 duration-200"
+              className="grid grid-cols-[32px_1fr_40px_40px_40px_40px_40px_40px_40px] gap-1 px-4 py-3 border-b border-[rgba(212,175,55,0.06)] items-center hover:bg-card-hover transition-colors cursor-pointer group hover:translate-x-1 duration-200"
               initial={{ opacity: 0, x: -20 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ delay: 0.4 + i * 0.03 }}
@@ -183,8 +181,6 @@ export default function StandingsPage() {
               <span className="text-center text-loss text-xs">{team.lost}</span>
               <span className="text-center text-gray-300 text-xs">{team.goalsFor}</span>
               <span className="text-center text-gray-300 text-xs">{team.goalsAgainst}</span>
-              <span className="text-center text-[#D4AF37] font-bold text-xs">{team.yellowCards}</span>
-              <span className="text-center text-red-400 font-bold text-xs">{team.redCards}</span>
               <motion.span
                 className="text-center font-black text-sm text-[#D4AF37]"
                 initial={{ scale: 0 }}
