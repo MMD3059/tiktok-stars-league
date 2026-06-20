@@ -1,0 +1,3 @@
+-- AlterTable
+ALTER TABLE "Team" ADD COLUMN "value" INTEGER;
+ALTER TABLE "Player" ADD COLUMN "price" INTEGER;

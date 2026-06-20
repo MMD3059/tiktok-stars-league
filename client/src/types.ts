@@ -4,6 +4,7 @@ export interface Team {
   shortName: string;
   logo: string;
   color: string;
+  value?: number | null;
   manualPoints?: number | null;
   manualWon?: number | null;
   manualDrawn?: number | null;
@@ -19,6 +20,7 @@ export interface Player {
   name: string;
   position: string;
   imageUrl?: string | null;
+  price?: number | null;
   isCaptain: boolean;
   isSubstitute: boolean;
   goalsScored: number;

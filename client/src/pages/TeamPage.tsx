@@ -530,6 +530,9 @@ export default function TeamPage() {
                   </div>
                   <div className="flex items-center gap-2 shrink-0">
                     <span className="text-[8px] font-bold text-win">{p.goalsScored}⚽</span>
+                    {p.price != null && (
+                      <span className="text-[7px] font-bold text-[#D4AF37]">{p.price.toLocaleString()}$</span>
+                    )}
                     <span
                       className="text-[6px] px-1.5 py-0.5 rounded font-bold"
                       style={{

@@ -72,6 +72,7 @@ function V1Fifa({ player }: { player: Player }) {
           <div className="shrink-0 pb-[3px] flex justify-center gap-2">
             {player.isCaptain && <span className="text-[4px] font-bold tracking-wider text-[#D4AF37]">★ C</span>}
             {player.goalsScored > 0 && <span className="text-[4px] font-bold tracking-wider text-emerald-400">⚽ {player.goalsScored}</span>}
+            {player.price != null && <span className="text-[4px] font-bold tracking-wider text-[#D4AF37]">💰 {player.price.toLocaleString()}</span>}
           </div>
 
           <div className="shrink-0 px-2 pb-[5px] space-y-[2px]">
@@ -148,6 +149,12 @@ function V2GoldFrame({ player }: { player: Player }) {
             <div className="text-[8px] font-black text-white">{player.position === "GK" ? 1 : player.goalsScored + 5}</div>
             <div className="text-[4px] text-white/50 tracking-wider">ASN</div>
           </div>
+          {player.price != null && (
+            <div className="text-center">
+              <div className="text-[8px] font-black text-[#D4AF37]">{player.price.toLocaleString()}</div>
+              <div className="text-[4px] text-white/50 tracking-wider">VAL</div>
+            </div>
+          )}
         </div>
       </div>
     </div>
@@ -213,6 +220,15 @@ function V3Glass({ player }: { player: Player }) {
             <span className="text-[10px] font-black text-white" style={{ color: "#d1aa5f" }}>{player.goalsScored + 50}</span>
             <span className="text-[4px] text-white/40 tracking-widest">RATING</span>
           </div>
+          {player.price != null && (
+            <>
+              <div className="w-px h-[18px]" style={{ background: "linear-gradient(180deg, transparent, rgba(255,255,255,0.08), transparent)" }} />
+              <div className="flex flex-col items-center">
+                <span className="text-[10px] font-black text-[#D4AF37]">{player.price.toLocaleString()}</span>
+                <span className="text-[4px] text-white/40 tracking-widest">VALUE</span>
+              </div>
+            </>
+          )}
         </div>
 
         {/* Goal badge */}
@@ -277,6 +293,15 @@ function V4Vertical({ player }: { player: Player }) {
               <span className="text-[10px] font-black text-white">{player.goalsScored + 50}</span>
               <span className="text-[4px] text-white/40">★</span>
             </div>
+            {player.price != null && (
+              <>
+                <div className="w-px h-[12px]" style={{ background: "linear-gradient(180deg, transparent, rgba(255,255,255,0.06), transparent)" }} />
+                <div className="flex flex-col items-center">
+                  <span className="text-[10px] font-black text-[#D4AF37]">{player.price.toLocaleString()}</span>
+                  <span className="text-[4px] text-white/40">💰</span>
+                </div>
+              </>
+            )}
           </div>
         </div>
       </div>
@@ -372,6 +397,12 @@ function V5Holo({ player }: { player: Player }) {
               <span className="text-[10px] font-black text-[#d1aa5f] drop-shadow">{player.goalsScored + 50}</span>
               <span className="text-[4px] text-white/40 tracking-[1px]">RT</span>
             </div>
+            {player.price != null && (
+              <div className="flex flex-col items-center">
+                <span className="text-[10px] font-black text-[#D4AF37] drop-shadow">{player.price.toLocaleString()}</span>
+                <span className="text-[4px] text-white/40 tracking-[1px]">$</span>
+              </div>
+            )}
           </div>
 
           {/* Bottom accent */}

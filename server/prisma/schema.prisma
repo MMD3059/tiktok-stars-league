@@ -13,6 +13,7 @@ model Team {
   shortName String
   logo      String
   color     String
+  value     Int?
   manualPoints   Int?
   manualWon      Int?
   manualDrawn    Int?
@@ -30,6 +31,7 @@ model Player {
   name       String
   position   String
   imageUrl   String?
+  price      Int?
   isCaptain  Boolean  @default(false)
   isSubstitute Boolean @default(false)
   goalsScored Int     @default(0)

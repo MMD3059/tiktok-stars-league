@@ -11,6 +11,7 @@ export default function AdminTeams() {
   const [shortName, setShortName] = useState("");
   const [logo, setLogo] = useState("");
   const [color, setColor] = useState("#D4AF37");
+  const [value, setValue] = useState("");
   const [editing, setEditing] = useState<number | null>(null);
   const [uploading, setUploading] = useState(false);
   const fileRef = useRef<HTMLInputElement>(null);
@@ -48,6 +49,7 @@ export default function AdminTeams() {
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     const data = { name, shortName, logo, color };
+    if (value) (data as any).value = parseInt(value, 10);
     if (editing) {
       await api.updateTeam(editing, data);
     } else {
@@ -64,6 +66,7 @@ export default function AdminTeams() {
     setShortName(team.shortName);
     setLogo(team.logo);
     setColor(team.color);
+    setValue(team.value ? String(team.value) : "");
     setEditing(team.id);
   }
 
@@ -73,6 +76,16 @@ export default function AdminTeams() {
       api.getTeams().then((data) =>
         setTeams([...data].sort((a, b) => (b.manualPoints ?? 0) - (a.manualPoints ?? 0)))
       );
+    }
+  }
+
+  async function handleDistribute(teamId: number) {
+    if (!confirm("توزيع قيمة الفريق على اللاعبين (باستثناء الكابتن)؟")) return;
+    try {
+      const result = await api.distributeValue(teamId);
+      alert(`تم التوزيع: ${result.share} لكل لاعب من ${result.count} لاعبين`);
+    } catch {
+      alert("فشل التوزيع");
     }
   }
 
@@ -112,6 +125,7 @@ export default function AdminTeams() {
     setShortName("");
     setLogo("");
     setColor("#D4AF37");
+    setValue("");
     setEditing(null);
   }
 
@@ -233,6 +247,13 @@ export default function AdminTeams() {
             />
             <span className="text-gray-400 text-sm">{color}</span>
           </div>
+          <input
+            placeholder="قيمة الفريق"
+            type="number"
+            value={value}
+            onChange={(e) => setValue(e.target.value)}
+            className="bg-dark border border-[rgba(212,175,55,0.15)] rounded-xl px-4 py-2 text-white focus:outline-none focus:border-[#D4AF37]"
+          />
         </div>
         <div className="flex gap-2">
           <motion.button
@@ -280,12 +301,25 @@ export default function AdminTeams() {
                 {team.manualPoints != null && (
                   <div className="text-[10px] text-[#D4AF37] mt-0.5">يدوي: {team.manualPoints}نقاط</div>
                 )}
+                {team.value != null && (
+                  <div className="text-[10px] text-emerald-400 mt-0.5">قيمة: {team.value.toLocaleString()}</div>
+                )}
               </div>
             </div>
             <div className="flex gap-1 sm:gap-2 flex-wrap justify-end">
+              {team.value != null && (
+                <motion.button
+                  onClick={() => handleDistribute(team.id)}
+                  className="px-2 sm:px-3 py-1 text-[10px] sm:text-xs bg-[rgba(16,185,129,0.1)] text-emerald-400 rounded-lg border border-emerald-500/20"
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                >
+                  توزيع
+                </motion.button>
+              )}
               <motion.button
                 onClick={() => openStats(team)}
-                className="px-2 sm:px-3 py-1 text-[10px] sm:text-xs bg-[rgba(16,185,129,0.1)] text-emerald-400 rounded-lg border border-emerald-500/20"
+                className="px-2 sm:px-3 py-1 text-[10px] sm:text-xs bg-[rgba(59,130,246,0.1)] text-blue-400 rounded-lg border border-blue-500/20"
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
               >

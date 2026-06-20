@@ -14,6 +14,7 @@ export default function AdminPlayers() {
   const [teamId, setTeamId] = useState<number>(1);
   const [imageUrl, setImageUrl] = useState("");
   const [goalsScored, setGoalsScored] = useState(0);
+  const [price, setPrice] = useState("");
   const [isCaptain, setIsCaptain] = useState(false);
   const [isSubstitute, setIsSubstitute] = useState(false);
   const [editing, setEditing] = useState<number | null>(null);
@@ -42,11 +43,12 @@ export default function AdminPlayers() {
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
-    const data = { name, position, imageUrl: imageUrl || null, teamId, goalsScored, isCaptain, isSubstitute };
+    const data: any = { name, position, imageUrl: imageUrl || null, teamId, goalsScored, isCaptain, isSubstitute };
+    if (price) data.price = parseInt(price, 10);
     if (editing) {
-      await api.updatePlayer(editing, data as any);
+      await api.updatePlayer(editing, data);
     } else {
-      await api.createPlayer(data as any);
+      await api.createPlayer(data);
     }
     reset();
     api.getPlayers().then(setPlayers);
@@ -58,6 +60,7 @@ export default function AdminPlayers() {
     setTeamId(player.teamId);
     setImageUrl(player.imageUrl ?? "");
     setGoalsScored(player.goalsScored);
+    setPrice(player.price ? String(player.price) : "");
     setIsCaptain(player.isCaptain);
     setIsSubstitute(player.isSubstitute);
     setEditing(player.id);
@@ -72,7 +75,7 @@ export default function AdminPlayers() {
 
   function reset() {
     setName(""); setPosition("GK"); setTeamId(1);
-    setImageUrl(""); setGoalsScored(0); setIsCaptain(false); setIsSubstitute(false);
+    setImageUrl(""); setGoalsScored(0); setPrice(""); setIsCaptain(false); setIsSubstitute(false);
     setEditing(null);
   }
 
@@ -155,6 +158,13 @@ export default function AdminPlayers() {
             onChange={(e) => setGoalsScored(Number(e.target.value))}
             className="bg-dark border border-[rgba(212,175,55,0.15)] rounded-xl px-4 py-2 text-white focus:outline-none focus:border-[#D4AF37]"
           />
+          <input
+            type="number"
+            placeholder="السعر"
+            value={price}
+            onChange={(e) => setPrice(e.target.value)}
+            className="bg-dark border border-[rgba(212,175,55,0.15)] rounded-xl px-4 py-2 text-white focus:outline-none focus:border-[#D4AF37]"
+          />
           <label className="flex items-center gap-2 text-white">
             <input type="checkbox" checked={isCaptain} onChange={(e) => setIsCaptain(e.target.checked)} />
             قائد
@@ -218,6 +228,7 @@ export default function AdminPlayers() {
                 </div>
                 <div className="text-xs text-gray-400">
                   {p.position} · {p.team?.shortName} · {p.goalsScored} هدف
+                  {p.price != null && <> · <span className="text-emerald-400">{p.price.toLocaleString()}</span></>}
                 </div>
               </div>
             </div>

@@ -120,6 +120,20 @@ app.put("/api/admin/standings/:teamId", adminAuth, async (req, res) => {
   res.json(team);
 });
 
+// Distribute team value among non-captain players
+app.post("/api/admin/distribute-value/:teamId", adminAuth, async (req, res) => {
+  const teamId = +req.params.teamId;
+  const team = await prisma.team.findUnique({ where: { id: teamId }, include: { players: true } });
+  if (!team || !team.value) { res.status(400).json({ error: "Team has no value set" }); return; }
+  const nonCaptains = team.players.filter(p => !p.isCaptain);
+  if (nonCaptains.length === 0) { res.status(400).json({ error: "No non-captain players" }); return; }
+  const share = Math.floor(team.value / nonCaptains.length);
+  for (const p of nonCaptains) {
+    await prisma.player.update({ where: { id: p.id }, data: { price: share } });
+  }
+  res.json({ ok: true, share, count: nonCaptains.length });
+});
+
 // Serve client build (after API routes so they take priority)
 const clientDist = path.join(__dirname, "..", "..", "client", "dist");
 app.use(express.static(clientDist));

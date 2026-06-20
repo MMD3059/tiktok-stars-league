@@ -81,6 +81,10 @@ export const api = {
   updateStanding: (teamId: number, data: { points?: number; won?: number; drawn?: number; lost?: number; goalsFor?: number; goalsAgainst?: number }) =>
     fetchJson<Team>(`/admin/standings/${teamId}`, { method: "PUT", body: JSON.stringify(data) }),
 
+  // Value distribution
+  distributeValue: (teamId: number) =>
+    fetchJson<{ ok: boolean; share: number; count: number }>(`/admin/distribute-value/${teamId}`, { method: "POST" }),
+
   // Transfers
   getTransfers: () => fetchJson<Transfer[]>("/transfers"),
   createTransfer: (data: Partial<Transfer>) =>
