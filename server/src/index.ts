@@ -25,19 +25,10 @@ const PORT = parseInt(process.env.PORT || "3002", 10);
 app.use(cors());
 app.use(express.json());
 
-// Serve uploaded files
-const uploadsDir = path.join(__dirname, "..", "uploads");
-app.use("/uploads", express.static(uploadsDir));
 
-// Multer config
-const storage = multer.diskStorage({
-  destination: (_req, _file, cb) => cb(null, uploadsDir),
-  filename: (_req, file, cb) => {
-    const ext = path.extname(file.originalname) || ".png";
-    cb(null, `${Date.now()}-${Math.round(Math.random() * 1e9)}${ext}`);
-  },
-});
-const upload = multer({ storage, limits: { fileSize: 5 * 1024 * 1024 } });
+
+// Multer config (memory storage — convert to base64 for DB persistence)
+const upload = multer({ storage: multer.memoryStorage(), limits: { fileSize: 5 * 1024 * 1024 } });
 
 // Public routes
 app.use("/api/auth", authRouter);
@@ -104,10 +95,12 @@ app.delete("/api/admin/transfers/:id", adminAuth, async (req, res) => {
   res.json({ ok: true });
 });
 
-// File upload
+// File upload (base64 for DB persistence)
 app.post("/api/admin/upload", adminAuth, upload.single("file"), (req, res) => {
   if (!req.file) { res.status(400).json({ error: "No file uploaded" }); return; }
-  res.json({ url: `/uploads/${req.file.filename}` });
+  const mime = req.file.mimetype;
+  const b64 = req.file.buffer.toString("base64");
+  res.json({ url: `data:${mime};base64,${b64}` });
 });
 
 // Manual standings override
@@ -131,10 +124,10 @@ app.put("/api/admin/standings/:teamId", adminAuth, async (req, res) => {
 const clientDist = path.join(__dirname, "..", "..", "client", "dist");
 app.use(express.static(clientDist));
 
-// SPA fallback: serve index.html for any non-API, non-file request
+// SPA fallback: serve index.html for any non-API request
 const clientIndex = path.join(clientDist, "index.html");
 app.get("*", (req, res) => {
-  if (!req.path.startsWith("/api") && !req.path.startsWith("/uploads")) {
+  if (!req.path.startsWith("/api")) {
     res.sendFile(clientIndex);
   } else {
     res.status(404).json({ error: "Not found" });
