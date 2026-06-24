@@ -1,0 +1,14 @@
+{
+  "installCommand": "npm ci --prefer-offline && cd server && npm ci --prefer-offline && cd ../client && npm ci --prefer-offline",
+  "buildCommand": "npm run vercel-build",
+  "outputDirectory": "client/dist",
+  "rewrites": [
+    { "source": "/api/(.*)", "destination": "/api" },
+    { "source": "/(.*)", "destination": "/index.html" }
+  ],
+  "functions": {
+    "api/index.ts": {
+      "runtime": "@vercel/node@5"
+    }
+  }
+}
