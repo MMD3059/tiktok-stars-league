@@ -20,6 +20,7 @@ export default function AdminPlayers() {
   const [editing, setEditing] = useState<number | null>(null);
   const [uploading, setUploading] = useState(false);
   const [submitting, setSubmitting] = useState(false);
+  const submittingRef = useRef(false);
   const fileRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
@@ -44,7 +45,8 @@ export default function AdminPlayers() {
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
-    if (submitting) return;
+    if (submittingRef.current) return;
+    submittingRef.current = true;
     setSubmitting(true);
     const data: any = { name, position, imageUrl: imageUrl || null, teamId, goalsScored, isCaptain, isSubstitute };
     if (price) data.price = parseInt(price, 10);
@@ -58,6 +60,7 @@ export default function AdminPlayers() {
       const [p] = await Promise.all([api.getPlayers()]);
       setPlayers(p);
     } finally {
+      submittingRef.current = false;
       setSubmitting(false);
     }
   }

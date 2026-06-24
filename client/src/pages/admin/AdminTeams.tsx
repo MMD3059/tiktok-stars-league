@@ -15,6 +15,7 @@ export default function AdminTeams() {
   const [editing, setEditing] = useState<number | null>(null);
   const [uploading, setUploading] = useState(false);
   const [submitting, setSubmitting] = useState(false);
+  const submittingRef = useRef(false);
   const fileRef = useRef<HTMLInputElement>(null);
 
   // Stats editing
@@ -49,7 +50,8 @@ export default function AdminTeams() {
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
-    if (submitting) return;
+    if (submittingRef.current) return;
+    submittingRef.current = true;
     setSubmitting(true);
     const data = { name, shortName, logo, color };
     if (value) (data as any).value = parseInt(value, 10);
@@ -63,6 +65,7 @@ export default function AdminTeams() {
       const result = await api.getTeams();
       setTeams([...result].sort((a, b) => (b.manualPoints ?? 0) - (a.manualPoints ?? 0)));
     } finally {
+      submittingRef.current = false;
       setSubmitting(false);
     }
   }
