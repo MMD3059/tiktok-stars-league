@@ -59,6 +59,8 @@ export default function AdminPlayers() {
       reset();
       const [p] = await Promise.all([api.getPlayers()]);
       setPlayers(p);
+    } catch (err: any) {
+      alert("خطأ: " + (err.message || "فشل الحفظ"));
     } finally {
       submittingRef.current = false;
       setSubmitting(false);

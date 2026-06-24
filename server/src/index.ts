@@ -56,17 +56,26 @@ app.delete("/api/admin/teams/:id", adminAuth, async (req, res) => {
 });
 
 app.post("/api/admin/players", adminAuth, async (req, res) => {
-  const { name, teamId } = req.body;
-  const existing = await prisma.player.findFirst({
-    where: { name: name.trim(), teamId },
-  });
-  if (existing) {
-    const player = await prisma.player.update({ where: { id: existing.id }, data: req.body });
+  try {
+    const { name, teamId } = req.body;
+    if (!name || !teamId) {
+      res.status(400).json({ error: "Missing name or teamId" });
+      return;
+    }
+    const existing = await prisma.player.findFirst({
+      where: { name: String(name).trim(), teamId: Number(teamId) },
+    });
+    if (existing) {
+      const player = await prisma.player.update({ where: { id: existing.id }, data: req.body });
+      res.json(player);
+      return;
+    }
+    const player = await prisma.player.create({ data: { ...req.body, name: String(name).trim() } });
     res.json(player);
-    return;
+  } catch (err: any) {
+    console.error("POST /api/admin/players error:", err);
+    res.status(500).json({ error: err.message });
   }
-  const player = await prisma.player.create({ data: { ...req.body, name: name.trim() } });
-  res.json(player);
 });
 
 app.put("/api/admin/players/:id", adminAuth, async (req, res) => {
