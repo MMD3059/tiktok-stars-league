@@ -14,8 +14,7 @@ export default function TeamsPage() {
   useEffect(() => {
     api.getTeams().then((data) => {
       setTeams(data);
-      setLoading(false);
-    });
+    }).catch(() => {}).finally(() => setLoading(false));
   }, []);
 
   return (

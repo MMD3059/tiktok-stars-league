@@ -63,10 +63,11 @@ export default function TeamPage() {
 
   useEffect(() => {
     if (!id) return;
+    setLoading(true);
+    setTeam(null);
     api.getTeam(Number(id)).then((data) => {
       setTeam(data);
-      setLoading(false);
-    });
+    }).catch(() => {}).finally(() => setLoading(false));
   }, [id]);
 
   useEffect(() => {

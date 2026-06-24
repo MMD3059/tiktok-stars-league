@@ -23,8 +23,7 @@ export default function StandingsPage() {
   useEffect(() => {
     api.getStandings().then((data) => {
       setStandings(data);
-      setLoading(false);
-    });
+    }).catch(() => {}).finally(() => setLoading(false));
   }, []);
 
   if (loading) {

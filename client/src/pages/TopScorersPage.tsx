@@ -15,8 +15,7 @@ export default function TopScorersPage() {
   useEffect(() => {
     api.getTopScorers().then((data) => {
       setScorers(data);
-      setLoading(false);
-    });
+    }).catch(() => {}).finally(() => setLoading(false));
   }, []);
 
   if (loading) {

@@ -11,7 +11,7 @@ export default function PageTransition({ children }: { children: React.ReactNode
   const location = useLocation();
 
   return (
-    <AnimatePresence mode="wait">
+    <AnimatePresence mode="popLayout">
       <motion.div
         key={location.pathname}
         variants={variants}

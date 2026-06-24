@@ -59,8 +59,7 @@ export default function HomePage() {
     Promise.all([api.getStandings(), api.getTeams()]).then(([s, t]) => {
       setStandings(s);
       setTeams(t);
-      setLoading(false);
-    });
+    }).catch(() => {}).finally(() => setLoading(false));
   }, []);
 
   const top3 = standings.slice(0, 3);

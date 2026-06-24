@@ -12,8 +12,7 @@ export default function TransfersPage() {
   useEffect(() => {
     api.getTransfers().then((data) => {
       setTransfers(data);
-      setLoading(false);
-    });
+    }).catch(() => {}).finally(() => setLoading(false));
   }, []);
 
   if (loading) {

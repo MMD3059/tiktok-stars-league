@@ -25,8 +25,7 @@ export default function SchedulePage() {
   useEffect(() => {
     api.getMatches().then((data) => {
       setMatches(data);
-      setLoading(false);
-    });
+    }).catch(() => {}).finally(() => setLoading(false));
   }, []);
 
   const filtered = matches.filter((m) => {
