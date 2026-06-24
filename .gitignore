@@ -8,3 +8,4 @@ dist/
 *.JPG
 *.jpg
 .vercel/
+.vercel
