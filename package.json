@@ -2,7 +2,7 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "vercel-build": "npx prisma generate --schema=server/prisma/schema.prisma && cd client && npm run build",
+    "vercel-build": "cd server && npx prisma generate && cd .. && cd client && npm run build",
     "dev": "cd server && npx tsx watch src/index.ts"
   },
   "dependencies": {
