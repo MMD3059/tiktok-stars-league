@@ -19,6 +19,7 @@ export default function AdminPlayers() {
   const [isSubstitute, setIsSubstitute] = useState(false);
   const [editing, setEditing] = useState<number | null>(null);
   const [uploading, setUploading] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
   const fileRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
@@ -43,15 +44,22 @@ export default function AdminPlayers() {
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
+    if (submitting) return;
+    setSubmitting(true);
     const data: any = { name, position, imageUrl: imageUrl || null, teamId, goalsScored, isCaptain, isSubstitute };
     if (price) data.price = parseInt(price, 10);
-    if (editing) {
-      await api.updatePlayer(editing, data);
-    } else {
-      await api.createPlayer(data);
+    try {
+      if (editing) {
+        await api.updatePlayer(editing, data);
+      } else {
+        await api.createPlayer(data);
+      }
+      reset();
+      const [p] = await Promise.all([api.getPlayers()]);
+      setPlayers(p);
+    } finally {
+      setSubmitting(false);
     }
-    reset();
-    api.getPlayers().then(setPlayers);
   }
 
   function edit(player: Player) {
@@ -177,11 +185,12 @@ export default function AdminPlayers() {
         <div className="flex gap-2">
           <motion.button
             type="submit"
-            className="px-6 py-2 bg-[#D4AF37] text-black font-bold rounded-xl"
+            disabled={submitting}
+            className="px-6 py-2 bg-[#D4AF37] text-black font-bold rounded-xl disabled:opacity-50"
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
           >
-            {editing ? "حفظ" : "إضافة"}
+            {submitting ? "...جاري" : editing ? "حفظ" : "إضافة"}
           </motion.button>
           {editing && (
             <motion.button

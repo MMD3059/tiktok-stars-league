@@ -14,6 +14,7 @@ export default function AdminTeams() {
   const [value, setValue] = useState("");
   const [editing, setEditing] = useState<number | null>(null);
   const [uploading, setUploading] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
   const fileRef = useRef<HTMLInputElement>(null);
 
   // Stats editing
@@ -48,17 +49,22 @@ export default function AdminTeams() {
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
+    if (submitting) return;
+    setSubmitting(true);
     const data = { name, shortName, logo, color };
     if (value) (data as any).value = parseInt(value, 10);
-    if (editing) {
-      await api.updateTeam(editing, data);
-    } else {
-      await api.createTeam(data);
+    try {
+      if (editing) {
+        await api.updateTeam(editing, data);
+      } else {
+        await api.createTeam(data);
+      }
+      reset();
+      const result = await api.getTeams();
+      setTeams([...result].sort((a, b) => (b.manualPoints ?? 0) - (a.manualPoints ?? 0)));
+    } finally {
+      setSubmitting(false);
     }
-    reset();
-    api.getTeams().then((data) =>
-      setTeams([...data].sort((a, b) => (b.manualPoints ?? 0) - (a.manualPoints ?? 0)))
-    );
   }
 
   function edit(team: Team) {
@@ -258,11 +264,12 @@ export default function AdminTeams() {
         <div className="flex gap-2">
           <motion.button
             type="submit"
-            className="px-6 py-2 bg-[#D4AF37] text-black font-bold rounded-xl"
+            disabled={submitting}
+            className="px-6 py-2 bg-[#D4AF37] text-black font-bold rounded-xl disabled:opacity-50"
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
           >
-            {editing ? "حفظ" : "إضافة"}
+            {submitting ? "...جاري" : editing ? "حفظ" : "إضافة"}
           </motion.button>
           {editing && (
             <motion.button
