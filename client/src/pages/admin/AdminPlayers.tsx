@@ -11,7 +11,7 @@ export default function AdminPlayers() {
   const [teams, setTeams] = useState<Team[]>([]);
   const [name, setName] = useState("");
   const [position, setPosition] = useState("GK");
-  const [teamId, setTeamId] = useState<number>(1);
+  const [teamId, setTeamId] = useState<number>(0);
   const [imageUrl, setImageUrl] = useState("");
   const [goalsScored, setGoalsScored] = useState(0);
   const [price, setPrice] = useState("");
@@ -27,6 +27,7 @@ export default function AdminPlayers() {
     Promise.all([api.getPlayers(), api.getTeams()]).then(([p, t]) => {
       setPlayers(p);
       setTeams(t);
+      if (t.length > 0 && teamId === 0) setTeamId(t[0].id);
     });
   }, []);
 
@@ -46,6 +47,7 @@ export default function AdminPlayers() {
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     if (submittingRef.current) return;
+    if (!teamId) { alert("اختر فريق"); return; }
     submittingRef.current = true;
     setSubmitting(true);
     const data: any = { name, position, imageUrl: imageUrl || null, teamId, goalsScored, isCaptain, isSubstitute };
@@ -87,7 +89,7 @@ export default function AdminPlayers() {
   }
 
   function reset() {
-    setName(""); setPosition("GK"); setTeamId(1);
+    setName(""); setPosition("GK"); setTeamId(teams.length > 0 ? teams[0].id : 0);
     setImageUrl(""); setGoalsScored(0); setPrice(""); setIsCaptain(false); setIsSubstitute(false);
     setEditing(null);
   }
