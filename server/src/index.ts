@@ -56,12 +56,23 @@ app.delete("/api/admin/teams/:id", adminAuth, async (req, res) => {
 });
 
 app.post("/api/admin/players", adminAuth, async (req, res) => {
-  const player = await prisma.player.create({ data: req.body });
+  const { name, teamId } = req.body;
+  const existing = await prisma.player.findFirst({
+    where: { name: name.trim(), teamId },
+  });
+  if (existing) {
+    const player = await prisma.player.update({ where: { id: existing.id }, data: req.body });
+    res.json(player);
+    return;
+  }
+  const player = await prisma.player.create({ data: { ...req.body, name: name.trim() } });
   res.json(player);
 });
 
 app.put("/api/admin/players/:id", adminAuth, async (req, res) => {
-  const player = await prisma.player.update({ where: { id: +req.params.id }, data: req.body });
+  const data = req.body;
+  if (data.name) data.name = data.name.trim();
+  const player = await prisma.player.update({ where: { id: +req.params.id }, data });
   res.json(player);
 });
 
