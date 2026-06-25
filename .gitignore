@@ -9,3 +9,6 @@ dist/
 *.jpg
 .vercel/
 .vercel
+client/android/
+client/ios/
+client/.sourcemaps/
