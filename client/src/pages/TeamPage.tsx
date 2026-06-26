@@ -3,7 +3,7 @@ import { useParams, Link } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import Icon from "../components/Icon";
 import { api } from "../api";
-import type { Team } from "../types";
+import type { Team, Match } from "../types";
 import { SkeletonLine } from "../components/Skeleton";
 import TeamBadge from "../components/TeamBadge";
 import PlayerCard, { type CardVariant } from "../components/PlayerCard";
@@ -51,9 +51,46 @@ function CountUp({ end, suffix = "", className = "", style }: { end: number; suf
   return <span ref={ref} className={className} style={style}>{count}{suffix}</span>;
 }
 
+function TeamMatchCard({ match, teamId, highlighted }: { match: Match; teamId: number; highlighted?: boolean }) {
+  const isHome = match.homeTeamId === teamId;
+  const opponent = isHome ? match.awayTeam : match.homeTeam;
+  const teamScore = isHome ? match.homeScore : match.awayScore;
+  const oppScore = isHome ? match.awayScore : match.homeScore;
+  const isPlayed = match.status === "played";
+  const won = isPlayed && teamScore != null && oppScore != null && teamScore > oppScore;
+  const lost = isPlayed && teamScore != null && oppScore != null && teamScore < oppScore;
+  const drawn = isPlayed && teamScore != null && oppScore != null && teamScore === oppScore;
+
+  return (
+    <motion.div
+      className={`flex items-center gap-3 px-3 py-2 rounded-xl transition-all duration-200 ${highlighted ? "bg-[rgba(212,175,55,0.06)] border border-[rgba(212,175,55,0.15)]" : "hover:bg-white/[0.03]"}`}
+      initial={{ opacity: 0, x: -10 }}
+      animate={{ opacity: 1, x: 0 }}
+    >
+      <div className="flex items-center gap-2 min-w-0 flex-1">
+        <TeamBadge src={opponent.logo} alt={opponent.shortName} size={6} />
+        <span className="text-[11px] font-bold text-white truncate">{opponent.shortName}</span>
+      </div>
+      <div className="text-center shrink-0">
+        {isPlayed ? (
+          <span className={`text-sm font-black ${won ? "text-win" : lost ? "text-loss" : "text-gray-300"}`}>
+            {teamScore}-{oppScore}
+          </span>
+        ) : (
+          <span className="text-[11px] font-bold text-[#D4AF37]">{match.time}</span>
+        )}
+      </div>
+      <div className="text-[9px] text-gray-500 shrink-0 text-left min-w-[60px]" dir="ltr">
+        <div>{match.date}</div>
+      </div>
+    </motion.div>
+  );
+}
+
 export default function TeamPage() {
   const { id } = useParams();
   const [team, setTeam] = useState<Team | null>(null);
+  const [allMatches, setAllMatches] = useState<Match[]>([]);
   const [loading, setLoading] = useState(true);
   const [squadTab, setSquadTab] = useState("ALL");
   const [mousePos, setMousePos] = useState({ x: -200, y: -200 });
@@ -65,8 +102,13 @@ export default function TeamPage() {
     if (!id) return;
     setLoading(true);
     setTeam(null);
-    api.getTeam(Number(id)).then((data) => {
-      setTeam(data);
+    setAllMatches([]);
+    Promise.all([
+      api.getTeam(Number(id)),
+      api.getMatches(),
+    ]).then(([teamData, matchesData]) => {
+      setTeam(teamData);
+      setAllMatches(matchesData);
     }).catch(() => {}).finally(() => setLoading(false));
   }, [id]);
 
@@ -112,6 +154,15 @@ export default function TeamPage() {
     .sort((a, b) => b.goalsScored - a.goalsScored);
 
   const maxGoals = scorers.length > 0 ? Math.max(...scorers.map((x) => x.goalsScored)) : 1;
+
+  const teamId = Number(id);
+  const teamMatches = allMatches
+    .filter((m) => m.homeTeamId === teamId || m.awayTeamId === teamId)
+    .sort((a, b) => a.date.localeCompare(b.date) || a.time.localeCompare(b.time));
+  const previousMatches = teamMatches.filter((m) => m.status === "played").reverse();
+  const upcomingMatches = teamMatches.filter((m) => m.status === "scheduled");
+  const currentMatch = upcomingMatches[0] || null;
+  const nextMatches = upcomingMatches.slice(1);
 
   return (
     <div className="min-h-screen relative">
@@ -556,7 +607,65 @@ export default function TeamPage() {
           </div>
         </motion.section>
 
-        {/* ═══════════════ 5. BACK BUTTON ═══════════════ */}
+        {/* ═══════════════ 5. MATCHES ═══════════════ */}
+        {teamMatches.length > 0 && (
+          <motion.section
+            variants={sectionVariants}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: "-50px" }}
+            className="rounded-2xl p-4 md:p-5"
+            style={{
+              background: "rgba(20,20,20,0.85)",
+              border: "1px solid rgba(212,175,55,0.1)",
+            }}
+          >
+            <div className="flex items-center justify-center gap-3 mb-6">
+              <div className="h-px flex-1 max-w-[80px]" style={{ background: "linear-gradient(90deg, transparent, rgba(212,175,55,0.2))" }} />
+              <h2 className="text-sm md:text-base font-bold text-white flex items-center gap-2">
+                <Icon name="calendar-days" size={14} className="text-[#D4AF37]" />
+                MATCHES
+              </h2>
+              <div className="h-px flex-1 max-w-[80px]" style={{ background: "linear-gradient(270deg, transparent, rgba(212,175,55,0.2))" }} />
+            </div>
+
+            {/* Current / Next Match */}
+            {currentMatch && (
+              <div className="mb-5">
+                <div className="text-[10px] text-[#D4AF37] font-bold mb-2 text-center tracking-widest">
+                  {previousMatches.length === 0 ? "NEXT MATCH" : "CURRENT / NEXT"}
+                </div>
+                <TeamMatchCard match={currentMatch} teamId={teamId} highlighted />
+              </div>
+            )}
+
+            {/* Previous Matches */}
+            {previousMatches.length > 0 && (
+              <div className="mb-4">
+                <div className="text-[10px] text-gray-500 font-bold mb-2 tracking-widest">PREVIOUS</div>
+                <div className="space-y-1.5">
+                  {previousMatches.map((m) => (
+                    <TeamMatchCard key={m.id} match={m} teamId={teamId} />
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {/* Next Matches */}
+            {nextMatches.length > 0 && (
+              <div>
+                <div className="text-[10px] text-gray-500 font-bold mb-2 tracking-widest">UPCOMING</div>
+                <div className="space-y-1.5">
+                  {nextMatches.map((m) => (
+                    <TeamMatchCard key={m.id} match={m} teamId={teamId} />
+                  ))}
+                </div>
+              </div>
+            )}
+          </motion.section>
+        )}
+
+        {/* ═══════════════ 6. BACK BUTTON ═══════════════ */}
         <div className="text-center pb-6">
           <Link to="/teams">
             <motion.span
