@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 import { motion } from "framer-motion";
 import Icon from "../components/Icon";
 import { api } from "../api";
@@ -6,16 +6,6 @@ import type { Match } from "../types";
 import TiltCard from "../components/TiltCard";
 import { SkeletonCard } from "../components/Skeleton";
 import TeamBadge from "../components/TeamBadge";
-
-function groupBy<T>(arr: T[], keyFn: (item: T) => string): Record<string, T[]> {
-  const map: Record<string, T[]> = {};
-  for (const item of arr) {
-    const key = keyFn(item);
-    if (!map[key]) map[key] = [];
-    map[key].push(item);
-  }
-  return map;
-}
 
 export default function SchedulePage() {
   const [matches, setMatches] = useState<Match[]>([]);
@@ -28,12 +18,14 @@ export default function SchedulePage() {
     }).catch(() => {}).finally(() => setLoading(false));
   }, []);
 
-  const filtered = matches.filter((m) => {
-    if (activeTab === "all") return true;
-    return m.status === activeTab;
-  });
-
-  const grouped = groupBy(filtered, (m) => ` ${m.week}`);
+  const filtered = useMemo(() => {
+    let list = matches.filter((m) => {
+      if (activeTab === "all") return true;
+      return m.status === activeTab;
+    });
+    list.sort((a, b) => a.date.localeCompare(b.date) || a.time.localeCompare(b.time));
+    return list;
+  }, [matches, activeTab]);
 
   if (loading) {
     return (
@@ -74,27 +66,10 @@ export default function SchedulePage() {
         ))}
       </div>
 
-      {/* Weeks */}
-      {Object.entries(grouped).map(([week, weekMatches], weekIdx) => (
-        <motion.div
-          key={week}
-          className="mb-8"
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: weekIdx * 0.05 }}
-        >
-          <motion.h2
-            className="text-xl font-bold text-white mb-4 flex items-center gap-2"
-            initial={{ x: -20 }}
-            animate={{ x: 0 }}
-          >
-            <Icon name="diamond" className="text-[#D4AF37]" size={16} />
-            {week}
-          </motion.h2>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            {weekMatches.map((match, matchIdx) => {
-              const isPlayed = match.status === "played";
+      {/* All matches sorted by date */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        {filtered.map((match, i) => {
+          const isPlayed = match.status === "played";
               const homeWon =
                 isPlayed &&
                 match.homeScore != null &&
@@ -117,7 +92,7 @@ export default function SchedulePage() {
                     className={`glass-card p-4 group hover:-translate-y-1 transition-transform duration-200 ${isPlayed ? "" : "border-[rgba(212,175,55,0.2)] animate-gold-border"}`}
                     initial={{ opacity: 0, scale: 0.9 }}
                     animate={{ opacity: 1, scale: 1 }}
-                    transition={{ delay: weekIdx * 0.05 + matchIdx * 0.03 }}
+                    transition={{ delay: i * 0.03 }}
                     style={{ transformStyle: "preserve-3d" }}
                   >
                     <motion.div
@@ -200,10 +175,8 @@ export default function SchedulePage() {
                   </motion.div>
                 </TiltCard>
               );
-            })}
-          </div>
-        </motion.div>
-      ))}
+        })}
+      </div>
     </div>
   );
 }
