@@ -119,8 +119,13 @@ export default function AdminUpcoming() {
             className="bg-dark border border-[rgba(212,175,55,0.15)] rounded-xl px-4 py-2 text-white focus:outline-none focus:border-[#D4AF37]">
             {teams.map((t) => <option key={t.id} value={t.id}>{t.name}</option>)}
           </select>
-          <input type="date" value={date} onChange={(e) => setDate(e.target.value)}
-            className="bg-dark border border-[rgba(212,175,55,0.15)] rounded-xl px-4 py-2 text-white focus:outline-none focus:border-[#D4AF37]" required />
+          <div>
+            <div className="text-[10px] text-[#D4AF37] font-bold mb-1">
+              {["الأحد","الإثنين","الثلاثاء","الأربعاء","الخميس","الجمعة","السبت"][new Date(date + "T12:00:00").getDay()]}
+            </div>
+            <input type="date" value={date} onChange={(e) => setDate(e.target.value)}
+              className="bg-dark border border-[rgba(212,175,55,0.15)] rounded-xl px-4 py-2 text-white focus:outline-none focus:border-[#D4AF37] w-full" required />
+          </div>
           <input type="time" value={time} onChange={(e) => setTime(e.target.value)}
             className="bg-dark border border-[rgba(212,175,55,0.15)] rounded-xl px-4 py-2 text-white focus:outline-none focus:border-[#D4AF37]" required />
           <input type="number" placeholder="رقم الجولة" value={week} onChange={(e) => setWeek(Number(e.target.value))}

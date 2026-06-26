@@ -132,8 +132,13 @@ export default function AdminMatches() {
             className="bg-dark border border-[rgba(212,175,55,0.15)] rounded-xl px-4 py-2 text-[#D4AF37] focus:outline-none focus:border-[#D4AF37]" />
           <input type="number" placeholder="حمراء ضيوف" value={awayRed} onChange={(e) => setAwayRed(e.target.value === "" ? "" : Number(e.target.value))}
             className="bg-dark border border-[rgba(212,175,55,0.15)] rounded-xl px-4 py-2 text-red-400 focus:outline-none focus:border-[#D4AF37]" />
-          <input type="date" value={date} onChange={(e) => setDate(e.target.value)}
-            className="bg-dark border border-[rgba(212,175,55,0.15)] rounded-xl px-4 py-2 text-white focus:outline-none focus:border-[#D4AF37]" />
+          <div>
+            <div className="text-[10px] text-[#D4AF37] font-bold mb-1">
+              {["الأحد","الإثنين","الثلاثاء","الأربعاء","الخميس","الجمعة","السبت"][new Date(date + "T12:00:00").getDay()]}
+            </div>
+            <input type="date" value={date} onChange={(e) => setDate(e.target.value)}
+              className="bg-dark border border-[rgba(212,175,55,0.15)] rounded-xl px-4 py-2 text-white focus:outline-none focus:border-[#D4AF37] w-full" />
+          </div>
           <input type="time" value={time} onChange={(e) => setTime(e.target.value)}
             className="bg-dark border border-[rgba(212,175,55,0.15)] rounded-xl px-4 py-2 text-white focus:outline-none focus:border-[#D4AF37]" />
           <input type="number" placeholder="الجولة" value={week} onChange={(e) => setWeek(Number(e.target.value))}
