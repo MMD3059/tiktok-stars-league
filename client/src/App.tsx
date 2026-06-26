@@ -18,8 +18,16 @@ const AdminLogin = lazy(() => import("./pages/admin/AdminLogin"));
 
 function ScrollToTop() {
   const { pathname } = useLocation();
-  useEffect(() => { window.scrollTo(0, 0); }, [pathname]);
+  useEffect(() => {
+    window.scrollTo(0, 0);
+    setTimeout(() => window.scrollTo(0, 0), 50);
+  }, [pathname]);
   return null;
+}
+
+// Disable browser scroll restoration
+if (typeof window !== "undefined" && "scrollRestoration" in history) {
+  history.scrollRestoration = "manual";
 }
 
 const LazyLoad = ({ children }: { children: React.ReactNode }) => (
