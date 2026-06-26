@@ -157,7 +157,9 @@ export default function SchedulePage() {
                           ) : (
                             <div className="text-[#D4AF37] font-bold">VS</div>
                           )}
-                          <div className="text-xs text-gray-500 mt-1">{match.date}</div>
+                          <div className="text-xs text-gray-500 mt-1">
+                            {["الأحد","الإثنين","الثلاثاء","الأربعاء","الخميس","الجمعة","السبت"][new Date(match.date + "T12:00:00").getDay()]} {match.date}
+                          </div>
                           <div className="text-xs text-gray-500">{match.time}</div>
                         </div>
 
