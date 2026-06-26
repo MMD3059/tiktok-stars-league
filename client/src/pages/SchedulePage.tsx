@@ -33,7 +33,7 @@ export default function SchedulePage() {
     return m.status === activeTab;
   });
 
-  const grouped = groupBy(filtered, (m) => `الجولة ${m.week}`);
+  const grouped = groupBy(filtered, (m) => ` ${m.week}`);
 
   if (loading) {
     return (

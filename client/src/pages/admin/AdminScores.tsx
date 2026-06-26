@@ -95,7 +95,7 @@ export default function AdminScores() {
               <TeamBadge src={match.homeTeam.logo} alt={match.homeTeam.shortName} size={7} /> {match.homeTeam.shortName} vs {match.awayTeam.shortName} <TeamBadge src={match.awayTeam.logo} alt={match.awayTeam.shortName} size={7} />
             </h3>
             <p className="text-gray-500 text-sm text-center mb-4">
-              {match.date} · {match.time} · الجولة {match.week}
+              {match.date} · {match.time}
             </p>
             <div className="flex items-center justify-center gap-4 mb-4">
               <div className="text-center">
@@ -207,7 +207,7 @@ export default function AdminScores() {
                     {match.homeTeam.shortName} vs {match.awayTeam.shortName}
                   </div>
                   <div className="text-xs text-gray-500">
-                    {match.date} · {match.time} · ج{match.week}
+                    {match.date} · {match.time}
                   </div>
                 </div>
                 <TeamBadge src={match.awayTeam.logo} alt={match.awayTeam.shortName} size={7} />
@@ -245,7 +245,7 @@ export default function AdminScores() {
                     {match.homeTeam.shortName} vs {match.awayTeam.shortName}
                   </div>
                   <div className="text-xs text-gray-500">
-                    {match.date} · ج{match.week}
+                    {match.date}
                   </div>
                 </div>
                 <TeamBadge src={match.awayTeam.logo} alt={match.awayTeam.shortName} size={7} />

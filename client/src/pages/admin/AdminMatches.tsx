@@ -174,7 +174,7 @@ export default function AdminMatches() {
                 <div className="font-bold text-white">{m.homeTeam.shortName} vs {m.awayTeam.shortName}</div>
                 <div className="text-xs text-gray-400 flex items-center gap-2">
                   <Icon name="calendar-days" size={12} />
-                  {m.date} · <Icon name="clock" size={12} /> {m.time} · ج{m.week}
+                  {m.date} · <Icon name="clock" size={12} /> {m.time}
                   {m.status === "played" && m.homeScore != null && ` · ${m.homeScore}-${m.awayScore}`}
                 </div>
               </div>

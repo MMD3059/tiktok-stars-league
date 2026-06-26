@@ -160,7 +160,7 @@ export default function AdminUpcoming() {
                   {match.homeTeam.shortName} vs {match.awayTeam.shortName}
                 </div>
                 <div className="text-xs text-gray-400 flex items-center gap-2">
-                  <Icon name="calendar-days" size={12} /> {match.date} · <Icon name="clock" size={12} /> {match.time} · ج{match.week}
+                  <Icon name="calendar-days" size={12} /> {match.date} · <Icon name="clock" size={12} /> {match.time}
                 </div>
               </div>
               <TeamBadge src={match.awayTeam.logo} alt={match.awayTeam.shortName} size={7} />
