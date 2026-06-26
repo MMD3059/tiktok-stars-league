@@ -38,11 +38,11 @@ export default function AdminUpcoming() {
       if (editing) {
         await api.updateMatch(editing, data);
         setMessage("تم تعديل المباراة!");
+        setEditing(null);
       } else {
         await api.createMatch(data);
         setMessage("تم إضافة المباراة!");
       }
-      reset();
       api.getMatches().then(setMatches);
     } catch (e: any) {
       setMessage(e.message || "حدث خطأ");

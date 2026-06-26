@@ -54,10 +54,10 @@ export default function AdminMatches() {
       };
       if (editing) {
         await api.updateMatch(editing, data);
+        setEditing(null);
       } else {
         await api.createMatch(data);
       }
-      reset();
       api.getMatches().then(setMatches);
     } catch (e: any) {
       alert(e.message || "فشل حفظ المباراة");
