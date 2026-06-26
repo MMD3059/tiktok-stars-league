@@ -8,8 +8,8 @@ import TeamBadge from "../../components/TeamBadge";
 export default function AdminMatches() {
   const [matches, setMatches] = useState<Match[]>([]);
   const [teams, setTeams] = useState<Team[]>([]);
-  const [homeTeamId, setHomeTeamId] = useState<number>(1);
-  const [awayTeamId, setAwayTeamId] = useState<number>(2);
+  const [homeTeamId, setHomeTeamId] = useState<number>(0);
+  const [awayTeamId, setAwayTeamId] = useState<number>(0);
   const [homeScore, setHomeScore] = useState<number | "">("");
   const [awayScore, setAwayScore] = useState<number | "">("");
   const [homeYellow, setHomeYellow] = useState<number | "">("");
@@ -26,32 +26,42 @@ export default function AdminMatches() {
     Promise.all([api.getMatches(), api.getTeams()]).then(([m, t]) => {
       setMatches(m);
       setTeams(t);
+      if (t.length >= 2 && !homeTeamId && !awayTeamId) {
+        setHomeTeamId(t[0].id);
+        setAwayTeamId(t[1].id);
+      }
     });
   }, []);
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
-    const data = {
-      homeTeamId,
-      awayTeamId,
-      homeScore: homeScore === "" ? null : homeScore,
-      awayScore: awayScore === "" ? null : awayScore,
-      homeYellowCards: Number(homeYellow || 0),
-      homeRedCards: Number(homeRed || 0),
-      awayYellowCards: Number(awayYellow || 0),
-      awayRedCards: Number(awayRed || 0),
-      date,
-      time,
-      week,
-      status,
-    };
-    if (editing) {
-      await api.updateMatch(editing, data);
-    } else {
-      await api.createMatch(data);
+    if (!homeTeamId || !awayTeamId) { alert("اختر الفريقين"); return; }
+    if (homeTeamId === awayTeamId) { alert("اختر فريقين مختلفين"); return; }
+    try {
+      const data = {
+        homeTeamId,
+        awayTeamId,
+        homeScore: homeScore === "" ? null : homeScore,
+        awayScore: awayScore === "" ? null : awayScore,
+        homeYellowCards: Number(homeYellow || 0),
+        homeRedCards: Number(homeRed || 0),
+        awayYellowCards: Number(awayYellow || 0),
+        awayRedCards: Number(awayRed || 0),
+        date,
+        time,
+        week,
+        status,
+      };
+      if (editing) {
+        await api.updateMatch(editing, data);
+      } else {
+        await api.createMatch(data);
+      }
+      reset();
+      api.getMatches().then(setMatches);
+    } catch (e: any) {
+      alert(e.message || "فشل حفظ المباراة");
     }
-    reset();
-    api.getMatches().then(setMatches);
   }
 
   function edit(match: Match) {
@@ -72,13 +82,17 @@ export default function AdminMatches() {
 
   async function remove(id: number) {
     if (confirm("حذف المباراة؟")) {
-      await api.deleteMatch(id);
-      api.getMatches().then(setMatches);
+      try {
+        await api.deleteMatch(id);
+        api.getMatches().then(setMatches);
+      } catch (e: any) {
+        alert(e.message || "فشل حذف المباراة");
+      }
     }
   }
 
   function reset() {
-    setHomeTeamId(1); setAwayTeamId(2);
+    if (teams.length >= 2) { setHomeTeamId(teams[0].id); setAwayTeamId(teams[1].id); }
     setHomeScore(""); setAwayScore("");
     setHomeYellow(""); setHomeRed("");
     setAwayYellow(""); setAwayRed("");

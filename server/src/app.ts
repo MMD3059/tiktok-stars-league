@@ -80,8 +80,12 @@ app.delete("/api/admin/players/:id", adminAuth, async (req, res) => {
 });
 
 app.post("/api/admin/matches", adminAuth, async (req, res) => {
-  const match = await prisma.match.create({ data: req.body });
-  res.json(match);
+  try {
+    const match = await prisma.match.create({ data: req.body });
+    res.json(match);
+  } catch (e: any) {
+    res.status(400).json({ error: e.message });
+  }
 });
 
 app.put("/api/admin/matches/:id", adminAuth, async (req, res) => {
