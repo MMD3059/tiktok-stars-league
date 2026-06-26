@@ -10,7 +10,7 @@ export default function AdminUpcoming() {
   const [teams, setTeams] = useState<Team[]>([]);
   const [homeTeamId, setHomeTeamId] = useState<number>(0);
   const [awayTeamId, setAwayTeamId] = useState<number>(0);
-  const [date, setDate] = useState("");
+  const [date, setDate] = useState(() => new Date().toISOString().split("T")[0]);
   const [time, setTime] = useState("20:00");
   const [week, setWeek] = useState(1);
   const [editing, setEditing] = useState<number | null>(null);
@@ -85,7 +85,7 @@ export default function AdminUpcoming() {
 
   function reset() {
     if (teams.length >= 2) { setHomeTeamId(teams[0].id); setAwayTeamId(teams[1].id); }
-    setDate(""); setTime("20:00"); setWeek(1);
+    setDate(new Date().toISOString().split("T")[0]); setTime("20:00"); setWeek(1);
     setEditing(null);
   }
 

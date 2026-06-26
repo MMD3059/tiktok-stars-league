@@ -16,7 +16,7 @@ export default function AdminMatches() {
   const [homeRed, setHomeRed] = useState<number | "">("");
   const [awayYellow, setAwayYellow] = useState<number | "">("");
   const [awayRed, setAwayRed] = useState<number | "">("");
-  const [date, setDate] = useState("");
+  const [date, setDate] = useState(() => new Date().toISOString().split("T")[0]);
   const [time, setTime] = useState("");
   const [week, setWeek] = useState(1);
   const [status, setStatus] = useState("scheduled");
@@ -96,7 +96,7 @@ export default function AdminMatches() {
     setHomeScore(""); setAwayScore("");
     setHomeYellow(""); setHomeRed("");
     setAwayYellow(""); setAwayRed("");
-    setDate(""); setTime(""); setWeek(1);
+    setDate(new Date().toISOString().split("T")[0]); setTime(""); setWeek(1);
     setStatus("scheduled"); setEditing(null);
   }
 
