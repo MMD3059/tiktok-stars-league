@@ -26,11 +26,11 @@ export default function AdminMatches() {
     Promise.all([api.getMatches(), api.getTeams()]).then(([m, t]) => {
       setMatches(m);
       setTeams(t);
-      if (t.length >= 2 && !homeTeamId && !awayTeamId) {
-        setHomeTeamId(t[0].id);
-        setAwayTeamId(t[1].id);
+      if (t.length >= 2) {
+        setHomeTeamId(h => h || t[0].id);
+        setAwayTeamId(h => h || t[1].id);
       }
-    });
+    }).catch(() => {});
   }, []);
 
   async function handleSubmit(e: React.FormEvent) {
