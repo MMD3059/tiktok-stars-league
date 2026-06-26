@@ -8,8 +8,8 @@ import TeamBadge from "../../components/TeamBadge";
 export default function AdminUpcoming() {
   const [matches, setMatches] = useState<Match[]>([]);
   const [teams, setTeams] = useState<Team[]>([]);
-  const [homeTeamId, setHomeTeamId] = useState<number>(1);
-  const [awayTeamId, setAwayTeamId] = useState<number>(2);
+  const [homeTeamId, setHomeTeamId] = useState<number>(0);
+  const [awayTeamId, setAwayTeamId] = useState<number>(0);
   const [date, setDate] = useState("");
   const [time, setTime] = useState("20:00");
   const [week, setWeek] = useState(1);
@@ -20,13 +20,19 @@ export default function AdminUpcoming() {
     Promise.all([api.getMatches(), api.getTeams()]).then(([m, t]) => {
       setMatches(m);
       setTeams(t);
-    });
+      if (t.length >= 2) {
+        setHomeTeamId(h => h || t[0].id);
+        setAwayTeamId(h => h || t[1].id);
+      }
+    }).catch(() => {});
   }, []);
 
   const upcoming = matches.filter((m) => m.status === "scheduled");
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
+    if (!homeTeamId || !awayTeamId) { setMessage("اختر الفريقين"); setTimeout(() => setMessage(""), 3000); return; }
+    if (homeTeamId === awayTeamId) { setMessage("اختر فريقين مختلفين"); setTimeout(() => setMessage(""), 3000); return; }
     const data = { homeTeamId, awayTeamId, date, time, week, status: "scheduled" };
     try {
       if (editing) {
@@ -38,8 +44,8 @@ export default function AdminUpcoming() {
       }
       reset();
       api.getMatches().then(setMatches);
-    } catch {
-      setMessage("حدث خطأ");
+    } catch (e: any) {
+      setMessage(e.message || "حدث خطأ");
     }
     setTimeout(() => setMessage(""), 3000);
   }
@@ -55,22 +61,30 @@ export default function AdminUpcoming() {
 
   async function remove(id: number) {
     if (confirm("حذف المباراة؟")) {
-      await api.deleteMatch(id);
-      api.getMatches().then(setMatches);
-      setMessage("تم حذف المباراة");
+      try {
+        await api.deleteMatch(id);
+        api.getMatches().then(setMatches);
+        setMessage("تم حذف المباراة");
+      } catch (e: any) {
+        setMessage(e.message || "حدث خطأ");
+      }
       setTimeout(() => setMessage(""), 3000);
     }
   }
 
   async function markPlayed(id: number) {
-    await api.updateMatch(id, { status: "played", homeScore: 0, awayScore: 0 });
-    api.getMatches().then(setMatches);
-    setMessage("تم تحويل المباراة إلى منتهية");
+    try {
+      await api.updateMatch(id, { status: "played", homeScore: 0, awayScore: 0 });
+      api.getMatches().then(setMatches);
+      setMessage("تم تحويل المباراة إلى منتهية");
+    } catch (e: any) {
+      setMessage(e.message || "حدث خطأ");
+    }
     setTimeout(() => setMessage(""), 3000);
   }
 
   function reset() {
-    setHomeTeamId(1); setAwayTeamId(2);
+    if (teams.length >= 2) { setHomeTeamId(teams[0].id); setAwayTeamId(teams[1].id); }
     setDate(""); setTime("20:00"); setWeek(1);
     setEditing(null);
   }
