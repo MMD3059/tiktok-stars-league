@@ -181,8 +181,8 @@ export default function HomePage() {
                 <div className="flex justify-center mb-2">
                   <Icon name={stat.icon} className="text-[#D4AF37]" size={32} />
                 </div>
-                <div className="text-3xl font-black text-[#D4AF37]">{stat.value}</div>
-                <div className="text-gray-400 text-sm">{stat.label}</div>
+                <div className="text-3xl lg:text-4xl font-black text-[#D4AF37]">{stat.value}</div>
+                <div className="text-gray-400 text-sm lg:text-base">{stat.label}</div>
               </motion.div>
             );
           })}
@@ -313,7 +313,7 @@ export default function HomePage() {
                   <div className="mb-2 flex justify-center">
                     <TeamBadge src={team.logo} alt={team.shortName} size={12} />
                   </div>
-                  <div className="font-bold text-white text-sm">{team.shortName}</div>
+                  <div className="font-bold text-white text-sm lg:text-base">{team.shortName}</div>
                 </motion.div>
               </TiltCard>
             </Link>
@@ -357,8 +357,8 @@ export default function HomePage() {
               >
                 <Icon name="trophy" size={80} className="text-[#D4AF37] mx-auto mb-4" />
               </motion.div>
-              <h3 className="text-xl font-black text-gold-gradient mb-2">كأس البطولة</h3>
-              <p className="text-gray-500 text-sm mb-4">500$</p>
+              <h3 className="text-xl lg:text-2xl font-black text-gold-gradient mb-2">كأس البطولة</h3>
+              <p className="text-gray-500 text-sm lg:text-base mb-4">500$</p>
               <div className="text-[10px] text-gray-600 tracking-widest uppercase">
                 نجوم تيك توك
               </div>
@@ -403,9 +403,9 @@ export default function HomePage() {
                 <div className="flex justify-center mb-3">
                   <Icon name={item.icon} className="text-[#D4AF37]" size={40} />
                 </div>
-                <h3 className="text-xl font-bold text-white mb-1">{item.title}</h3>
-                <div className="text-3xl font-black text-gold-gradient mb-2">{item.reward}</div>
-                <div className="text-xs text-gray-500">{item.condition}</div>
+                <h3 className="text-xl lg:text-2xl font-bold text-white mb-1">{item.title}</h3>
+                <div className="text-3xl lg:text-4xl font-black text-gold-gradient mb-2">{item.reward}</div>
+                <div className="text-xs lg:text-sm text-gray-500">{item.condition}</div>
               </motion.div>
             );
           })}
@@ -441,8 +441,8 @@ export default function HomePage() {
                   <Icon name={rule.icon} className="text-[#D4AF37]" size={24} />
                 </div>
                 <div>
-                  <h4 className="font-bold text-white mb-1">{rule.title}</h4>
-                  <p className="text-sm text-gray-400">{rule.desc}</p>
+                  <h4 className="font-bold text-white mb-1 lg:text-lg">{rule.title}</h4>
+                  <p className="text-sm lg:text-base text-gray-400">{rule.desc}</p>
                 </div>
               </motion.div>
             );
@@ -527,8 +527,8 @@ export default function HomePage() {
               <div className="flex justify-center mb-4">
                 <Icon name="clipboard-list" className="text-[#D4AF37]" size={48} />
               </div>
-              <h3 className="text-xl font-bold text-white mb-2">اللجنة التنظيمية</h3>
-              <p className="text-sm text-gray-400">
+              <h3 className="text-xl lg:text-2xl font-bold text-white mb-2">اللجنة التنظيمية</h3>
+              <p className="text-sm lg:text-base text-gray-400">
                 تسجيل الفرق — جدولة المباريات — الترتيب — الجوائز — مواعيد المباريات
               </p>
             </motion.div>
@@ -543,8 +543,8 @@ export default function HomePage() {
               <div className="flex justify-center mb-4">
                 <Icon name="swords" className="text-[#D4AF37]" size={48} />
               </div>
-              <h3 className="text-xl font-bold text-white mb-2">لجنة التحكيم</h3>
-              <p className="text-sm text-gray-400">
+              <h3 className="text-xl lg:text-2xl font-bold text-white mb-2">لجنة التحكيم</h3>
+              <p className="text-sm lg:text-base text-gray-400">
                 إدارة المباريات — القرارات النهائية — فض النزاعات
               </p>
             </motion.div>

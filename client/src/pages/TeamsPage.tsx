@@ -58,8 +58,8 @@ export default function TeamsPage() {
                   <div className="mb-3 flex justify-center">
                     <TeamBadge src={team.logo} alt={team.shortName} size={16} />
                   </div>
-                  <div className="font-bold text-white text-sm mb-1 truncate">{team.name || team.shortName}</div>
-                  <div className="flex items-center justify-center gap-3 text-xs text-gray-500">
+                  <div className="font-bold text-white text-sm lg:text-lg mb-1 truncate">{team.name || team.shortName}</div>
+                  <div className="flex items-center justify-center gap-3 text-xs lg:text-sm text-gray-500">
                     <span className="flex items-center gap-1">
                       <Icon name="users" size={12} />
                       {team.players?.length || 0}

@@ -145,8 +145,8 @@ export default function StandingsPage() {
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.3 }}
       >
-        <div className="flex items-center gap-0.5 px-3 py-3 border-b border-[rgba(212,175,55,0.12)] text-xs text-gray-500 font-bold tracking-wider">
-          <span style={{ width: 36 }}>#</span>
+        <div className="flex items-center gap-0.5 px-3 py-3 border-b border-[rgba(212,175,55,0.12)] text-xs lg:text-sm text-gray-500 font-bold tracking-wider">
+          <span className="text-center" style={{ width: 36 }}>#</span>
           <span className="flex-1 min-w-0">الفريق</span>
           <span className="text-center" style={{ width: 32 }}>ل</span>
           <span className="text-center" style={{ width: 32 }}>ف</span>
@@ -170,19 +170,19 @@ export default function StandingsPage() {
               </span>
               <div className="flex-1 min-w-0 flex items-center gap-2">
                 <TeamBadge src={team.logo} alt={team.shortName} size={6} />
-                <span className="font-bold text-white text-xs group-hover:text-[#D4AF37] transition-colors truncate">
+                <span className="font-bold text-white text-xs lg:text-sm group-hover:text-[#D4AF37] transition-colors truncate">
                   {team.shortName}
                 </span>
               </div>
-              <span className="text-center text-gray-300 text-xs" style={{ width: 32 }}>{team.played}</span>
-              <span className="text-center text-win text-xs" style={{ width: 32 }}>{team.won}</span>
-              <span className="text-center text-gray-400 text-xs" style={{ width: 32 }}>{team.drawn}</span>
-              <span className="text-center text-loss text-xs" style={{ width: 32 }}>{team.lost}</span>
-              <span className="text-center text-gray-300 text-xs" style={{ width: 32 }}>{team.goalsFor}</span>
-              <span className="text-center text-gray-300 text-xs" style={{ width: 32 }}>{team.goalsAgainst}</span>
+              <span className="text-center text-gray-300 text-xs lg:text-sm" style={{ width: 36 }}>{team.played}</span>
+              <span className="text-center text-win text-xs lg:text-sm" style={{ width: 36 }}>{team.won}</span>
+              <span className="text-center text-gray-400 text-xs lg:text-sm" style={{ width: 36 }}>{team.drawn}</span>
+              <span className="text-center text-loss text-xs lg:text-sm" style={{ width: 36 }}>{team.lost}</span>
+              <span className="text-center text-gray-300 text-xs lg:text-sm" style={{ width: 36 }}>{team.goalsFor}</span>
+              <span className="text-center text-gray-300 text-xs lg:text-sm" style={{ width: 36 }}>{team.goalsAgainst}</span>
               <motion.span
-                className="text-center font-black text-sm text-[#D4AF37]"
-                style={{ width: 40 }}
+                className="text-center font-black text-sm lg:text-base text-[#D4AF37]"
+                style={{ width: 48 }}
                 initial={{ scale: 0 }}
                 animate={{ scale: 1 }}
                 transition={{ type: "spring", delay: 0.6 + i * 0.03 }}

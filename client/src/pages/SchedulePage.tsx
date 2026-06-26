@@ -102,7 +102,7 @@ export default function SchedulePage() {
                       <div className="flex items-center justify-between gap-4">
                         <div className={`flex-1 text-center ${homeWon ? "opacity-100" : isDraw ? "opacity-80" : "opacity-60"}`}>
                           <TeamBadge src={match.homeTeam.logo} alt={match.homeTeam.shortName} size={9} />
-                          <div className="font-bold text-white text-sm truncate">{match.homeTeam.shortName}</div>
+                          <div className="font-bold text-white text-sm lg:text-lg truncate">{match.homeTeam.shortName}</div>
                         </div>
 
                         {/* Score */}
@@ -110,7 +110,7 @@ export default function SchedulePage() {
                           {isPlayed ? (
                             <div className="flex items-center gap-2">
                               <motion.span
-                                className={`text-2xl font-black ${homeWon ? "text-win" : isDraw ? "text-gray-300" : "text-loss"}`}
+                                className={`text-2xl lg:text-3xl font-black ${homeWon ? "text-win" : isDraw ? "text-gray-300" : "text-loss"}`}
                                 key={`h-${match.id}`}
                                 initial={{ scale: 0 }}
                                 animate={{ scale: 1 }}
@@ -118,9 +118,9 @@ export default function SchedulePage() {
                               >
                                 {match.homeScore}
                               </motion.span>
-                              <span className="text-gray-500 text-lg">-</span>
+                              <span className="text-gray-500 text-lg lg:text-xl">-</span>
                               <motion.span
-                                className={`text-2xl font-black ${awayWon ? "text-win" : isDraw ? "text-gray-300" : "text-loss"}`}
+                                className={`text-2xl lg:text-3xl font-black ${awayWon ? "text-win" : isDraw ? "text-gray-300" : "text-loss"}`}
                                 key={`a-${match.id}`}
                                 initial={{ scale: 0 }}
                                 animate={{ scale: 1 }}
@@ -132,15 +132,15 @@ export default function SchedulePage() {
                           ) : (
                             <div className="text-[#D4AF37] font-bold">VS</div>
                           )}
-                          <div className="text-xs text-gray-500 mt-1">
+                          <div className="text-xs lg:text-sm text-gray-500 mt-1">
                             {["الأحد","الإثنين","الثلاثاء","الأربعاء","الخميس","الجمعة","السبت"][new Date(match.date + "T12:00:00").getDay()]} {match.date}
                           </div>
-                          <div className="text-xs text-gray-500">{match.time}</div>
+                          <div className="text-xs lg:text-sm text-gray-500">{match.time}</div>
                         </div>
 
                         <div className={`flex-1 text-center ${awayWon ? "opacity-100" : isDraw ? "opacity-80" : "opacity-60"}`}>
                           <TeamBadge src={match.awayTeam.logo} alt={match.awayTeam.shortName} size={9} />
-                          <div className="font-bold text-white text-sm truncate">{match.awayTeam.shortName}</div>
+                          <div className="font-bold text-white text-sm lg:text-lg truncate">{match.awayTeam.shortName}</div>
                         </div>
                       </div>
 
@@ -152,12 +152,12 @@ export default function SchedulePage() {
                           transition={{ delay: 0.4 }}
                         >
                           {homeWon && (
-                            <span className="text-xs text-win">فوز {match.homeTeam.shortName}</span>
-                          )}
-                          {awayWon && (
-                            <span className="text-xs text-win">فوز {match.awayTeam.shortName}</span>
-                          )}
-                          {isDraw && <span className="text-xs text-gray-400">تعادل</span>}
+                              <span className="text-xs lg:text-sm text-win">فوز {match.homeTeam.shortName}</span>
+                            )}
+                            {awayWon && (
+                              <span className="text-xs lg:text-sm text-win">فوز {match.awayTeam.shortName}</span>
+                            )}
+                            {isDraw && <span className="text-xs lg:text-sm text-gray-400">تعادل</span>}
                         </motion.div>
                       )}
 
@@ -168,7 +168,7 @@ export default function SchedulePage() {
                           transition={{ duration: 2, repeat: Infinity }}
                         >
                           <span className="w-2 h-2 rounded-full bg-[#D4AF37] animate-live-pulse" />
-                          <span className="text-xs text-[#D4AF37]">قادمة</span>
+                          <span className="text-xs lg:text-sm text-[#D4AF37]">قادمة</span>
                         </motion.div>
                       )}
                     </motion.div>

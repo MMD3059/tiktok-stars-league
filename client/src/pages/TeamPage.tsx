@@ -69,18 +69,18 @@ function TeamMatchCard({ match, teamId, highlighted }: { match: Match; teamId: n
     >
       <div className="flex items-center gap-2 min-w-0 flex-1">
         <TeamBadge src={opponent.logo} alt={opponent.shortName} size={6} />
-        <span className="text-[11px] font-bold text-white truncate">{opponent.shortName}</span>
+        <span className="text-[11px] lg:text-sm font-bold text-white truncate">{opponent.shortName}</span>
       </div>
       <div className="text-center shrink-0">
         {isPlayed ? (
-          <span className={`text-sm font-black ${won ? "text-win" : lost ? "text-loss" : "text-gray-300"}`}>
+          <span className={`text-sm lg:text-base font-black ${won ? "text-win" : lost ? "text-loss" : "text-gray-300"}`}>
             {teamScore}-{oppScore}
           </span>
         ) : (
-          <span className="text-[11px] font-bold text-[#D4AF37]">{match.time}</span>
+          <span className="text-[11px] lg:text-sm font-bold text-[#D4AF37]">{match.time}</span>
         )}
       </div>
-      <div className="text-[9px] text-gray-500 shrink-0 text-left min-w-[60px]" dir="ltr">
+      <div className="text-[9px] lg:text-xs text-gray-500 shrink-0 text-left min-w-[60px]" dir="ltr">
         <div>{match.date}</div>
       </div>
     </motion.div>
@@ -235,7 +235,7 @@ export default function TeamPage() {
               }}
             >
               <CountUp end={allPlayers.length} className="text-xl md:text-2xl font-black block" style={{ color: "#D4AF37" }} />
-              <span className="text-[8px] text-gray-500 uppercase">Players</span>
+              <span className="text-[8px] lg:text-xs text-gray-500 uppercase">Players</span>
             </div>
             <div
               className="rounded-xl px-4 py-3 min-w-[80px] text-center"
@@ -245,7 +245,7 @@ export default function TeamPage() {
               }}
             >
               <CountUp end={totalGoals} className="text-xl md:text-2xl font-black block text-win" />
-              <span className="text-[8px] text-gray-500 uppercase">Goals</span>
+              <span className="text-[8px] lg:text-xs text-gray-500 uppercase">Goals</span>
             </div>
             <div
               className="rounded-xl px-4 py-3 min-w-[80px] text-center"
@@ -255,7 +255,7 @@ export default function TeamPage() {
               }}
             >
               <CountUp end={scorersCount} className="text-xl md:text-2xl font-black block" style={{ color: "#D4AF37" }} />
-              <span className="text-[8px] text-gray-500 uppercase">Scorers</span>
+              <span className="text-[8px] lg:text-xs text-gray-500 uppercase">Scorers</span>
             </div>
           </div>
 
@@ -273,7 +273,7 @@ export default function TeamPage() {
                 }}
               >
                 <Icon name="star" size={12} className="text-[#D4AF37]" />
-                <span className="text-[10px] text-gray-300">
+                <span className="text-[10px] lg:text-sm text-gray-300">
                   C: <span className="text-[#D4AF37] font-bold">{captain.name}</span>
                 </span>
               </motion.div>
@@ -290,7 +290,7 @@ export default function TeamPage() {
                 }}
               >
                 <Icon name="target" size={12} className="text-win" />
-                <span className="text-[10px] text-gray-300">
+                <span className="text-[10px] lg:text-sm text-gray-300">
                   Top: <span className="text-win font-bold">{topScorer.name}</span>
                 </span>
               </motion.div>
@@ -352,7 +352,7 @@ export default function TeamPage() {
             <h2 className="text-sm md:text-base font-bold text-white flex items-center gap-2">
               <Icon name="trophy" size={14} className="text-[#D4AF37]" />
               SQUAD
-              <span className="text-gray-500 text-[10px]">({allPlayers.length})</span>
+              <span className="text-gray-500 text-[10px] lg:text-xs">({allPlayers.length})</span>
             </h2>
             <div
               className="h-px flex-1 max-w-[80px]"
@@ -366,7 +366,7 @@ export default function TeamPage() {
               <button
                 key={tab}
                 onClick={() => setSquadTab(tab)}
-                className="relative px-3 py-1.5 text-[10px] font-bold rounded-lg transition-all duration-200"
+                className="relative px-3 py-1.5 text-[10px] lg:text-xs font-bold rounded-lg transition-all duration-200"
                 style={{
                   background:
                     squadTab === tab ? "rgba(212,175,55,0.1)" : "transparent",
@@ -409,7 +409,7 @@ export default function TeamPage() {
                 </motion.div>
               ))}
               {filtered.length === 0 && (
-                <div className="text-gray-500 text-xs py-8">
+                <div className="text-gray-500 text-xs lg:text-sm py-8">
                   لا يوجد لاعبون في هذا المركز
                 </div>
               )}
@@ -435,7 +435,7 @@ export default function TeamPage() {
           >
             <div className="flex items-center gap-1.5 mb-4">
               <Icon name="zap" size={13} className="text-[#D4AF37]" />
-              <span className="text-xs font-bold text-white">TOP SCORERS</span>
+              <span className="text-xs lg:text-sm font-bold text-white">TOP SCORERS</span>
             </div>
             <div className="space-y-2.5">
               {scorers.slice(0, 5).map((p, i) => {
@@ -448,7 +448,7 @@ export default function TeamPage() {
                     transition={{ delay: 0.1 + i * 0.06, duration: 0.4 }}
                     className="flex items-center gap-2"
                   >
-                    <span className="text-[9px] font-bold text-gray-500 w-3 shrink-0">
+                    <span className="text-[9px] lg:text-xs font-bold text-gray-500 w-3 shrink-0">
                       {i + 1}
                     </span>
                     <div
@@ -463,7 +463,7 @@ export default function TeamPage() {
                         />
                       ) : (
                         <div
-                          className="w-full h-full flex items-center justify-center text-[6px] font-black"
+                          className="w-full h-full flex items-center justify-center text-[6px] lg:text-[9px] font-black"
                           style={{
                             background: hexToRgba(
                               posColors[p.position] || "#D4AF37",
@@ -476,7 +476,7 @@ export default function TeamPage() {
                         </div>
                       )}
                     </div>
-                    <span className="text-[10px] font-bold text-white w-14 md:w-16 truncate">
+                    <span className="text-[10px] lg:text-xs font-bold text-white w-14 md:w-20 truncate">
                       {p.name}
                     </span>
                     <div className="flex-1 h-2.5 rounded-full overflow-hidden bg-dark">
@@ -493,14 +493,14 @@ export default function TeamPage() {
                         }}
                       />
                     </div>
-                    <span className="text-[10px] font-black text-white w-5 text-right shrink-0">
+                    <span className="text-[10px] lg:text-xs font-black text-white w-5 text-right shrink-0">
                       {p.goalsScored}
                     </span>
                   </motion.div>
                 );
               })}
               {scorers.length === 0 && (
-                <div className="text-gray-500 text-xs text-center py-4">
+                <div className="text-gray-500 text-xs lg:text-sm text-center py-4">
                   No goals scored yet
                 </div>
               )}
@@ -517,8 +517,8 @@ export default function TeamPage() {
           >
             <div className="flex items-center gap-1.5 mb-4">
               <Icon name="user" size={13} className="text-[#D4AF37]" />
-              <span className="text-xs font-bold text-white">FULL ROSTER</span>
-              <span className="text-[9px] text-gray-500">({allPlayers.length})</span>
+              <span className="text-xs lg:text-sm font-bold text-white">FULL ROSTER</span>
+              <span className="text-[9px] lg:text-xs text-gray-500">({allPlayers.length})</span>
             </div>
             <div
               className="space-y-0.5 max-h-[320px] overflow-y-auto pr-1"
@@ -546,7 +546,7 @@ export default function TeamPage() {
                 >
                   <div className="flex items-center gap-2 min-w-0">
                     <div
-                      className="w-5 h-5 rounded flex items-center justify-center text-[6px] font-black shrink-0"
+                      className="w-5 h-5 rounded flex items-center justify-center text-[6px] lg:text-[9px] font-black shrink-0"
                       style={{
                         background: hexToRgba(
                           posColors[p.position] || "#6B7280",
@@ -568,12 +568,12 @@ export default function TeamPage() {
                           className="w-full h-full object-cover"
                         />
                       ) : (
-                        <div className="w-full h-full flex items-center justify-center text-[6px] font-black text-gray-500 bg-white/[0.03]">
+                        <div className="w-full h-full flex items-center justify-center text-[6px] lg:text-[9px] font-black text-gray-500 bg-white/[0.03]">
                           {p.name.charAt(0)}
                         </div>
                       )}
                     </div>
-                    <span className="text-[9px] font-bold text-white truncate max-w-[90px] md:max-w-[120px]">
+                    <span className="text-[9px] lg:text-xs font-bold text-white truncate max-w-[90px] md:max-w-[120px]">
                       {p.name}
                     </span>
                     {p.isCaptain && (
@@ -581,12 +581,12 @@ export default function TeamPage() {
                     )}
                   </div>
                   <div className="flex items-center gap-2 shrink-0">
-                    <span className="text-[8px] font-bold text-win">{p.goalsScored}⚽</span>
+                    <span className="text-[8px] lg:text-[11px] font-bold text-win">{p.goalsScored}⚽</span>
                     {p.price != null && (
-                      <span className="text-[7px] font-bold text-[#D4AF37]">{p.price.toLocaleString()}$</span>
+                      <span className="text-[7px] lg:text-[10px] font-bold text-[#D4AF37]">{p.price.toLocaleString()}$</span>
                     )}
                     <span
-                      className="text-[6px] px-1.5 py-0.5 rounded font-bold"
+                      className="text-[6px] lg:text-[9px] px-1.5 py-0.5 rounded font-bold"
                       style={{
                         background:
                           p.isSubstitute || p.position === "SUB"
@@ -632,7 +632,7 @@ export default function TeamPage() {
             {/* Current / Next Match */}
             {currentMatch && (
               <div className="mb-5">
-                <div className="text-[10px] text-[#D4AF37] font-bold mb-2 text-center tracking-widest">
+                <div className="text-[10px] lg:text-xs text-[#D4AF37] font-bold mb-2 text-center tracking-widest">
                   {previousMatches.length === 0 ? "NEXT MATCH" : "CURRENT / NEXT"}
                 </div>
                 <TeamMatchCard match={currentMatch} teamId={teamId} highlighted />
@@ -642,7 +642,7 @@ export default function TeamPage() {
             {/* Previous Matches */}
             {previousMatches.length > 0 && (
               <div className="mb-4">
-                <div className="text-[10px] text-gray-500 font-bold mb-2 tracking-widest">PREVIOUS</div>
+                <div className="text-[10px] lg:text-xs text-gray-500 font-bold mb-2 tracking-widest">PREVIOUS</div>
                 <div className="space-y-1.5">
                   {previousMatches.map((m) => (
                     <TeamMatchCard key={m.id} match={m} teamId={teamId} />
@@ -654,7 +654,7 @@ export default function TeamPage() {
             {/* Next Matches */}
             {nextMatches.length > 0 && (
               <div>
-                <div className="text-[10px] text-gray-500 font-bold mb-2 tracking-widest">UPCOMING</div>
+                <div className="text-[10px] lg:text-xs text-gray-500 font-bold mb-2 tracking-widest">UPCOMING</div>
                 <div className="space-y-1.5">
                   {nextMatches.map((m) => (
                     <TeamMatchCard key={m.id} match={m} teamId={teamId} />
@@ -669,7 +669,7 @@ export default function TeamPage() {
         <div className="text-center pb-6">
           <Link to="/teams">
             <motion.span
-              className="inline-flex items-center gap-1.5 px-5 py-2 rounded-xl border text-[11px] font-bold cursor-pointer transition-all duration-200"
+              className="inline-flex items-center gap-1.5 px-5 py-2 rounded-xl border text-[11px] lg:text-sm font-bold cursor-pointer transition-all duration-200"
               style={{
                 borderColor: "rgba(212,175,55,0.15)",
                 color: "#D4AF37",

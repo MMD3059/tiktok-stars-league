@@ -44,7 +44,7 @@ export default function TransfersPage() {
       >
         {/* Header */}
         <div
-          className="grid grid-cols-[1fr_1fr_auto_1fr] gap-2 px-4 py-3 text-[10px] font-bold text-gray-500 uppercase tracking-wider"
+          className="grid grid-cols-[1fr_1fr_auto_1fr] gap-2 px-4 py-3 text-[10px] lg:text-xs font-bold text-gray-500 uppercase tracking-wider"
           style={{ borderBottom: "1px solid rgba(212,175,55,0.08)" }}
         >
           <span>اللاعب</span>
@@ -71,14 +71,14 @@ export default function TransfersPage() {
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: i * 0.04 }}
           >
-            <div className="flex items-center gap-2 font-bold text-white text-sm">
+            <div className="flex items-center gap-2 font-bold text-white text-sm lg:text-base">
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#D4AF37" strokeWidth="1.5">
                 <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
               </svg>
               <span className="truncate">{transfer.playerName}</span>
             </div>
 
-            <div className="text-center text-gray-400 text-xs truncate">{transfer.fromTeam}</div>
+            <div className="text-center text-gray-400 text-xs lg:text-sm truncate">{transfer.fromTeam}</div>
 
             <div className="w-8 flex justify-center">
               <motion.div
@@ -91,7 +91,7 @@ export default function TransfersPage() {
               </motion.div>
             </div>
 
-            <div className="text-center text-gray-400 text-xs truncate">{transfer.toTeam}</div>
+            <div className="text-center text-gray-400 text-xs lg:text-sm truncate">{transfer.toTeam}</div>
           </motion.div>
         ))}
       </motion.div>

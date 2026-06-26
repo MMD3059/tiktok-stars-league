@@ -70,8 +70,8 @@ export default function TopScorersPage() {
                       <path d="M12 16h.01"/>
                     </svg>
                   </div>
-                  <div className="font-bold text-white text-xs sm:text-sm mt-1 truncate max-w-full">{scorer.name}</div>
-                  <div className="text-xs text-gray-400 truncate max-w-full">{scorer.team?.shortName}</div>
+                    <div className="font-bold text-white text-xs sm:text-sm lg:text-base mt-1 truncate max-w-full">{scorer.name}</div>
+                  <div className="text-xs lg:text-sm text-gray-400 truncate max-w-full">{scorer.team?.shortName}</div>
                   <motion.div
                     className={`text-2xl sm:text-3xl font-black ${pos === 0 ? "text-[#FFD700]" : pos === 1 ? "text-gray-300" : "text-amber-600"}`}
                     initial={{ scale: 0 }}
@@ -80,7 +80,7 @@ export default function TopScorersPage() {
                   >
                     {scorer.goalsScored}
                   </motion.div>
-                  <div className="text-[10px] text-gray-500">هدف</div>
+                    <div className="text-[10px] lg:text-xs text-gray-500">هدف</div>
                 </div>
                 <div className="text-xs text-gray-400 mt-2">{labels[pos]}</div>
               </motion.div>
@@ -96,10 +96,10 @@ export default function TopScorersPage() {
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.3 }}
       >
-        <div className="flex items-center px-4 py-3 border-b border-[rgba(212,175,55,0.12)] text-xs text-gray-500 font-bold tracking-wider gap-1">
+        <div className="flex items-center px-4 py-3 border-b border-[rgba(212,175,55,0.12)] text-xs lg:text-sm text-gray-500 font-bold tracking-wider gap-1">
           <span style={{ width: 40 }}>#</span>
           <span style={{ width: 60, textAlign: 'center' }}>المركز</span>
-          <span style={{ width: 90 }}>الفريق</span>
+          <span style={{ width: 100 }}>الفريق</span>
           <span className="flex-1 min-w-0">اللاعب</span>
           <span style={{ width: 60, textAlign: 'center' }}>الأهداف</span>
         </div>
@@ -123,18 +123,18 @@ export default function TopScorersPage() {
                 i + 1
               )}
             </span>
-            <span style={{ width: 60, textAlign: 'center' }} className="text-xs text-gray-500 font-bold">
+            <span style={{ width: 60, textAlign: 'center' }} className="text-xs lg:text-sm text-gray-500 font-bold">
               {scorer.position}
             </span>
-            <div style={{ width: 90 }} className="flex items-center gap-1">
+            <div style={{ width: 100 }} className="flex items-center gap-1">
               {scorer.team && <TeamBadge src={scorer.team.logo} alt={scorer.team.shortName} size={5} />}
-              <span className="text-xs text-gray-400 truncate">{scorer.team?.shortName}</span>
+              <span className="text-xs lg:text-sm text-gray-400 truncate">{scorer.team?.shortName}</span>
             </div>
             <div className="flex-1 min-w-0 flex items-center gap-1.5">
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#D4AF37" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="shrink-0">
                 <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
               </svg>
-              <span className="font-bold text-white text-sm truncate">
+              <span className="font-bold text-white text-sm lg:text-base truncate">
                 {scorer.name}
                 {scorer.isCaptain && (
                   <svg className="inline mr-1 text-[#D4AF37] shrink-0" width="10" height="10" viewBox="0 0 24 24" fill="currentColor" stroke="none">
@@ -144,7 +144,7 @@ export default function TopScorersPage() {
               </span>
             </div>
             <motion.span
-              className="text-center font-black text-base text-[#D4AF37]"
+              className="text-center font-black text-base lg:text-lg text-[#D4AF37]"
               style={{ width: 60 }}
               initial={{ scale: 0 }}
               animate={{ scale: 1 }}
