@@ -4,7 +4,7 @@ import ShieldLogo from "./ShieldLogo";
 import StadiumBackground from "./StadiumBackground";
 import Icon from "./Icon";
 import { useState, useEffect } from "react";
-import { useTheme } from "../contexts/ThemeContext";
+
 
 const navLinks = [
   { to: "/", label: "الرئيسية" },
@@ -105,13 +105,10 @@ export default function Layout({ children }: { children: React.ReactNode }) {
             })}
           </div>
 
-          {/* Search + Theme toggle */}
-          <div className="flex items-center gap-2">
-            <Link to="/search" className="p-2 text-gray-400 hover:text-[#D4AF37] transition-colors">
-              <Icon name="search" size={18} />
-            </Link>
-            <ThemeToggle />
-          </div>
+          {/* Search */}
+          <Link to="/search" className="p-2 text-gray-400 hover:text-[#D4AF37] transition-colors">
+            <Icon name="search" size={18} />
+          </Link>
 
           {/* Mobile nav toggle */}
           <MobileNav currentPath={location.pathname} />
@@ -138,19 +135,6 @@ export default function Layout({ children }: { children: React.ReactNode }) {
         </div>
       </footer>
     </div>
-  );
-}
-
-function ThemeToggle() {
-  const { theme, toggle } = useTheme();
-  return (
-    <button
-      onClick={toggle}
-      className="p-2 text-gray-400 hover:text-[#D4AF37] transition-colors"
-      title={theme === "dark" ? "الوضع النهاري" : "الوضع الليلي"}
-    >
-      <Icon name="sun-moon" size={18} />
-    </button>
   );
 }
 

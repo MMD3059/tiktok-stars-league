@@ -331,13 +331,6 @@ const icons: Record<string, (size: number) => JSX.Element> = {
       <path d="M16 16l5 5" />
     </svg>
   ),
-  "sun-moon": (s) => (
-    <svg {...svgProps} width={s} height={s}>
-      <circle cx="12" cy="12" r="4" />
-      <path d="M12 2v2M12 20v2M5 5l1 1M18 18l1 1M2 12h2M20 12h2M5 19l1-1M18 6l1-1" />
-      <path d="M16 8a6 6 0 000 8" opacity="0.5" />
-    </svg>
-  ),
   "arrow-left": (s) => (
     <svg {...svgProps} width={s} height={s}>
       <path d="M19 12H5M12 19l-7-7 7-7" />

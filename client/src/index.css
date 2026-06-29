@@ -28,20 +28,6 @@
   --bg-overlay: rgba(11,11,11,0.9);
 }
 
-[data-theme="light"] {
-  --bg-deep: #F3F4F6;
-  --bg-dark: #E5E7EB;
-  --bg-card: #FFFFFF;
-  --bg-card-hover: #F9FAFB;
-  --text-primary: #111827;
-  --text-secondary: #4B5563;
-  --text-muted: #9CA3AF;
-  --border-color: rgba(0,0,0,0.08);
-  --card-bg: rgba(255,255,255,0.9);
-  --bg-gradient: from-white/60;
-  --bg-overlay: rgba(243,244,246,0.9);
-}
-
 html {
   scroll-behavior: smooth;
 }
@@ -52,7 +38,6 @@ body {
   color: var(--text-primary);
   overflow-x: hidden;
   cursor: auto;
-  transition: background 0.3s, color 0.3s;
 }
 
 
@@ -256,7 +241,6 @@ body {
   backdrop-filter: blur(8px);
   border: 1px solid var(--border-color);
   border-radius: 16px;
-  transition: background 0.3s, border-color 0.3s;
 }
 
 .glass-card:hover {
