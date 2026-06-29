@@ -18,13 +18,19 @@ export default function SchedulePage() {
     }).catch(() => {}).finally(() => setLoading(false));
   }, []);
 
-  const filtered = useMemo(() => {
+  const weeks = useMemo(() => {
     let list = matches.filter((m) => {
       if (activeTab === "all") return true;
       return m.status === activeTab;
     });
-    list.sort((a, b) => a.date.localeCompare(b.date) || a.time.localeCompare(b.time));
-    return list;
+    list.sort((a, b) => a.week - b.week || a.date.localeCompare(b.date) || a.time.localeCompare(b.time));
+    const grouped: { week: number; matches: Match[] }[] = [];
+    for (const m of list) {
+      const g = grouped.find((g) => g.week === m.week);
+      if (g) g.matches.push(m);
+      else grouped.push({ week: m.week, matches: [m] });
+    }
+    return grouped;
   }, [matches, activeTab]);
 
   if (loading) {
@@ -66,9 +72,18 @@ export default function SchedulePage() {
         ))}
       </div>
 
-      {/* All matches sorted by date */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        {filtered.map((match, i) => {
+      {/* Matches grouped by week */}
+      {weeks.map(({ week, matches }) => (
+        <div key={week} className="mb-10">
+          <div className="flex items-center justify-center gap-3 mb-6">
+            <div className="h-px flex-1 max-w-[60px]" style={{ background: "linear-gradient(90deg, transparent, rgba(212,175,55,0.2))" }} />
+            <h2 className="text-sm lg:text-base font-black text-[#D4AF37] tracking-widest">
+              الجولة {week}
+            </h2>
+            <div className="h-px flex-1 max-w-[60px]" style={{ background: "linear-gradient(270deg, transparent, rgba(212,175,55,0.2))" }} />
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            {matches.map((match, i) => {
           const isPlayed = match.status === "played";
               const homeWon =
                 isPlayed &&
@@ -175,8 +190,10 @@ export default function SchedulePage() {
                   </motion.div>
                 </TiltCard>
               );
-        })}
-      </div>
+          })}
+          </div>
+        </div>
+      ))}
     </div>
   );
 }
