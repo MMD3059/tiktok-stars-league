@@ -9,6 +9,7 @@ import standingsRouter from "./routes/standings.js";
 import topScorersRouter from "./routes/topScorers.js";
 import transfersRouter from "./routes/transfers.js";
 import authRouter from "./routes/auth.js";
+import headToHeadRouter from "./routes/headToHead.js";
 import prisma from "./prisma.js";
 import { adminAuth } from "./middleware/adminAuth.js";
 
@@ -28,6 +29,7 @@ app.use("/api/matches", matchesRouter);
 app.use("/api/standings", standingsRouter);
 app.use("/api/top-scorers", topScorersRouter);
 app.use("/api/transfers", transfersRouter);
+app.use("/api/head-to-head", headToHeadRouter);
 
 // ===== HEALTH CHECK (keep DB alive) =====
 app.get("/api/health", async (_req, res) => {

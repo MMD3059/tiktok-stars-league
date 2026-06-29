@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import Icon from "../components/Icon";
 import { api } from "../api";
@@ -19,6 +19,9 @@ const podiumTargets = [192, 144, 112];
 export default function StandingsPage() {
   const [standings, setStandings] = useState<Standing[]>([]);
   const [loading, setLoading] = useState(true);
+  const [h2h1, setH2h1] = useState("");
+  const [h2h2, setH2h2] = useState("");
+  const navigate = useNavigate();
 
   useEffect(() => {
     api.getStandings().then((data) => {
@@ -46,6 +49,43 @@ export default function StandingsPage() {
       >
         جدول <span className="text-gold-gradient">الترتيب</span>
       </motion.h1>
+
+      {/* ====== HEAD-TO-HEAD SELECTOR ====== */}
+      <motion.div
+        className="flex items-center justify-center gap-3 mb-8 flex-wrap"
+        initial={{ opacity: 0, y: 10 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.1 }}
+      >
+        <select
+          value={h2h1}
+          onChange={(e) => setH2h1(e.target.value)}
+          className="bg-dark border border-[rgba(212,175,55,0.15)] rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-[#D4AF37]"
+        >
+          <option value="">اختر الفريق الأول</option>
+          {standings.map((s) => (
+            <option key={s.id} value={s.id}>{s.shortName}</option>
+          ))}
+        </select>
+        <span className="text-[#D4AF37] font-black text-sm">VS</span>
+        <select
+          value={h2h2}
+          onChange={(e) => setH2h2(e.target.value)}
+          className="bg-dark border border-[rgba(212,175,55,0.15)] rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-[#D4AF37]"
+        >
+          <option value="">اختر الفريق الثاني</option>
+          {standings.map((s) => (
+            <option key={s.id} value={s.id}>{s.shortName}</option>
+          ))}
+        </select>
+        <button
+          disabled={!h2h1 || !h2h2 || h2h1 === h2h2}
+          onClick={() => navigate(`/h2h/${h2h1}/${h2h2}`)}
+          className="px-4 py-2 bg-[#D4AF37] text-black font-bold rounded-lg text-sm disabled:opacity-40 disabled:cursor-not-allowed transition-all hover:scale-105 active:scale-95"
+        >
+          عرض المواجهات
+        </button>
+      </motion.div>
 
       {/* ====== ANIMATED PODIUM ====== */}
       <div className="flex items-end justify-center gap-4 mb-12" dir="ltr">

@@ -2,7 +2,9 @@ import { Link, useLocation } from "react-router-dom";
 import { motion } from "framer-motion";
 import ShieldLogo from "./ShieldLogo";
 import StadiumBackground from "./StadiumBackground";
+import Icon from "./Icon";
 import { useState, useEffect } from "react";
+import { useTheme } from "../contexts/ThemeContext";
 
 const navLinks = [
   { to: "/", label: "الرئيسية" },
@@ -103,6 +105,14 @@ export default function Layout({ children }: { children: React.ReactNode }) {
             })}
           </div>
 
+          {/* Search + Theme toggle */}
+          <div className="flex items-center gap-2">
+            <Link to="/search" className="p-2 text-gray-400 hover:text-[#D4AF37] transition-colors">
+              <Icon name="search" size={18} />
+            </Link>
+            <ThemeToggle />
+          </div>
+
           {/* Mobile nav toggle */}
           <MobileNav currentPath={location.pathname} />
         </div>
@@ -128,6 +138,19 @@ export default function Layout({ children }: { children: React.ReactNode }) {
         </div>
       </footer>
     </div>
+  );
+}
+
+function ThemeToggle() {
+  const { theme, toggle } = useTheme();
+  return (
+    <button
+      onClick={toggle}
+      className="p-2 text-gray-400 hover:text-[#D4AF37] transition-colors"
+      title={theme === "dark" ? "الوضع النهاري" : "الوضع الليلي"}
+    >
+      <Icon name="sun-moon" size={18} />
+    </button>
   );
 }
 
@@ -166,6 +189,7 @@ function MobileNav({ currentPath }: { currentPath: string }) {
               { to: "/questions", label: "الفئات" },
               { to: "/committee", label: "اللجنة" },
               { to: "/transfers", label: "الانتقالات" },
+              { to: "/search", label: "بحث" },
             ].map((link) => {
               const isActive = currentPath === link.to;
               return (

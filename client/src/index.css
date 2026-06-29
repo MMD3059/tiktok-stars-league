@@ -14,16 +14,45 @@
   --color-loss: #ef4444;
 }
 
+:root {
+  --bg-deep: #0B0B0B;
+  --bg-dark: #141414;
+  --bg-card: #1A1A1A;
+  --bg-card-hover: #222222;
+  --text-primary: #e2e8f0;
+  --text-secondary: #9CA3AF;
+  --text-muted: #6B7280;
+  --border-color: rgba(212,175,55,0.15);
+  --card-bg: rgba(20,20,20,0.85);
+  --bg-gradient: from-black/60;
+  --bg-overlay: rgba(11,11,11,0.9);
+}
+
+[data-theme="light"] {
+  --bg-deep: #F3F4F6;
+  --bg-dark: #E5E7EB;
+  --bg-card: #FFFFFF;
+  --bg-card-hover: #F9FAFB;
+  --text-primary: #111827;
+  --text-secondary: #4B5563;
+  --text-muted: #9CA3AF;
+  --border-color: rgba(0,0,0,0.08);
+  --card-bg: rgba(255,255,255,0.9);
+  --bg-gradient: from-white/60;
+  --bg-overlay: rgba(243,244,246,0.9);
+}
+
 html {
   scroll-behavior: smooth;
 }
 
 body {
   font-family: 'Tajawal', 'Cairo', 'IBM Plex Sans Arabic', sans-serif;
-  background: #0B0B0B;
-  color: #e2e8f0;
+  background: var(--bg-deep);
+  color: var(--text-primary);
   overflow-x: hidden;
   cursor: auto;
+  transition: background 0.3s, color 0.3s;
 }
 
 
@@ -223,10 +252,11 @@ body {
 
 /* ====== GOLD GLASS CARD ====== */
 .glass-card {
-  background: rgba(20, 20, 20, 0.85);
+  background: var(--card-bg);
   backdrop-filter: blur(8px);
-  border: 1px solid rgba(212, 175, 55, 0.12);
+  border: 1px solid var(--border-color);
   border-radius: 16px;
+  transition: background 0.3s, border-color 0.3s;
 }
 
 .glass-card:hover {
@@ -275,7 +305,7 @@ body {
 
 /* ====== SCROLLBAR ====== */
 ::-webkit-scrollbar { width: 6px; }
-::-webkit-scrollbar-track { background: #0B0B0B; }
+::-webkit-scrollbar-track { background: var(--bg-deep); }
 ::-webkit-scrollbar-thumb { background: rgba(212, 175, 55, 0.3); border-radius: 3px; }
 ::-webkit-scrollbar-thumb:hover { background: rgba(212, 175, 55, 0.5); }
 
@@ -456,11 +486,11 @@ body {
 }
 .ticker-wrap::before {
   left: 0;
-  background: linear-gradient(90deg, rgba(11,11,11,0.9), transparent);
+  background: linear-gradient(90deg, var(--bg-overlay), transparent);
 }
 .ticker-wrap::after {
   right: 0;
-  background: linear-gradient(270deg, rgba(11,11,11,0.9), transparent);
+  background: linear-gradient(270deg, var(--bg-overlay), transparent);
 }
 .ticker-text {
   display: inline-block;

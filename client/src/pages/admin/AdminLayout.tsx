@@ -9,6 +9,7 @@ import AdminScores from "./AdminScores";
 import AdminUpcoming from "./AdminUpcoming";
 import AdminTopScorers from "./AdminTopScorers";
 import CardShowcase from "./CardShowcase";
+import AdminSettings from "./AdminSettings";
 
 const adminLinks = [
   { to: "/admin", label: "الفرق", end: true },
@@ -19,6 +20,7 @@ const adminLinks = [
   { to: "/admin/upcoming", label: "المباريات القادمة" },
   { to: "/admin/transfers", label: "الانتقالات" },
   { to: "/admin/cards", label: "تصميم البطاقات" },
+  { to: "/admin/settings", label: "الإعدادات" },
 ];
 
 export default function AdminLayout() {
@@ -111,6 +113,7 @@ export default function AdminLayout() {
           <Route path="upcoming" element={<AdminUpcoming />} />
           <Route path="transfers" element={<AdminTransfers />} />
           <Route path="cards" element={<CardShowcase />} />
+          <Route path="settings" element={<AdminSettings />} />
         </Routes>
       </motion.div>
     </div>

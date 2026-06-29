@@ -325,6 +325,24 @@ const icons: Record<string, (size: number) => JSX.Element> = {
       <circle cx="50" cy="50" r="8" fill="currentColor" stroke="none"/><path d="M50 18v6M50 76v6"/><path d="M18 50h6M76 50h6"/><path d="M27 27l4 4M69 69l4 4"/><path d="M27 73l4-4M69 31l4-4"/><rect x="16" y="16" width="6" height="6" rx="1" transform="rotate(45 19 19)" fill="currentColor" stroke="none"/><rect x="78" y="78" width="6" height="6" rx="1" transform="rotate(45 81 81)" fill="currentColor" stroke="none"/><rect x="78" y="16" width="6" height="6" rx="1" transform="rotate(45 81 19)" fill="currentColor" stroke="none"/><rect x="16" y="78" width="6" height="6" rx="1" transform="rotate(45 19 81)" fill="currentColor" stroke="none"/>
     </svg>
   ),
+  search: (s) => (
+    <svg {...svgProps} width={s} height={s}>
+      <circle cx="11" cy="11" r="7" />
+      <path d="M16 16l5 5" />
+    </svg>
+  ),
+  "sun-moon": (s) => (
+    <svg {...svgProps} width={s} height={s}>
+      <circle cx="12" cy="12" r="4" />
+      <path d="M12 2v2M12 20v2M5 5l1 1M18 18l1 1M2 12h2M20 12h2M5 19l1-1M18 6l1-1" />
+      <path d="M16 8a6 6 0 000 8" opacity="0.5" />
+    </svg>
+  ),
+  "arrow-left": (s) => (
+    <svg {...svgProps} width={s} height={s}>
+      <path d="M19 12H5M12 19l-7-7 7-7" />
+    </svg>
+  ),
 };
 
 export type IconName = keyof typeof icons;

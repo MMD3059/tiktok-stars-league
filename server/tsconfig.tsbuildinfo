@@ -1,0 +1,1 @@
+{"root":["./src/app.ts","./src/index.ts","./src/prisma.ts","./src/seed.ts","./src/middleware/adminauth.ts","./src/routes/auth.ts","./src/routes/matches.ts","./src/routes/players.ts","./src/routes/standings.ts","./src/routes/teams.ts","./src/routes/topscorers.ts","./src/routes/transfers.ts"],"version":"5.9.3"}

@@ -93,6 +93,17 @@ export const api = {
   distributeValue: (teamId: number) =>
     fetchJson<{ ok: boolean; share: number; count: number }>(`/admin/distribute-value/${teamId}`, { method: "POST" }),
 
+  // Head-to-Head
+  getHeadToHead: (team1: number, team2: number) =>
+    fetchJson<{ matches: Match[]; stats: { played: number; t1Wins: number; t2Wins: number; draws: number; t1Goals: number; t2Goals: number } }>(`/head-to-head/${team1}/${team2}`),
+
+  // Admin change password
+  changePassword: (currentPassword: string, newPassword: string) =>
+    fetchJson<{ ok: boolean }>("/auth/change-password", {
+      method: "POST",
+      body: JSON.stringify({ currentPassword, newPassword }),
+    }),
+
   // Transfers
   getTransfers: () => fetchJson<Transfer[]>("/transfers"),
   createTransfer: (data: Partial<Transfer>) =>
