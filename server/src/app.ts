@@ -29,6 +29,16 @@ app.use("/api/standings", standingsRouter);
 app.use("/api/top-scorers", topScorersRouter);
 app.use("/api/transfers", transfersRouter);
 
+// ===== HEALTH CHECK (keep DB alive) =====
+app.get("/api/health", async (_req, res) => {
+  try {
+    await prisma.$queryRaw`SELECT 1`;
+    res.json({ status: "ok" });
+  } catch {
+    res.status(503).json({ status: "error", message: "Database unavailable" });
+  }
+});
+
 app.post("/api/admin/teams", adminAuth, async (req, res) => {
   const team = await prisma.team.create({ data: req.body });
   res.json(team);
