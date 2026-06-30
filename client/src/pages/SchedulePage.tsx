@@ -93,7 +93,14 @@ export default function SchedulePage() {
           </div>
 
           {/* Match cards — 2 columns grid */}
-          <div className="grid grid-cols-2 gap-2">
+          <div
+            className="grid"
+            style={{
+              display: "grid",
+              gridTemplateColumns: "repeat(2, minmax(520px, 1fr))",
+              gap: "18px",
+            }}
+          >
             {weekMatches.map((match, i) => {
               const isPlayed = match.status === "played";
               const homeWon = isPlayed && match.homeScore != null && match.awayScore != null && match.homeScore > match.awayScore;
@@ -109,8 +116,12 @@ export default function SchedulePage() {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ delay: i * 0.03 }}
-                  className="flex items-center justify-between px-2 py-3 rounded-xl transition-all duration-200 hover:bg-white/[0.03]"
+                  className="flex items-center justify-between transition-all duration-200 hover:bg-white/[0.03]"
                   style={{
+                    width: "100%",
+                    minHeight: "115px",
+                    borderRadius: "18px",
+                    padding: "20px",
                     background: "rgba(20,20,20,0.85)",
                     border: "1px solid rgba(212,175,55,0.1)",
                   }}
