@@ -270,109 +270,7 @@ export default function TeamPage() {
           />
         </motion.div>
 
-        {/* ═══════════════ 2. UPCOMING MATCHES — Premium ═══════════════ */}
-        {upcomingMatches.length > 0 && (
-          <motion.section
-            variants={sectionVariants}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, margin: "-50px" }}
-          >
-            <div className="flex items-center justify-center gap-3 mb-6">
-              <div className="h-px flex-1 max-w-[60px]" style={{ background: "linear-gradient(90deg, transparent, rgba(78,167,255,0.2))" }} />
-              <h2 className="text-sm md:text-base font-bold text-white flex items-center gap-2 tracking-wider">
-                <Icon name="calendar-days" size={15} className="text-[#4EA7FF]" />
-                UPCOMING MATCHES
-              </h2>
-              <div className="h-px flex-1 max-w-[60px]" style={{ background: "linear-gradient(270deg, transparent, rgba(78,167,255,0.2))" }} />
-            </div>
 
-            <div className="space-y-5">
-              {upcomingMatches.map((m, i) => {
-                const isHome = m.homeTeamId === teamId;
-                const homeTeam = isHome ? team : (m.homeTeam || team);
-                const awayTeam = isHome ? (m.awayTeam || team) : team;
-                const homeName = homeTeam.shortName || homeTeam.name || "Home";
-                const awayName = awayTeam.shortName || awayTeam.name || "Away";
-
-                return (
-                  <motion.div
-                    key={m.id}
-                    initial={{ opacity: 0, y: 30 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ delay: i * 0.1, duration: 0.45, ease: "easeOut" }}
-                    whileHover={{ y: -4 }}
-                    className="group rounded-[20px] p-4 md:p-5 transition-all duration-250"
-                    style={{
-                      background: "#101826",
-                      border: "1px solid rgba(78,167,255,0.12)",
-                    }}
-                    onMouseEnter={(e) => {
-                      e.currentTarget.style.borderColor = "rgba(78,167,255,0.45)";
-                      e.currentTarget.style.boxShadow = "0 8px 30px rgba(78,167,255,0.08), 0 0 0 1px rgba(78,167,255,0.05)";
-                    }}
-                    onMouseLeave={(e) => {
-                      e.currentTarget.style.borderColor = "rgba(78,167,255,0.12)";
-                      e.currentTarget.style.boxShadow = "none";
-                    }}
-                  >
-                    {/* Mobile layout */}
-                    <div className="flex flex-col gap-3 md:hidden">
-                      <div className="flex items-center justify-center gap-2 text-[11px]">
-                        <span className="text-gray-500">{m.date}</span>
-                        <span className="w-1 h-1 rounded-full bg-gray-600" />
-                        <span className="font-bold text-[#4EA7FF]">{m.time}</span>
-                      </div>
-                      <div className="flex items-center justify-center gap-2">
-                        <span className="text-sm font-semibold text-white text-right flex-1 truncate">{homeName}</span>
-                        <div className="flex items-center gap-2 shrink-0">
-                          <div className="w-[42px] h-[42px] rounded-full flex items-center justify-center overflow-hidden group-hover:scale-110 transition-transform duration-250">
-                            <TeamBadge src={homeTeam.logo} alt={homeName} size={10} />
-                          </div>
-                          <span className="text-xs font-black text-[#4EA7FF] px-2">VS</span>
-                          <div className="w-[42px] h-[42px] rounded-full flex items-center justify-center overflow-hidden group-hover:scale-110 transition-transform duration-250">
-                            <TeamBadge src={awayTeam.logo} alt={awayName} size={10} />
-                          </div>
-                        </div>
-                        <span className="text-sm font-semibold text-white text-left flex-1 truncate">{awayName}</span>
-                      </div>
-                    </div>
-
-                    {/* Desktop layout */}
-                    <div className="hidden md:flex items-center gap-4">
-                      <div className="w-28 shrink-0 text-center">
-                        <div className="text-sm font-bold text-white">{m.date}</div>
-                        <div className="text-[11px] text-gray-500 mt-0.5">{m.time}</div>
-                      </div>
-                      <div className="w-px h-10 bg-[rgba(78,167,255,0.08)] shrink-0" />
-                      <div className="flex-1 flex items-center justify-center gap-5">
-                        <div className="flex items-center gap-3 flex-1 justify-end">
-                          <span className="text-lg font-semibold text-white truncate max-w-[140px] text-right">{homeName}</span>
-                          <div className="w-[48px] h-[48px] rounded-full flex items-center justify-center overflow-hidden shrink-0 group-hover:scale-110 transition-transform duration-250">
-                            <TeamBadge src={homeTeam.logo} alt={homeName} size={12} />
-                          </div>
-                        </div>
-                        <div className="shrink-0 px-3">
-                          <span className="text-sm font-black text-[#4EA7FF] tracking-wider">VS</span>
-                        </div>
-                        <div className="flex items-center gap-3 flex-1 justify-start">
-                          <div className="w-[48px] h-[48px] rounded-full flex items-center justify-center overflow-hidden shrink-0 group-hover:scale-110 transition-transform duration-250">
-                            <TeamBadge src={awayTeam.logo} alt={awayName} size={12} />
-                          </div>
-                          <span className="text-lg font-semibold text-white truncate max-w-[140px] text-left">{awayName}</span>
-                        </div>
-                      </div>
-                      <div className="w-28 shrink-0" />
-                    </div>
-
-                    <div className="mt-3 h-px bg-[rgba(78,167,255,0.04)]" />
-                  </motion.div>
-                );
-              })}
-            </div>
-          </motion.section>
-        )}
 
         {/* ═══════════════ 3. SQUAD GALLERY ═══════════════ */}
         <motion.section
@@ -659,12 +557,12 @@ export default function TeamPage() {
           >
             {/* Section header */}
             <div className="flex items-center justify-center gap-3 mb-8">
-              <div className="h-px flex-1 max-w-[60px]" style={{ background: "linear-gradient(90deg, transparent, rgba(78,167,255,0.2))" }} />
+              <div className="h-px flex-1 max-w-[60px]" style={{ background: "linear-gradient(90deg, transparent, rgba(212,175,55,0.2))" }} />
               <h2 className="text-sm md:text-base font-bold text-white flex items-center gap-2 tracking-wider">
-                <Icon name="calendar-days" size={15} className="text-[#4EA7FF]" />
+                <Icon name="calendar-days" size={15} className="text-[#D4AF37]" />
                 UPCOMING MATCHES
               </h2>
-              <div className="h-px flex-1 max-w-[60px]" style={{ background: "linear-gradient(270deg, transparent, rgba(78,167,255,0.2))" }} />
+              <div className="h-px flex-1 max-w-[60px]" style={{ background: "linear-gradient(270deg, transparent, rgba(212,175,55,0.2))" }} />
             </div>
 
             {/* Upcoming matches — premium cards */}
@@ -687,16 +585,16 @@ export default function TeamPage() {
                     className="group rounded-[20px] p-4 md:p-5 transition-all duration-250"
                     style={{
                       background: "#101826",
-                      border: "1px solid rgba(78,167,255,0.12)",
-                      boxShadow: "0 0 0 rgba(78,167,255,0)",
+                      border: "1px solid rgba(212,175,55,0.12)",
+                      boxShadow: "0 0 0 rgba(212,175,55,0)",
                     }}
                     onMouseEnter={(e) => {
-                      e.currentTarget.style.borderColor = "rgba(78,167,255,0.45)";
-                      e.currentTarget.style.boxShadow = "0 8px 30px rgba(78,167,255,0.08), 0 0 0 1px rgba(78,167,255,0.05)";
+                      e.currentTarget.style.borderColor = "rgba(212,175,55,0.45)";
+                      e.currentTarget.style.boxShadow = "0 8px 30px rgba(212,175,55,0.08), 0 0 0 1px rgba(212,175,55,0.05)";
                     }}
                     onMouseLeave={(e) => {
-                      e.currentTarget.style.borderColor = "rgba(78,167,255,0.12)";
-                      e.currentTarget.style.boxShadow = "0 0 0 rgba(78,167,255,0)";
+                      e.currentTarget.style.borderColor = "rgba(212,175,55,0.12)";
+                      e.currentTarget.style.boxShadow = "0 0 0 rgba(212,175,55,0)";
                     }}
                   >
                     {/* Mobile layout */}
@@ -705,7 +603,7 @@ export default function TeamPage() {
                       <div className="flex items-center justify-center gap-2 text-[11px]">
                         <span className="text-gray-500">{m.date}</span>
                         <span className="w-1 h-1 rounded-full bg-gray-600" />
-                        <span className="font-bold text-[#4EA7FF]">{m.time}</span>
+                        <span className="font-bold text-[#D4AF37]">{m.time}</span>
                       </div>
                       {/* Team row */}
                       <div className="flex items-center justify-center gap-2">
@@ -714,7 +612,7 @@ export default function TeamPage() {
                           <div className="w-[42px] h-[42px] rounded-full flex items-center justify-center overflow-hidden group-hover:scale-110 transition-transform duration-250">
                             <TeamBadge src={homeTeam.logo} alt={homeName} size={10} />
                           </div>
-                          <span className="text-xs font-black text-[#4EA7FF] px-2">VS</span>
+                          <span className="text-xs font-black text-[#D4AF37] px-2">VS</span>
                           <div className="w-[42px] h-[42px] rounded-full flex items-center justify-center overflow-hidden group-hover:scale-110 transition-transform duration-250">
                             <TeamBadge src={awayTeam.logo} alt={awayName} size={10} />
                           </div>
@@ -732,7 +630,7 @@ export default function TeamPage() {
                       </div>
 
                       {/* Divider */}
-                      <div className="w-px h-10 bg-[rgba(78,167,255,0.08)] shrink-0" />
+                      <div className="w-px h-10 bg-[rgba(212,175,55,0.08)] shrink-0" />
 
                       {/* Center — Teams */}
                       <div className="flex-1 flex items-center justify-center gap-5">
@@ -746,7 +644,7 @@ export default function TeamPage() {
 
                         {/* VS / Time */}
                         <div className="shrink-0 px-3">
-                          <span className="text-sm font-black text-[#4EA7FF] tracking-wider">VS</span>
+                          <span className="text-sm font-black text-[#D4AF37] tracking-wider">VS</span>
                         </div>
 
                         {/* Away team */}
@@ -763,7 +661,7 @@ export default function TeamPage() {
                     </div>
 
                     {/* Subtle inner bottom divider */}
-                    <div className="mt-3 h-px bg-[rgba(78,167,255,0.04)]" />
+                    <div className="mt-3 h-px bg-[rgba(212,175,55,0.04)]" />
                   </motion.div>
                 );
               })}
