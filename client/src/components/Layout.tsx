@@ -28,6 +28,12 @@ export default function Layout({ children }: { children: React.ReactNode }) {
   const location = useLocation();
   const [scrolled, setScrolled] = useState(false);
 
+  useEffect(() => {
+    const handleScroll = () => setScrolled(window.scrollY > 50);
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
   // Admin pages: isolated shell — no navbar/ticker/footer, but same visual theme
   if (location.pathname.startsWith("/admin")) {
     return (
@@ -37,12 +43,6 @@ export default function Layout({ children }: { children: React.ReactNode }) {
       </div>
     );
   }
-
-  useEffect(() => {
-    const handleScroll = () => setScrolled(window.scrollY > 50);
-    window.addEventListener("scroll", handleScroll, { passive: true });
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
 
   return (
     <div className="min-h-screen relative" dir="rtl">
