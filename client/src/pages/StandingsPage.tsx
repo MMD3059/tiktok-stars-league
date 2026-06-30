@@ -5,6 +5,7 @@ import Icon from "../components/Icon";
 import { api } from "../api";
 import type { Standing } from "../types";
 import AnimatedBar from "../components/AnimatedBar";
+import AnimatedCounter from "../components/AnimatedCounter";
 import { SkeletonTable } from "../components/Skeleton";
 import TeamBadge from "../components/TeamBadge";
 
@@ -129,7 +130,7 @@ export default function StandingsPage() {
                     animate={{ scale: 1 }}
                     transition={{ delay: 0.8 + order * 0.15, type: "spring" }}
                   >
-                    {team.points}
+                    <AnimatedCounter end={team.points} />
                   </motion.span>
                 </motion.div>
               </motion.div>
@@ -165,7 +166,7 @@ export default function StandingsPage() {
                 animate={{ scale: 1 }}
                 transition={{ type: "spring", delay: 0.3 + i * 0.1 }}
               >
-                {team.points}
+                <AnimatedCounter end={team.points} />
               </motion.div>
               <div className="text-xs text-gray-500">نقطة</div>
               <div className="flex justify-center gap-3 mt-2 text-xs text-gray-400">
@@ -227,7 +228,7 @@ export default function StandingsPage() {
                 animate={{ scale: 1 }}
                 transition={{ type: "spring", delay: 0.6 + i * 0.03 }}
               >
-                {team.points}
+                <AnimatedCounter end={team.points} />
               </motion.span>
             </motion.div>
           </Link>
@@ -256,7 +257,7 @@ export default function StandingsPage() {
                 className="flex-1"
               />
               <span className="text-sm font-bold text-white w-10 text-left">
-                {team.points}
+                <AnimatedCounter end={team.points} />
               </span>
             </div>
           ))}

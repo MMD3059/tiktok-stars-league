@@ -8,6 +8,7 @@ import { SkeletonLine } from "../components/Skeleton";
 import TeamBadge from "../components/TeamBadge";
 import PlayerCard, { type CardVariant } from "../components/PlayerCard";
 import SpotlightCard from "../components/SpotlightCard";
+import AnimatedCounter from "../components/AnimatedCounter";
 import { useCountUp } from "../hooks/useCountUp";
 
 const posColors: Record<string, string> = {
@@ -73,9 +74,14 @@ function TeamMatchCard({ match, teamId, highlighted }: { match: Match; teamId: n
       </div>
       <div className="text-center shrink-0">
         {isPlayed ? (
-          <span className={`text-sm lg:text-base font-black ${won ? "text-win" : lost ? "text-loss" : "text-gray-300"}`}>
-            {teamScore}-{oppScore}
-          </span>
+          <motion.span
+            className={`text-sm lg:text-base font-black ${won ? "text-win" : lost ? "text-loss" : "text-gray-300"}`}
+            initial={{ scale: 0, rotateX: 90 }}
+            animate={{ scale: 1, rotateX: 0 }}
+            transition={{ type: "spring", stiffness: 200, damping: 15 }}
+          >
+            <AnimatedCounter end={teamScore ?? 0} />-<AnimatedCounter end={oppScore ?? 0} />
+          </motion.span>
         ) : (
           <span className="text-[11px] lg:text-sm font-bold text-[#D4AF37]">{match.time}</span>
         )}
