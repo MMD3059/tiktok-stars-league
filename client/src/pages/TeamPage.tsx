@@ -582,16 +582,16 @@ export default function TeamPage() {
                     whileHover={{ y: -4 }}
                     className="group rounded-[20px] p-4 md:p-5 transition-all duration-250"
                     style={{
-                      background: "#101826",
-                      border: "1px solid rgba(212,175,55,0.12)",
+                      background: "rgba(20,20,20,0.85)",
+                      border: "1px solid rgba(212,175,55,0.1)",
                       boxShadow: "0 0 0 rgba(212,175,55,0)",
                     }}
                     onMouseEnter={(e) => {
-                      e.currentTarget.style.borderColor = "rgba(212,175,55,0.45)";
-                      e.currentTarget.style.boxShadow = "0 8px 30px rgba(212,175,55,0.08), 0 0 0 1px rgba(212,175,55,0.05)";
+                      e.currentTarget.style.borderColor = "rgba(212,175,55,0.3)";
+                      e.currentTarget.style.boxShadow = "0 8px 30px rgba(212,175,55,0.06)";
                     }}
                     onMouseLeave={(e) => {
-                      e.currentTarget.style.borderColor = "rgba(212,175,55,0.12)";
+                      e.currentTarget.style.borderColor = "rgba(212,175,55,0.1)";
                       e.currentTarget.style.boxShadow = "0 0 0 rgba(212,175,55,0)";
                     }}
                   >
