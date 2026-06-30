@@ -111,8 +111,6 @@ export default function TeamPage() {
         ? allPlayers.filter((p) => ["LW","RW","FWD"].includes(p.position))
         : allPlayers.filter((p) => p.position === squadTab);
 
-  const featured = captain || (topScorer && topScorer.goalsScored > 0 ? topScorer : null);
-
   const scorers = allPlayers
     .filter((p) => p.goalsScored > 0)
     .sort((a, b) => b.goalsScored - a.goalsScored);

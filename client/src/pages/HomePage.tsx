@@ -56,11 +56,13 @@ export default function HomePage() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    Promise.all([api.getStandings(), api.getTeams()]).then(([s, t]) => {
-      setStandings(s);
-      setTeams(t);
-    }).catch(() => {}).finally(() => setLoading(false));
+    api.getStandings().then(setStandings).catch(() => {});
+    api.getTeams().then(setTeams).catch(() => {});
   }, []);
+
+  useEffect(() => {
+    if (standings.length > 0 || teams.length > 0) setLoading(false);
+  }, [standings, teams]);
 
   const top3 = standings.slice(0, 3);
 
@@ -303,21 +305,40 @@ export default function HomePage() {
           whileInView="visible"
           viewport={{ once: true }}
         >
-          {teams.map((team) => (
-            <Link key={team.id} to={`/team/${team.id}`}>
-              <TiltCard>
-                <motion.div
-                  className="glass-card p-4 text-center cursor-pointer hover-lift"
-                  variants={itemVariants}
-                >
-                  <div className="mb-2 flex justify-center">
-                    <TeamBadge src={team.logo} alt={team.shortName} size={12} />
-                  </div>
-                  <div className="font-bold text-white text-sm lg:text-base">{team.shortName}</div>
-                </motion.div>
-              </TiltCard>
-            </Link>
-          ))}
+          {loading ? (
+            Array.from({ length: 5 }).map((_, i) => (
+              <div key={i} className="glass-card p-4 text-center">
+                <div className="w-16 h-16 rounded-full bg-gray-800 mx-auto mb-2 animate-pulse" />
+                <div className="h-4 w-20 bg-gray-800 mx-auto rounded animate-pulse" />
+              </div>
+            ))
+          ) : teams.length === 0 ? (
+            <div className="col-span-full text-center py-8">
+              <p className="text-gray-500 text-sm mb-3">تعذر تحميل الفرق</p>
+              <button
+                onClick={() => { setLoading(true); api.getTeams().then(setTeams).catch(() => {}).finally(() => setLoading(false)); }}
+                className="px-4 py-2 bg-[#D4AF37] text-[#0B0B0B] font-bold rounded-xl text-sm hover:bg-[#FFD700] transition-colors"
+              >
+                إعادة المحاولة
+              </button>
+            </div>
+          ) : (
+            teams.map((team) => (
+              <Link key={team.id} to={`/team/${team.id}`}>
+                <TiltCard>
+                  <motion.div
+                    className="glass-card p-4 text-center cursor-pointer hover-lift"
+                    variants={itemVariants}
+                  >
+                    <div className="mb-2 flex justify-center">
+                      <TeamBadge src={team.logo} alt={team.shortName} size={12} />
+                    </div>
+                    <div className="font-bold text-white text-sm lg:text-base">{team.shortName}</div>
+                  </motion.div>
+                </TiltCard>
+              </Link>
+            ))
+          )}
         </motion.div>
       </section>
 
