@@ -5,6 +5,15 @@ import { api } from "../../api";
 import type { Match, Team } from "../../types";
 import TeamBadge from "../../components/TeamBadge";
 
+function defaultTime(date: string, matches: Match[]): string {
+  const day = new Date(date + "T12:00:00").getDay();
+  if (day === 4) {
+    const at2230 = matches.filter(m => m.date === date && m.time === "22:30").length;
+    return at2230 > 0 ? "23:30" : "22:30";
+  }
+  return "22:30";
+}
+
 export default function AdminMatches() {
   const [matches, setMatches] = useState<Match[]>([]);
   const [teams, setTeams] = useState<Team[]>([]);
@@ -17,7 +26,7 @@ export default function AdminMatches() {
   const [awayYellow, setAwayYellow] = useState<number | "">("");
   const [awayRed, setAwayRed] = useState<number | "">("");
   const [date, setDate] = useState(() => new Date().toISOString().split("T")[0]);
-  const [time, setTime] = useState("");
+  const [time, setTime] = useState("22:30");
   const [week, setWeek] = useState(1);
   const [status, setStatus] = useState("scheduled");
   const [editing, setEditing] = useState<number | null>(null);
@@ -58,10 +67,18 @@ export default function AdminMatches() {
       } else {
         await api.createMatch(data);
       }
-      api.getMatches().then(setMatches);
+      api.getMatches().then((fresh) => {
+        setMatches(fresh);
+        if (!editing) setTime(defaultTime(date, fresh));
+      });
     } catch (e: any) {
       alert(e.message || "فشل حفظ المباراة");
     }
+  }
+
+  function onDateChange(newDate: string) {
+    setDate(newDate);
+    if (!editing) setTime(defaultTime(newDate, matches));
   }
 
   function edit(match: Match) {
@@ -84,7 +101,10 @@ export default function AdminMatches() {
     if (confirm("حذف المباراة؟")) {
       try {
         await api.deleteMatch(id);
-        api.getMatches().then(setMatches);
+        api.getMatches().then((fresh) => {
+          setMatches(fresh);
+          if (!editing) setTime(defaultTime(date, fresh));
+        });
       } catch (e: any) {
         alert(e.message || "فشل حذف المباراة");
       }
@@ -96,7 +116,7 @@ export default function AdminMatches() {
     setHomeScore(""); setAwayScore("");
     setHomeYellow(""); setHomeRed("");
     setAwayYellow(""); setAwayRed("");
-    setDate(new Date().toISOString().split("T")[0]); setTime(""); setWeek(1);
+    setDate(new Date().toISOString().split("T")[0]); setTime("22:30"); setWeek(1);
     setStatus("scheduled"); setEditing(null);
   }
 
@@ -136,7 +156,7 @@ export default function AdminMatches() {
             <div className="text-[10px] text-[#D4AF37] font-bold mb-1">
               {["الأحد","الإثنين","الثلاثاء","الأربعاء","الخميس","الجمعة","السبت"][new Date(date + "T12:00:00").getDay()]}
             </div>
-            <input type="date" value={date} onChange={(e) => setDate(e.target.value)}
+            <input type="date" value={date} onChange={(e) => onDateChange(e.target.value)}
               className="bg-dark border border-[rgba(212,175,55,0.15)] rounded-xl px-4 py-2 text-white focus:outline-none focus:border-[#D4AF37] w-full" />
           </div>
           <input type="time" value={time} onChange={(e) => setTime(e.target.value)}

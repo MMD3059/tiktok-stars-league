@@ -93,6 +93,10 @@ export const api = {
   distributeValue: (teamId: number) =>
     fetchJson<{ ok: boolean; share: number; count: number }>(`/admin/distribute-value/${teamId}`, { method: "POST" }),
 
+  // Search
+  search: (q: string) =>
+    fetchJson<{ teams: Team[]; players: Player[] }>(`/search?q=${encodeURIComponent(q)}`),
+
   // Head-to-Head
   getHeadToHead: (team1: number, team2: number) =>
     fetchJson<{ matches: Match[]; stats: { played: number; t1Wins: number; t2Wins: number; draws: number; t1Goals: number; t2Goals: number } }>(`/head-to-head/${team1}/${team2}`),

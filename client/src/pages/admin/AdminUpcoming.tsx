@@ -5,13 +5,22 @@ import { api } from "../../api";
 import type { Match, Team } from "../../types";
 import TeamBadge from "../../components/TeamBadge";
 
+function defaultTime(date: string, matches: Match[]): string {
+  const day = new Date(date + "T12:00:00").getDay();
+  if (day === 4) {
+    const at2230 = matches.filter(m => m.date === date && m.time === "22:30").length;
+    return at2230 > 0 ? "23:30" : "22:30";
+  }
+  return "22:30";
+}
+
 export default function AdminUpcoming() {
   const [matches, setMatches] = useState<Match[]>([]);
   const [teams, setTeams] = useState<Team[]>([]);
   const [homeTeamId, setHomeTeamId] = useState<number>(0);
   const [awayTeamId, setAwayTeamId] = useState<number>(0);
   const [date, setDate] = useState(() => new Date().toISOString().split("T")[0]);
-  const [time, setTime] = useState("20:00");
+  const [time, setTime] = useState("22:30");
   const [week, setWeek] = useState(1);
   const [editing, setEditing] = useState<number | null>(null);
   const [message, setMessage] = useState("");
@@ -43,11 +52,19 @@ export default function AdminUpcoming() {
         await api.createMatch(data);
         setMessage("تم إضافة المباراة!");
       }
-      api.getMatches().then(setMatches);
+      api.getMatches().then((fresh) => {
+        setMatches(fresh);
+        if (!editing) setTime(defaultTime(date, fresh));
+      });
     } catch (e: any) {
       setMessage(e.message || "حدث خطأ");
     }
     setTimeout(() => setMessage(""), 3000);
+  }
+
+  function onDateChange(newDate: string) {
+    setDate(newDate);
+    if (!editing) setTime(defaultTime(newDate, matches));
   }
 
   function edit(match: Match) {
@@ -63,7 +80,10 @@ export default function AdminUpcoming() {
     if (confirm("حذف المباراة؟")) {
       try {
         await api.deleteMatch(id);
-        api.getMatches().then(setMatches);
+        api.getMatches().then((fresh) => {
+          setMatches(fresh);
+          if (!editing) setTime(defaultTime(date, fresh));
+        });
         setMessage("تم حذف المباراة");
       } catch (e: any) {
         setMessage(e.message || "حدث خطأ");
@@ -75,7 +95,10 @@ export default function AdminUpcoming() {
   async function markPlayed(id: number) {
     try {
       await api.updateMatch(id, { status: "played", homeScore: 0, awayScore: 0 });
-      api.getMatches().then(setMatches);
+      api.getMatches().then((fresh) => {
+        setMatches(fresh);
+        if (!editing) setTime(defaultTime(date, fresh));
+      });
       setMessage("تم تحويل المباراة إلى منتهية");
     } catch (e: any) {
       setMessage(e.message || "حدث خطأ");
@@ -85,7 +108,7 @@ export default function AdminUpcoming() {
 
   function reset() {
     if (teams.length >= 2) { setHomeTeamId(teams[0].id); setAwayTeamId(teams[1].id); }
-    setDate(new Date().toISOString().split("T")[0]); setTime("20:00"); setWeek(1);
+    setDate(new Date().toISOString().split("T")[0]); setTime("22:30"); setWeek(1);
     setEditing(null);
   }
 
@@ -123,7 +146,7 @@ export default function AdminUpcoming() {
             <div className="text-[10px] text-[#D4AF37] font-bold mb-1">
               {["الأحد","الإثنين","الثلاثاء","الأربعاء","الخميس","الجمعة","السبت"][new Date(date + "T12:00:00").getDay()]}
             </div>
-            <input type="date" value={date} onChange={(e) => setDate(e.target.value)}
+            <input type="date" value={date} onChange={(e) => onDateChange(e.target.value)}
               className="bg-dark border border-[rgba(212,175,55,0.15)] rounded-xl px-4 py-2 text-white focus:outline-none focus:border-[#D4AF37] w-full" required />
           </div>
           <input type="time" value={time} onChange={(e) => setTime(e.target.value)}

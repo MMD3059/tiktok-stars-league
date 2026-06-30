@@ -1,4 +1,4 @@
-import { useEffect, useState, useMemo } from "react";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import Icon from "../components/Icon";
@@ -8,25 +8,17 @@ import TeamBadge from "../components/TeamBadge";
 
 export default function SearchPage() {
   const [query, setQuery] = useState("");
-  const [teams, setTeams] = useState<Team[]>([]);
-  const [players, setPlayers] = useState<Player[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [results, setResults] = useState<{ teams: Team[]; players: Player[] }>({ teams: [], players: [] });
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    Promise.all([api.getTeams(), api.getPlayers()]).then(([t, p]) => {
-      setTeams(t);
-      setPlayers(p);
-    }).catch(() => {}).finally(() => setLoading(false));
-  }, []);
-
-  const results = useMemo(() => {
-    if (!query.trim()) return { teams: [] as Team[], players: [] as Player[] };
-    const q = query.trim().toLowerCase();
-    return {
-      teams: teams.filter((t) => t.name.toLowerCase().includes(q) || t.shortName.toLowerCase().includes(q)),
-      players: players.filter((p) => p.name.toLowerCase().includes(q)),
-    };
-  }, [query, teams, players]);
+    if (!query.trim()) { setResults({ teams: [], players: [] }); return; }
+    const t = setTimeout(() => {
+      setLoading(true);
+      api.search(query.trim()).then(setResults).catch(() => {}).finally(() => setLoading(false));
+    }, 200);
+    return () => clearTimeout(t);
+  }, [query]);
 
   return (
     <div className="max-w-7xl mx-auto px-4 py-8 min-h-screen">

@@ -45,6 +45,24 @@ app.get("/api/health", async (_req, res) => {
   }
 });
 
+// ===== PUBLIC SEARCH =====
+app.get("/api/search", async (req, res) => {
+  try {
+    const q = String(req.query.q || "").trim().toLowerCase();
+    if (!q) { res.json({ teams: [], players: [] }); return; }
+    const [teams, players] = await Promise.all([
+      prisma.team.findMany({ select: { id: true, name: true, shortName: true, logo: true } }),
+      prisma.player.findMany({ select: { id: true, name: true, position: true, goalsScored: true, teamId: true, imageUrl: true } }),
+    ]);
+    res.json({
+      teams: teams.filter((t) => t.name.toLowerCase().includes(q) || t.shortName.toLowerCase().includes(q)),
+      players: players.filter((p) => p.name.toLowerCase().includes(q)),
+    });
+  } catch (err: any) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
 // ===== ADMINISTRATOR ROUTES (all protected by adminAuth + adminLimiter) =====
 app.post("/api/admin/teams", adminAuth, adminLimiter, async (req, res) => {
   const data = sanitizeObject(req.body);
