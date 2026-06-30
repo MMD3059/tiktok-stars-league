@@ -613,58 +613,166 @@ export default function TeamPage() {
           </div>
         </motion.section>
 
-        {/* ═══════════════ 5. MATCHES ═══════════════ */}
+        {/* ═══════════════ 5. MATCHES — Premium Flashscore-style ═══════════════ */}
         {teamMatches.length > 0 && (
           <motion.section
             variants={sectionVariants}
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true, margin: "-50px" }}
-            className="rounded-2xl p-4 md:p-5"
-            style={{
-              background: "rgba(20,20,20,0.85)",
-              border: "1px solid rgba(212,175,55,0.1)",
-            }}
           >
-            <div className="flex items-center justify-center gap-3 mb-6">
-              <div className="h-px flex-1 max-w-[80px]" style={{ background: "linear-gradient(90deg, transparent, rgba(212,175,55,0.2))" }} />
-              <h2 className="text-sm md:text-base font-bold text-white flex items-center gap-2">
-                <Icon name="calendar-days" size={14} className="text-[#D4AF37]" />
-                MATCHES
+            {/* Section header */}
+            <div className="flex items-center justify-center gap-3 mb-8">
+              <div className="h-px flex-1 max-w-[60px]" style={{ background: "linear-gradient(90deg, transparent, rgba(78,167,255,0.2))" }} />
+              <h2 className="text-sm md:text-base font-bold text-white flex items-center gap-2 tracking-wider">
+                <Icon name="calendar-days" size={15} className="text-[#4EA7FF]" />
+                UPCOMING MATCHES
               </h2>
-              <div className="h-px flex-1 max-w-[80px]" style={{ background: "linear-gradient(270deg, transparent, rgba(212,175,55,0.2))" }} />
+              <div className="h-px flex-1 max-w-[60px]" style={{ background: "linear-gradient(270deg, transparent, rgba(78,167,255,0.2))" }} />
             </div>
 
-            {/* Current / Next Match */}
-            {currentMatch && (
-              <div className="mb-5">
-                <div className="text-[10px] lg:text-xs text-[#D4AF37] font-bold mb-2 text-center tracking-widest">
-                  {previousMatches.length === 0 ? "NEXT MATCH" : "CURRENT / NEXT"}
-                </div>
-                <TeamMatchCard match={currentMatch} teamId={teamId} highlighted />
-              </div>
-            )}
+            {/* Upcoming matches — premium cards */}
+            <div className="space-y-5">
+              {upcomingMatches.map((m, i) => {
+                const isHome = m.homeTeamId === teamId;
+                const homeTeam = isHome ? team : (m.homeTeam || team);
+                const awayTeam = isHome ? (m.awayTeam || team) : team;
+                const homeName = homeTeam.shortName || homeTeam.name || "Home";
+                const awayName = awayTeam.shortName || awayTeam.name || "Away";
 
-            {/* Previous Matches */}
+                return (
+                  <motion.div
+                    key={m.id}
+                    initial={{ opacity: 0, y: 30 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ delay: i * 0.08, duration: 0.45, ease: "easeOut" }}
+                    whileHover={{ y: -4 }}
+                    className="group rounded-[20px] p-4 md:p-5 transition-all duration-250"
+                    style={{
+                      background: "#101826",
+                      border: "1px solid rgba(78,167,255,0.12)",
+                      boxShadow: "0 0 0 rgba(78,167,255,0)",
+                    }}
+                    onMouseEnter={(e) => {
+                      e.currentTarget.style.borderColor = "rgba(78,167,255,0.45)";
+                      e.currentTarget.style.boxShadow = "0 8px 30px rgba(78,167,255,0.08), 0 0 0 1px rgba(78,167,255,0.05)";
+                    }}
+                    onMouseLeave={(e) => {
+                      e.currentTarget.style.borderColor = "rgba(78,167,255,0.12)";
+                      e.currentTarget.style.boxShadow = "0 0 0 rgba(78,167,255,0)";
+                    }}
+                  >
+                    {/* Mobile layout */}
+                    <div className="flex flex-col gap-3 md:hidden">
+                      {/* Date + Time row */}
+                      <div className="flex items-center justify-center gap-2 text-[11px]">
+                        <span className="text-gray-500">{m.date}</span>
+                        <span className="w-1 h-1 rounded-full bg-gray-600" />
+                        <span className="font-bold text-[#4EA7FF]">{m.time}</span>
+                      </div>
+                      {/* Team row */}
+                      <div className="flex items-center justify-center gap-2">
+                        <span className="text-sm font-semibold text-white text-right flex-1 truncate">{homeName}</span>
+                        <div className="flex items-center gap-2 shrink-0">
+                          <div className="w-[42px] h-[42px] rounded-full flex items-center justify-center overflow-hidden group-hover:scale-110 transition-transform duration-250">
+                            <TeamBadge src={homeTeam.logo} alt={homeName} size={10} />
+                          </div>
+                          <span className="text-xs font-black text-[#4EA7FF] px-2">VS</span>
+                          <div className="w-[42px] h-[42px] rounded-full flex items-center justify-center overflow-hidden group-hover:scale-110 transition-transform duration-250">
+                            <TeamBadge src={awayTeam.logo} alt={awayName} size={10} />
+                          </div>
+                        </div>
+                        <span className="text-sm font-semibold text-white text-left flex-1 truncate">{awayName}</span>
+                      </div>
+                    </div>
+
+                    {/* Desktop layout */}
+                    <div className="hidden md:flex items-center gap-4">
+                      {/* Left — Date */}
+                      <div className="w-28 shrink-0 text-center">
+                        <div className="text-sm font-bold text-white">{m.date}</div>
+                        <div className="text-[11px] text-gray-500 mt-0.5">{m.time}</div>
+                      </div>
+
+                      {/* Divider */}
+                      <div className="w-px h-10 bg-[rgba(78,167,255,0.08)] shrink-0" />
+
+                      {/* Center — Teams */}
+                      <div className="flex-1 flex items-center justify-center gap-5">
+                        {/* Home team */}
+                        <div className="flex items-center gap-3 flex-1 justify-end">
+                          <span className="text-lg font-semibold text-white truncate max-w-[140px] text-right">{homeName}</span>
+                          <div className="w-[48px] h-[48px] rounded-full flex items-center justify-center overflow-hidden shrink-0 group-hover:scale-110 transition-transform duration-250">
+                            <TeamBadge src={homeTeam.logo} alt={homeName} size={12} />
+                          </div>
+                        </div>
+
+                        {/* VS / Time */}
+                        <div className="shrink-0 px-3">
+                          <span className="text-sm font-black text-[#4EA7FF] tracking-wider">VS</span>
+                        </div>
+
+                        {/* Away team */}
+                        <div className="flex items-center gap-3 flex-1 justify-start">
+                          <div className="w-[48px] h-[48px] rounded-full flex items-center justify-center overflow-hidden shrink-0 group-hover:scale-110 transition-transform duration-250">
+                            <TeamBadge src={awayTeam.logo} alt={awayName} size={12} />
+                          </div>
+                          <span className="text-lg font-semibold text-white truncate max-w-[140px] text-left">{awayName}</span>
+                        </div>
+                      </div>
+
+                      {/* Right — empty for balance */}
+                      <div className="w-28 shrink-0" />
+                    </div>
+
+                    {/* Subtle inner bottom divider */}
+                    <div className="mt-3 h-px bg-[rgba(78,167,255,0.04)]" />
+                  </motion.div>
+                );
+              })}
+              {upcomingMatches.length === 0 && (
+                <div className="text-center py-8 text-gray-500 text-sm">لا توجد مباريات قادمة</div>
+              )}
+            </div>
+
+            {/* Previous Results — compact */}
             {previousMatches.length > 0 && (
-              <div className="mb-4">
-                <div className="text-[10px] lg:text-xs text-gray-500 font-bold mb-2 tracking-widest">PREVIOUS</div>
-                <div className="space-y-1.5">
-                  {previousMatches.map((m) => (
-                    <TeamMatchCard key={m.id} match={m} teamId={teamId} />
-                  ))}
+              <div className="mt-10">
+                <div className="flex items-center justify-center gap-3 mb-5">
+                  <div className="h-px flex-1 max-w-[50px]" style={{ background: "linear-gradient(90deg, transparent, rgba(212,175,55,0.15))" }} />
+                  <h3 className="text-[10px] font-bold text-gray-500 tracking-widest">PREVIOUS RESULTS</h3>
+                  <div className="h-px flex-1 max-w-[50px]" style={{ background: "linear-gradient(270deg, transparent, rgba(212,175,55,0.15))" }} />
                 </div>
-              </div>
-            )}
-
-            {/* Next Matches */}
-            {nextMatches.length > 0 && (
-              <div>
-                <div className="text-[10px] lg:text-xs text-gray-500 font-bold mb-2 tracking-widest">UPCOMING</div>
                 <div className="space-y-1.5">
-                  {nextMatches.map((m) => (
-                    <TeamMatchCard key={m.id} match={m} teamId={teamId} />
-                  ))}
+                  {previousMatches.map((m) => {
+                    const isHome = m.homeTeamId === teamId;
+                    const opponent = isHome ? m.awayTeam : m.homeTeam;
+                    const teamScore = isHome ? m.homeScore : m.awayScore;
+                    const oppScore = isHome ? m.awayScore : m.homeScore;
+                    const won = teamScore != null && oppScore != null && teamScore > oppScore;
+                    const lost = teamScore != null && oppScore != null && teamScore < oppScore;
+                    return (
+                      <motion.div
+                        key={m.id}
+                        initial={{ opacity: 0, x: -10 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        className="flex items-center gap-3 px-3 py-2 rounded-xl hover:bg-white/[0.03] transition-all duration-200"
+                      >
+                        <TeamBadge src={opponent?.logo} alt={opponent?.shortName || ""} size={6} />
+                        <span className="text-[11px] lg:text-sm font-bold text-white truncate flex-1">{opponent?.shortName || "?"}</span>
+                        <motion.span
+                          className={`text-sm lg:text-base font-black ${won ? "text-win" : lost ? "text-loss" : "text-gray-300"}`}
+                          initial={{ scale: 0, rotateX: 90 }}
+                          animate={{ scale: 1, rotateX: 0 }}
+                          transition={{ type: "spring", stiffness: 200, damping: 15 }}
+                        >
+                          <AnimatedCounter end={teamScore ?? 0} />-<AnimatedCounter end={oppScore ?? 0} />
+                        </motion.span>
+                        <span className="text-[9px] lg:text-xs text-gray-500 min-w-[60px] text-right" dir="ltr">{m.date}</span>
+                      </motion.div>
+                    );
+                  })}
                 </div>
               </div>
             )}
