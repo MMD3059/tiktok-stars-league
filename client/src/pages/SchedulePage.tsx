@@ -92,15 +92,21 @@ export default function SchedulePage() {
             <div className="h-px flex-1 max-w-[60px]" style={{ background: "linear-gradient(270deg, transparent, rgba(212,175,55,0.2))" }} />
           </div>
 
-          {/* Match cards — 2 columns grid */}
-          <div
-            className="grid"
-            style={{
-              display: "grid",
-              gridTemplateColumns: "repeat(2, minmax(520px, 1fr))",
-              gap: "18px",
-            }}
-          >
+          <style>{`
+            .schedule-grid {
+              display: grid;
+              gap: 18px;
+              grid-template-columns: 1fr;
+            }
+            @media (min-width: 1024px) {
+              .schedule-grid {
+                grid-template-columns: repeat(2, minmax(520px, 1fr));
+              }
+            }
+          `}</style>
+
+          {/* Match cards — responsive grid (1 col mobile, 2 col desktop) */}
+          <div className="schedule-grid" style={{ display: "grid" }}>
             {weekMatches.map((match, i) => {
               const isPlayed = match.status === "played";
               const homeWon = isPlayed && match.homeScore != null && match.awayScore != null && match.homeScore > match.awayScore;
