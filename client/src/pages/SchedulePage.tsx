@@ -6,11 +6,14 @@ import type { Match } from "../types";
 import TiltCard from "../components/TiltCard";
 import { SkeletonCard } from "../components/Skeleton";
 import TeamBadge from "../components/TeamBadge";
+import Confetti from "../components/Confetti";
+import ScrollReveal from "../components/ScrollReveal";
 
 export default function SchedulePage() {
   const [matches, setMatches] = useState<Match[]>([]);
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState<"all" | "played" | "scheduled">("all");
+  const [celebrate, setCelebrate] = useState(false);
 
   useEffect(() => {
     api.getMatches().then((data) => {
@@ -45,8 +48,13 @@ export default function SchedulePage() {
     );
   }
 
+  useEffect(() => {
+    if (activeTab === "played") setCelebrate(true);
+  }, [activeTab]);
+
   return (
     <div className="max-w-7xl mx-auto px-4 py-8">
+      <Confetti trigger={celebrate} />
       <motion.h1
         className="text-3xl md:text-4xl font-black text-white mb-8 text-center"
         initial={{ opacity: 0, y: -20 }}
@@ -74,12 +82,19 @@ export default function SchedulePage() {
 
       {/* Matches grouped by week */}
       {weeks.map(({ week, matches }) => (
-        <div key={week} className="mb-10">
+        <ScrollReveal key={week} y={40} delay={0.1}>
+        <div className="mb-10">
           <div className="flex items-center justify-center gap-3 mb-6">
             <div className="h-px flex-1 max-w-[60px]" style={{ background: "linear-gradient(90deg, transparent, rgba(212,175,55,0.2))" }} />
-            <h2 className="text-sm lg:text-base font-black text-[#D4AF37] tracking-widest">
+            <motion.h2
+              className="text-sm lg:text-base font-black text-[#D4AF37] tracking-widest"
+              initial={{ scale: 0 }}
+              whileInView={{ scale: 1 }}
+              viewport={{ once: true }}
+              transition={{ type: "spring", stiffness: 200 }}
+            >
               الجولة {week}
-            </h2>
+            </motion.h2>
             <div className="h-px flex-1 max-w-[60px]" style={{ background: "linear-gradient(270deg, transparent, rgba(212,175,55,0.2))" }} />
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -176,7 +191,7 @@ export default function SchedulePage() {
                         </motion.div>
                       )}
 
-                      {!isPlayed && (
+                                      {!isPlayed && (
                         <motion.div
                           className="text-center mt-2 flex items-center justify-center gap-1"
                           animate={{ opacity: [0.5, 1, 0.5] }}
@@ -193,6 +208,7 @@ export default function SchedulePage() {
           })}
           </div>
         </div>
+        </ScrollReveal>
       ))}
     </div>
   );
