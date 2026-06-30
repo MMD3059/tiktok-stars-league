@@ -92,13 +92,15 @@ export default function SchedulePage() {
             <div className="h-px flex-1 max-w-[60px]" style={{ background: "linear-gradient(270deg, transparent, rgba(212,175,55,0.2))" }} />
           </div>
 
-          {/* Match cards */}
-          <div className="space-y-3">
+          {/* Match cards — 2 columns grid */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
             {weekMatches.map((match, i) => {
               const isPlayed = match.status === "played";
               const homeWon = isPlayed && match.homeScore != null && match.awayScore != null && match.homeScore > match.awayScore;
               const awayWon = isPlayed && match.homeScore != null && match.awayScore != null && match.awayScore > match.homeScore;
               const isDraw = isPlayed && match.homeScore != null && match.awayScore != null && match.homeScore === match.awayScore;
+              const dayNames = ["الأحد","الإثنين","الثلاثاء","الأربعاء","الخميس","الجمعة","السبت"];
+              const dayName = dayNames[new Date(match.date + "T12:00:00").getDay()];
 
               return (
                 <motion.div
@@ -107,47 +109,42 @@ export default function SchedulePage() {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ delay: i * 0.03 }}
-                  className="flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 hover:bg-white/[0.03]"
+                  className="flex items-center gap-2 px-3 py-2 rounded-xl transition-all duration-200 hover:bg-white/[0.03]"
                   style={{
                     background: "rgba(20,20,20,0.85)",
                     border: "1px solid rgba(212,175,55,0.1)",
                   }}
                 >
                   {/* Home team */}
-                  <div className={`flex items-center gap-2 flex-1 ${homeWon ? "opacity-100" : isDraw ? "opacity-80" : "opacity-60"}`}>
-                    <TeamBadge src={match.homeTeam.logo} alt={match.homeTeam.shortName} size={8} />
-                    <span className="text-[11px] lg:text-sm font-bold text-white truncate">{match.homeTeam.shortName}</span>
+                  <div className={`flex items-center gap-1.5 flex-1 min-w-0 ${homeWon ? "opacity-100" : isDraw ? "opacity-80" : "opacity-60"}`}>
+                    <TeamBadge src={match.homeTeam.logo} alt={match.homeTeam.shortName} size={6} />
+                    <span className="text-[10px] lg:text-xs font-bold text-white truncate">{match.homeTeam.shortName}</span>
                   </div>
 
                   {/* Score / VS */}
-                  <div className="text-center shrink-0 min-w-[80px]">
+                  <div className="text-center shrink-0 min-w-[60px]">
                     {isPlayed ? (
-                      <motion.span
-                        className={`text-base lg:text-lg font-black ${homeWon ? "text-win" : awayWon ? "text-loss" : "text-gray-300"}`}
-                        initial={{ scale: 0 }}
-                        whileInView={{ scale: 1 }}
-                        viewport={{ once: true }}
-                        transition={{ type: "spring", delay: 0.1 }}
-                      >
+                      <span className={`text-sm font-black ${homeWon ? "text-win" : awayWon ? "text-loss" : "text-gray-300"}`}>
                         {match.homeScore} - {match.awayScore}
-                      </motion.span>
+                      </span>
                     ) : (
                       <div>
-                        <span className="text-sm font-black text-[#D4AF37]">VS</span>
-                        <div className="text-[9px] lg:text-xs text-gray-500 mt-0.5">{match.time}</div>
+                        <span className="text-xs font-black text-[#D4AF37]">VS</span>
+                        <div className="text-[8px] text-gray-500">{match.time}</div>
                       </div>
                     )}
                   </div>
 
                   {/* Away team */}
-                  <div className={`flex items-center gap-2 flex-1 justify-end ${awayWon ? "opacity-100" : isDraw ? "opacity-80" : "opacity-60"}`}>
-                    <span className="text-[11px] lg:text-sm font-bold text-white truncate">{match.awayTeam.shortName}</span>
-                    <TeamBadge src={match.awayTeam.logo} alt={match.awayTeam.shortName} size={8} />
+                  <div className={`flex items-center gap-1.5 flex-1 min-w-0 justify-end ${awayWon ? "opacity-100" : isDraw ? "opacity-80" : "opacity-60"}`}>
+                    <span className="text-[10px] lg:text-xs font-bold text-white truncate">{match.awayTeam.shortName}</span>
+                    <TeamBadge src={match.awayTeam.logo} alt={match.awayTeam.shortName} size={6} />
                   </div>
 
-                  {/* Date */}
-                  <div className="text-[9px] lg:text-xs text-gray-500 shrink-0 min-w-[55px] text-left" dir="ltr">
-                    {match.date}
+                  {/* Day + Date */}
+                  <div className="text-[8px] text-gray-500 shrink-0 text-center min-w-[48px]" dir="ltr">
+                    <div>{dayName}</div>
+                    <div>{match.date}</div>
                   </div>
                 </motion.div>
               );
