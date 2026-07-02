@@ -24,6 +24,7 @@ model Team {
   players   Player[]
   homeMatches Match[] @relation("HomeTeam")
   awayMatches Match[] @relation("AwayTeam")
+  matchEvents MatchEvent[]
   createdAt DateTime  @default(now())
 }
 
