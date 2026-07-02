@@ -16,7 +16,7 @@ export default function TopScorersPage() {
     const fallback = setTimeout(() => setLoading(false), 10000);
     api.getTopScorers().then((data) => {
       setScorers(data);
-    }).catch(() => {}).finally(() => clearTimeout(fallback));
+    }).catch(() => {});
   }, []);
 
   if (loading) {

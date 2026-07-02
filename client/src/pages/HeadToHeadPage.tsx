@@ -21,7 +21,7 @@ export default function HeadToHeadPage() {
     ]).then(([h, t]) => {
       setData(h);
       setTeams(t);
-    }).catch(() => {}).finally(() => clearTimeout(fallback));
+    }).catch(() => {});
   }, [team1, team2]);
 
   if (loading) {

@@ -60,7 +60,7 @@ export default function HomePage() {
     Promise.all([
       api.getStandings().then(setStandings).catch(() => {}),
       api.getTeams().then(setTeams).catch(() => {}),
-    ]).finally(() => clearTimeout(fallback));
+    ]).catch(() => {});
   }, []);
 
   useEffect(() => {

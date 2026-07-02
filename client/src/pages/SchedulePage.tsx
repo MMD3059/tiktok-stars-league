@@ -15,7 +15,7 @@ export default function SchedulePage() {
 
   useEffect(() => {
     const fallback = setTimeout(() => setLoading(false), 10000);
-    api.getMatches().then(setMatches).catch(() => {}).finally(() => clearTimeout(fallback));
+    api.getMatches().then(setMatches).catch(() => {});
   }, []);
 
   const weeks = useMemo(() => {

@@ -1,6 +1,7 @@
 import type { Team, Player, Match, Standing, Transfer, MatchEvent } from "./types";
 
 const BASE = import.meta.env.VITE_API_URL || "/api";
+const CACHE_TTL = 5 * 60 * 1000; // 5 min
 
 function getToken(): string | null {
   return localStorage.getItem("admin_token");
@@ -48,6 +49,33 @@ async function fetchFormData<T>(url: string, formData: FormData): Promise<T> {
   }
 }
 
+// Simple cache: returns cached data instantly then refreshes in background
+const memCache = new Map<string, { data: any; ts: number }>();
+
+async function cachedFetch<T>(key: string, fetcher: () => Promise<T>): Promise<T> {
+  const cached = memCache.get(key);
+  if (cached && Date.now() - cached.ts < CACHE_TTL) {
+    // refresh in background if stale enough
+    if (Date.now() - cached.ts > CACHE_TTL * 0.5) {
+      fetcher().then(fresh => memCache.set(key, { data: fresh, ts: Date.now() })).catch(() => {});
+    }
+    return cached.data as T;
+  }
+  try {
+    const data = await fetcher();
+    memCache.set(key, { data, ts: Date.now() });
+    return data;
+  } catch (e) {
+    // if network fails but we have stale cache, return it
+    if (cached) return cached.data as T;
+    throw e;
+  }
+}
+
+function bustCache(key: string) {
+  memCache.delete(key);
+}
+
 export const api = {
   // Auth
   login: (username: string, password: string) =>
@@ -64,14 +92,20 @@ export const api = {
   },
 
   // Teams
-  getTeams: () => fetchJson<Team[]>("/teams"),
+  getTeams: () => cachedFetch<Team[]>("teams", () => fetchJson<Team[]>("/teams")),
   getTeam: (id: number) => fetchJson<Team>(`/teams/${id}`),
-  createTeam: (data: Partial<Team>) =>
-    fetchJson<Team>("/admin/teams", { method: "POST", body: JSON.stringify(data) }),
-  updateTeam: (id: number, data: Partial<Team>) =>
-    fetchJson<Team>(`/admin/teams/${id}`, { method: "PUT", body: JSON.stringify(data) }),
-  deleteTeam: (id: number) =>
-    fetchJson<{ ok: boolean }>(`/admin/teams/${id}`, { method: "DELETE" }),
+  createTeam: (data: Partial<Team>) => {
+    bustCache("teams");
+    return fetchJson<Team>("/admin/teams", { method: "POST", body: JSON.stringify(data) });
+  },
+  updateTeam: (id: number, data: Partial<Team>) => {
+    bustCache("teams");
+    return fetchJson<Team>(`/admin/teams/${id}`, { method: "PUT", body: JSON.stringify(data) });
+  },
+  deleteTeam: (id: number) => {
+    bustCache("teams");
+    return fetchJson<{ ok: boolean }>(`/admin/teams/${id}`, { method: "DELETE" });
+  },
 
   // Players
   getPlayers: () => fetchJson<Player[]>("/players"),
@@ -84,24 +118,32 @@ export const api = {
     fetchJson<{ ok: boolean }>(`/admin/players/${id}`, { method: "DELETE" }),
 
   // Matches
-  getMatches: () => fetchJson<Match[]>("/matches"),
+  getMatches: () => cachedFetch<Match[]>("matches", () => fetchJson<Match[]>("/matches")),
   getMatch: (id: number) => fetchJson<Match>(`/matches/${id}`),
-  createMatch: (data: Partial<Match>) =>
-    fetchJson<Match>("/admin/matches", { method: "POST", body: JSON.stringify(data) }),
-  updateMatch: (id: number, data: Partial<Match>) =>
-    fetchJson<Match>(`/admin/matches/${id}`, { method: "PUT", body: JSON.stringify(data) }),
-  deleteMatch: (id: number) =>
-    fetchJson<{ ok: boolean }>(`/admin/matches/${id}`, { method: "DELETE" }),
+  createMatch: (data: Partial<Match>) => {
+    bustCache("matches");
+    return fetchJson<Match>("/admin/matches", { method: "POST", body: JSON.stringify(data) });
+  },
+  updateMatch: (id: number, data: Partial<Match>) => {
+    bustCache("matches");
+    return fetchJson<Match>(`/admin/matches/${id}`, { method: "PUT", body: JSON.stringify(data) });
+  },
+  deleteMatch: (id: number) => {
+    bustCache("matches");
+    return fetchJson<{ ok: boolean }>(`/admin/matches/${id}`, { method: "DELETE" });
+  },
 
   // Standings
-  getStandings: () => fetchJson<Standing[]>("/standings"),
+  getStandings: () => cachedFetch<Standing[]>("standings", () => fetchJson<Standing[]>("/standings")),
 
   // Top Scorers
-  getTopScorers: () => fetchJson<Player[]>("/top-scorers"),
+  getTopScorers: () => cachedFetch<Player[]>("topscorers", () => fetchJson<Player[]>("/top-scorers")),
 
   // Standings (admin)
-  updateStanding: (teamId: number, data: { points?: number; won?: number; drawn?: number; lost?: number; goalsFor?: number; goalsAgainst?: number }) =>
-    fetchJson<Team>(`/admin/standings/${teamId}`, { method: "PUT", body: JSON.stringify(data) }),
+  updateStanding: (teamId: number, data: { points?: number; won?: number; drawn?: number; lost?: number; goalsFor?: number; goalsAgainst?: number }) => {
+    bustCache("standings");
+    return fetchJson<Team>(`/admin/standings/${teamId}`, { method: "PUT", body: JSON.stringify(data) });
+  },
 
   // Value distribution
   distributeValue: (teamId: number) =>
@@ -131,9 +173,13 @@ export const api = {
     }),
 
   // Transfers
-  getTransfers: () => fetchJson<Transfer[]>("/transfers"),
-  createTransfer: (data: Partial<Transfer>) =>
-    fetchJson<Transfer>("/admin/transfers", { method: "POST", body: JSON.stringify(data) }),
-  deleteTransfer: (id: number) =>
-    fetchJson<{ ok: boolean }>(`/admin/transfers/${id}`, { method: "DELETE" }),
+  getTransfers: () => cachedFetch<Transfer[]>("transfers", () => fetchJson<Transfer[]>("/transfers")),
+  createTransfer: (data: Partial<Transfer>) => {
+    bustCache("transfers");
+    return fetchJson<Transfer>("/admin/transfers", { method: "POST", body: JSON.stringify(data) });
+  },
+  deleteTransfer: (id: number) => {
+    bustCache("transfers");
+    return fetchJson<{ ok: boolean }>(`/admin/transfers/${id}`, { method: "DELETE" });
+  },
 };

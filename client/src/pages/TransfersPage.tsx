@@ -13,7 +13,7 @@ export default function TransfersPage() {
     const fallback = setTimeout(() => setLoading(false), 10000);
     api.getTransfers().then((data) => {
       setTransfers(data);
-    }).catch(() => {}).finally(() => clearTimeout(fallback));
+    }).catch(() => {});
   }, []);
 
   if (loading) {

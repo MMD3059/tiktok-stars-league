@@ -28,7 +28,7 @@ export default function StandingsPage() {
     const fallback = setTimeout(() => setLoading(false), 10000);
     api.getStandings().then((data) => {
       setStandings(data);
-    }).catch(() => {}).finally(() => clearTimeout(fallback));
+    }).catch(() => {});
   }, []);
 
   if (loading) {

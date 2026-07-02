@@ -15,7 +15,7 @@ export default function TeamsPage() {
     const fallback = setTimeout(() => setLoading(false), 10000);
     api.getTeams().then((data) => {
       setTeams(data);
-    }).catch(() => {}).finally(() => clearTimeout(fallback));
+    }).catch(() => {});
   }, []);
 
   return (

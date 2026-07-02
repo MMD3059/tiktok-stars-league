@@ -116,7 +116,7 @@ export default function TeamPage() {
     ]).then(([teamData, matchesData]) => {
       setTeam(teamData);
       setAllMatches(matchesData);
-    }).catch(() => {}).finally(() => clearTimeout(fallback));
+    }).catch(() => {});
   }, [id]);
 
   useEffect(() => {

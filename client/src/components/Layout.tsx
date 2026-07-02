@@ -4,6 +4,7 @@ import ShieldLogo from "./ShieldLogo";
 import StadiumBackground from "./StadiumBackground";
 import Icon from "./Icon";
 import { useState, useEffect } from "react";
+import { api } from "../api";
 
 
 const navLinks = [
@@ -32,6 +33,14 @@ export default function Layout({ children }: { children: React.ReactNode }) {
     const handleScroll = () => setScrolled(window.scrollY > 50);
     window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  // Pre-fetch data on first load so pages don't wait for cold DB
+  useEffect(() => {
+    api.getTeams().catch(() => {});
+    api.getMatches().catch(() => {});
+    api.getStandings().catch(() => {});
+    api.getTopScorers().catch(() => {});
   }, []);
 
   // Admin pages: isolated shell — no navbar/ticker/footer, but same visual theme
