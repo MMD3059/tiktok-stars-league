@@ -6,32 +6,46 @@ function getToken(): string | null {
   return localStorage.getItem("admin_token");
 }
 
+const FETCH_TIMEOUT = 12000;
+
 async function fetchJson<T>(url: string, options?: RequestInit): Promise<T> {
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), FETCH_TIMEOUT);
   const headers: Record<string, string> = { "Content-Type": "application/json" };
   const token = getToken();
   if (token) headers["Authorization"] = `Bearer ${token}`;
 
-  const res = await fetch(`${BASE}${url}`, { headers, ...options });
-  if (!res.ok) {
-    let msg = `API error: ${res.status}`;
-    try { const body = await res.json(); if (body.error) msg = body.error; } catch {}
-    throw new Error(msg);
+  try {
+    const res = await fetch(`${BASE}${url}`, { headers, signal: controller.signal, ...options });
+    if (!res.ok) {
+      let msg = `API error: ${res.status}`;
+      try { const body = await res.json(); if (body.error) msg = body.error; } catch {}
+      throw new Error(msg);
+    }
+    return res.json();
+  } finally {
+    clearTimeout(timer);
   }
-  return res.json();
 }
 
 async function fetchFormData<T>(url: string, formData: FormData): Promise<T> {
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), FETCH_TIMEOUT);
   const token = getToken();
   const headers: Record<string, string> = {};
   if (token) headers["Authorization"] = `Bearer ${token}`;
 
-  const res = await fetch(`${BASE}${url}`, { method: "POST", headers, body: formData });
-  if (!res.ok) {
-    let msg = `API error: ${res.status}`;
-    try { const body = await res.json(); if (body.error) msg = body.error; } catch {}
-    throw new Error(msg);
+  try {
+    const res = await fetch(`${BASE}${url}`, { method: "POST", headers, signal: controller.signal, body: formData });
+    if (!res.ok) {
+      let msg = `API error: ${res.status}`;
+      try { const body = await res.json(); if (body.error) msg = body.error; } catch {}
+      throw new Error(msg);
+    }
+    return res.json();
+  } finally {
+    clearTimeout(timer);
   }
-  return res.json();
 }
 
 export const api = {

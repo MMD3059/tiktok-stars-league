@@ -109,13 +109,14 @@ export default function TeamPage() {
     setLoading(true);
     setTeam(null);
     setAllMatches([]);
+    const fallback = setTimeout(() => setLoading(false), 10000);
     Promise.all([
       api.getTeam(Number(id)),
       api.getMatches(),
     ]).then(([teamData, matchesData]) => {
       setTeam(teamData);
       setAllMatches(matchesData);
-    }).catch(() => {}).finally(() => setLoading(false));
+    }).catch(() => {}).finally(() => clearTimeout(fallback));
   }, [id]);
 
   useEffect(() => {

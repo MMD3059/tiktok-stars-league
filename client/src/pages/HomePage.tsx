@@ -56,8 +56,11 @@ export default function HomePage() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    api.getStandings().then(setStandings).catch(() => {});
-    api.getTeams().then(setTeams).catch(() => {});
+    const fallback = setTimeout(() => setLoading(false), 10000);
+    Promise.all([
+      api.getStandings().then(setStandings).catch(() => {}),
+      api.getTeams().then(setTeams).catch(() => {}),
+    ]).finally(() => clearTimeout(fallback));
   }, []);
 
   useEffect(() => {

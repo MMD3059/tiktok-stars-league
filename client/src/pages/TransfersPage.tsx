@@ -10,9 +10,10 @@ export default function TransfersPage() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    const fallback = setTimeout(() => setLoading(false), 10000);
     api.getTransfers().then((data) => {
       setTransfers(data);
-    }).catch(() => {}).finally(() => setLoading(false));
+    }).catch(() => {}).finally(() => clearTimeout(fallback));
   }, []);
 
   if (loading) {

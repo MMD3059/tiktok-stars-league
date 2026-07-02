@@ -13,9 +13,10 @@ export default function TopScorersPage() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    const fallback = setTimeout(() => setLoading(false), 10000);
     api.getTopScorers().then((data) => {
       setScorers(data);
-    }).catch(() => {}).finally(() => setLoading(false));
+    }).catch(() => {}).finally(() => clearTimeout(fallback));
   }, []);
 
   if (loading) {

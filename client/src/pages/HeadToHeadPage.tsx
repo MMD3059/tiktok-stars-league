@@ -14,13 +14,14 @@ export default function HeadToHeadPage() {
 
   useEffect(() => {
     if (!team1 || !team2) return;
+    const fallback = setTimeout(() => setLoading(false), 10000);
     Promise.all([
       api.getHeadToHead(Number(team1), Number(team2)),
       api.getTeams(),
     ]).then(([h, t]) => {
       setData(h);
       setTeams(t);
-    }).catch(() => {}).finally(() => setLoading(false));
+    }).catch(() => {}).finally(() => clearTimeout(fallback));
   }, [team1, team2]);
 
   if (loading) {

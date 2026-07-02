@@ -12,7 +12,8 @@ export default function SchedulePage() {
   const [activeTab, setActiveTab] = useState<"all" | "played" | "scheduled">("all");
 
   useEffect(() => {
-    api.getMatches().then(setMatches).catch(() => {}).finally(() => setLoading(false));
+    const fallback = setTimeout(() => setLoading(false), 10000);
+    api.getMatches().then(setMatches).catch(() => {}).finally(() => clearTimeout(fallback));
   }, []);
 
   const weeks = useMemo(() => {

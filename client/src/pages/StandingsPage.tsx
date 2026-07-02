@@ -25,9 +25,10 @@ export default function StandingsPage() {
   const navigate = useNavigate();
 
   useEffect(() => {
+    const fallback = setTimeout(() => setLoading(false), 10000);
     api.getStandings().then((data) => {
       setStandings(data);
-    }).catch(() => {}).finally(() => setLoading(false));
+    }).catch(() => {}).finally(() => clearTimeout(fallback));
   }, []);
 
   if (loading) {

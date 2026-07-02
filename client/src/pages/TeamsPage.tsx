@@ -12,9 +12,10 @@ export default function TeamsPage() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    const fallback = setTimeout(() => setLoading(false), 10000);
     api.getTeams().then((data) => {
       setTeams(data);
-    }).catch(() => {}).finally(() => setLoading(false));
+    }).catch(() => {}).finally(() => clearTimeout(fallback));
   }, []);
 
   return (
