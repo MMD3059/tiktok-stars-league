@@ -5,11 +5,13 @@ import { api } from "../api";
 import type { Match } from "../types";
 import { SkeletonCard } from "../components/Skeleton";
 import TeamBadge from "../components/TeamBadge";
+import MatchDetailModal from "../components/MatchDetailModal";
 
 export default function SchedulePage() {
   const [matches, setMatches] = useState<Match[]>([]);
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState<"all" | "played" | "scheduled">("all");
+  const [selectedMatch, setSelectedMatch] = useState<Match | null>(null);
 
   useEffect(() => {
     const fallback = setTimeout(() => setLoading(false), 10000);
@@ -123,14 +125,17 @@ export default function SchedulePage() {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ delay: i * 0.03 }}
-                  className="flex items-center justify-between transition-all duration-200 hover:bg-white/[0.03]"
+                  className={`flex items-center justify-between transition-all duration-200 hover:bg-white/[0.03] ${isPlayed ? "cursor-pointer" : ""}`}
+                  onClick={isPlayed ? () => setSelectedMatch(match) : undefined}
                   style={{
                     width: "100%",
                     minHeight: "130px",
                     borderRadius: "18px",
                     padding: "20px",
                     background: "rgba(20,20,20,0.85)",
-                    border: "1px solid rgba(212,175,55,0.1)",
+                    border: isPlayed
+                      ? "1px solid rgba(212,175,55,0.25)"
+                      : "1px solid rgba(212,175,55,0.1)",
                   }}
                 >
                   {/* Home team */}
@@ -164,6 +169,7 @@ export default function SchedulePage() {
           </div>
         </div>
       ))}
+      <MatchDetailModal match={selectedMatch} onClose={() => setSelectedMatch(null)} />
     </div>
   );
 }

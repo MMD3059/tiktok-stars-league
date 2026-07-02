@@ -35,6 +35,24 @@ app.use("/api/head-to-head", headToHeadRouter);
 const upload = multer({ storage: multer.memoryStorage(), limits: { fileSize: 5 * 1024 * 1024 } });
 const ALLOWED_MIME_TYPES = ["image/jpeg", "image/png", "image/webp", "image/svg+xml", "image/gif"];
 
+// ===== AUTO-CREATE MatchEvent table (no migration needed) =====
+async function ensureTables() {
+  try {
+    await prisma.$executeRawUnsafe(`
+      CREATE TABLE IF NOT EXISTS "MatchEvent" (
+        id SERIAL PRIMARY KEY,
+        "matchId" INTEGER NOT NULL REFERENCES "Match"(id) ON DELETE CASCADE,
+        "teamId" INTEGER NOT NULL REFERENCES "Team"(id),
+        "playerId" INTEGER NOT NULL REFERENCES "Player"(id),
+        "playerName" TEXT NOT NULL,
+        type TEXT NOT NULL,
+        "createdAt" TIMESTAMPTZ NOT NULL DEFAULT NOW()
+      )
+    `);
+  } catch {}
+}
+ensureTables();
+
 // ===== HEALTH CHECK (keep DB alive) =====
 app.get("/api/health", async (_req, res) => {
   try {
@@ -152,6 +170,46 @@ app.put("/api/admin/matches/:id", adminAuth, adminLimiter, async (req, res) => {
 app.delete("/api/admin/matches/:id", adminAuth, adminLimiter, async (req, res) => {
   await prisma.match.delete({ where: { id: +req.params.id } });
   res.json({ ok: true });
+});
+
+// ===== MATCH EVENTS (public & admin) =====
+app.get("/api/matches/:id/events", async (req, res) => {
+  try {
+    const events = await prisma.matchEvent.findMany({
+      where: { matchId: +req.params.id },
+      orderBy: { createdAt: "asc" },
+    });
+    res.json(events);
+  } catch (e: any) {
+    res.status(400).json({ error: e.message });
+  }
+});
+
+app.post("/api/admin/matches/:id/events", adminAuth, adminLimiter, async (req, res) => {
+  try {
+    const data = sanitizeObject(req.body);
+    const event = await prisma.matchEvent.create({
+      data: {
+        matchId: +req.params.id,
+        teamId: Number(data.teamId),
+        playerId: Number(data.playerId),
+        playerName: data.playerName,
+        type: data.type,
+      },
+    });
+    res.json(event);
+  } catch (e: any) {
+    res.status(400).json({ error: e.message });
+  }
+});
+
+app.delete("/api/admin/matches/:id/events/:eventId", adminAuth, adminLimiter, async (req, res) => {
+  try {
+    await prisma.matchEvent.delete({ where: { id: +req.params.eventId } });
+    res.json({ ok: true });
+  } catch (e: any) {
+    res.status(400).json({ error: e.message });
+  }
 });
 
 app.post("/api/admin/transfers", adminAuth, adminLimiter, async (req, res) => {

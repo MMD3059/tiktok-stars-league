@@ -45,6 +45,17 @@ export interface Match {
   status: string;
   homeTeam: Team;
   awayTeam: Team;
+  events?: MatchEvent[];
+  createdAt: string;
+}
+
+export interface MatchEvent {
+  id: number;
+  matchId: number;
+  teamId: number;
+  playerId: number;
+  playerName: string;
+  type: "goal" | "yellow_card" | "red_card";
   createdAt: string;
 }
 

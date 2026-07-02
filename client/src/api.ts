@@ -1,4 +1,4 @@
-import type { Team, Player, Match, Standing, Transfer } from "./types";
+import type { Team, Player, Match, Standing, Transfer, MatchEvent } from "./types";
 
 const BASE = import.meta.env.VITE_API_URL || "/api";
 
@@ -106,6 +106,14 @@ export const api = {
   // Value distribution
   distributeValue: (teamId: number) =>
     fetchJson<{ ok: boolean; share: number; count: number }>(`/admin/distribute-value/${teamId}`, { method: "POST" }),
+
+  // Match Events
+  getMatchEvents: (matchId: number) =>
+    fetchJson<MatchEvent[]>(`/matches/${matchId}/events`),
+  createMatchEvent: (matchId: number, data: { teamId: number; playerId: number; playerName: string; type: string }) =>
+    fetchJson<MatchEvent>(`/admin/matches/${matchId}/events`, { method: "POST", body: JSON.stringify(data) }),
+  deleteMatchEvent: (matchId: number, eventId: number) =>
+    fetchJson<{ ok: boolean }>(`/admin/matches/${matchId}/events/${eventId}`, { method: "DELETE" }),
 
   // Search
   search: (q: string) =>

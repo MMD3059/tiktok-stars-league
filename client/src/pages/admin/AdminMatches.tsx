@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import Icon from "../../components/Icon";
 import { api } from "../../api";
-import type { Match, Team } from "../../types";
+import type { Match, Team, MatchEvent } from "../../types";
 import TeamBadge from "../../components/TeamBadge";
 
 function defaultTime(date: string, matches: Match[]): string {
@@ -30,6 +30,11 @@ export default function AdminMatches() {
   const [week, setWeek] = useState(1);
   const [status, setStatus] = useState("scheduled");
   const [editing, setEditing] = useState<number | null>(null);
+  const [eventMatchId, setEventMatchId] = useState<number | null>(null);
+  const [matchEvents, setMatchEvents] = useState<Record<number, MatchEvent[]>>({});
+  const [newEventType, setNewEventType] = useState("goal");
+  const [newEventPlayer, setNewEventPlayer] = useState("");
+  const [newEventTeam, setNewEventTeam] = useState<"home" | "away">("home");
 
   useEffect(() => {
     Promise.all([api.getMatches(), api.getTeams()]).then(([m, t]) => {
@@ -95,6 +100,39 @@ export default function AdminMatches() {
     setWeek(match.week);
     setStatus(match.status);
     setEditing(match.id);
+  }
+
+  async function loadEvents(matchId: number) {
+    try {
+      const events = await api.getMatchEvents(matchId);
+      setMatchEvents(prev => ({ ...prev, [matchId]: events }));
+    } catch {}
+  }
+
+  async function addEvent(matchId: number) {
+    if (!newEventPlayer.trim()) return;
+    try {
+      const match = matches.find(m => m.id === matchId);
+      if (!match) return;
+      const teamId = newEventTeam === "home" ? match.homeTeamId : match.awayTeamId;
+      await api.createMatchEvent(matchId, {
+        teamId,
+        playerId: 0,
+        playerName: newEventPlayer.trim(),
+        type: newEventType,
+      });
+      setNewEventPlayer("");
+      await loadEvents(matchId);
+    } catch (e: any) {
+      alert(e.message || "فشل إضافة الحدث");
+    }
+  }
+
+  async function removeEvent(matchId: number, eventId: number) {
+    try {
+      await api.deleteMatchEvent(matchId, eventId);
+      await loadEvents(matchId);
+    } catch {}
   }
 
   async function remove(id: number) {
@@ -185,28 +223,75 @@ export default function AdminMatches() {
 
       <div className="space-y-2">
         {matches.map((m, i) => (
-          <motion.div key={m.id} className="glass-card p-3 flex items-center justify-between"
-            initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: i * 0.02 }}
-            whileHover={{ x: 4 }}>
-            <div className="flex items-center gap-3">
-              <TeamBadge src={m.homeTeam.logo} alt={m.homeTeam.shortName} size={6} />
-              <div>
-                <div className="font-bold text-white">{m.homeTeam.shortName} vs {m.awayTeam.shortName}</div>
-                <div className="text-xs text-gray-400 flex items-center gap-2">
-                  <Icon name="calendar-days" size={12} />
-                  {m.date} · <Icon name="clock" size={12} /> {m.time}
-                  {m.status === "played" && m.homeScore != null && ` · ${m.homeScore}-${m.awayScore}`}
+          <div key={m.id} className="glass-card" style={{ borderRadius: "12px", overflow: "hidden" }}>
+            <motion.div className="p-3 flex items-center justify-between"
+              initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: i * 0.02 }}
+              whileHover={{ x: 4 }}>
+              <div className="flex items-center gap-3">
+                <TeamBadge src={m.homeTeam.logo} alt={m.homeTeam.shortName} size={6} />
+                <div>
+                  <div className="font-bold text-white">{m.homeTeam.shortName} vs {m.awayTeam.shortName}</div>
+                  <div className="text-xs text-gray-400 flex items-center gap-2">
+                    <Icon name="calendar-days" size={12} />
+                    {m.date} · <Icon name="clock" size={12} /> {m.time}
+                    {m.status === "played" && m.homeScore != null && ` · ${m.homeScore}-${m.awayScore}`}
+                  </div>
                 </div>
+                <TeamBadge src={m.awayTeam.logo} alt={m.awayTeam.shortName} size={6} />
               </div>
-              <TeamBadge src={m.awayTeam.logo} alt={m.awayTeam.shortName} size={6} />
-            </div>
-            <div className="flex gap-2">
-              <motion.button onClick={() => edit(m)} className="px-3 py-1 text-xs bg-[rgba(212,175,55,0.1)] text-[#D4AF37] rounded-lg border border-[rgba(212,175,55,0.2)]"
-                whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>تعديل</motion.button>
-              <motion.button onClick={() => remove(m.id)} className="px-3 py-1 text-xs bg-red-500/10 text-red-400 rounded-lg border border-red-500/20"
-                whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>حذف</motion.button>
-            </div>
-          </motion.div>
+              <div className="flex gap-2">
+                <motion.button onClick={() => edit(m)} className="px-3 py-1 text-xs bg-[rgba(212,175,55,0.1)] text-[#D4AF37] rounded-lg border border-[rgba(212,175,55,0.2)]"
+                  whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>تعديل</motion.button>
+                {m.status === "played" && (
+                  <motion.button onClick={() => { setEventMatchId(eventMatchId === m.id ? null : m.id); if (!matchEvents[m.id]) loadEvents(m.id); }}
+                    className="px-3 py-1 text-xs bg-green-500/10 text-green-400 rounded-lg border border-green-500/20"
+                    whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>أحداث</motion.button>
+                )}
+                <motion.button onClick={() => remove(m.id)} className="px-3 py-1 text-xs bg-red-500/10 text-red-400 rounded-lg border border-red-500/20"
+                  whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>حذف</motion.button>
+              </div>
+            </motion.div>
+            {eventMatchId === m.id && (
+              <motion.div
+                initial={{ height: 0, opacity: 0 }}
+                animate={{ height: "auto", opacity: 1 }}
+                className="overflow-hidden px-3 pb-3"
+                style={{ background: "rgba(10,10,10,0.6)", borderTop: "1px solid rgba(212,175,55,0.08)" }}
+              >
+                <div className="flex flex-wrap gap-2 py-2">
+                  {(matchEvents[m.id] || []).map(ev => (
+                    <div key={ev.id} className={`text-xs px-2 py-1 rounded-lg flex items-center gap-1 ${
+                      ev.type === "goal" ? "bg-[#D4AF37]/10 text-[#D4AF37]" :
+                      ev.type === "yellow_card" ? "bg-yellow-500/10 text-yellow-400" : "bg-red-500/10 text-red-400"
+                    }`}>
+                      <span>{ev.playerName}</span>
+                      <span>{ev.type === "goal" ? "⚽" : ev.type === "yellow_card" ? "🟨" : "🟥"}</span>
+                      <button onClick={() => removeEvent(m.id, ev.id)} className="mr-1 text-gray-500 hover:text-white">×</button>
+                    </div>
+                  ))}
+                  {(matchEvents[m.id] || []).length === 0 && <span className="text-xs text-gray-500">لا توجد أحداث</span>}
+                </div>
+                <div className="flex items-center gap-2">
+                  <input value={newEventPlayer} onChange={e => setNewEventPlayer(e.target.value)}
+                    placeholder="اسم اللاعب"
+                    className="flex-1 bg-dark border border-[rgba(212,175,55,0.15)] rounded-lg px-2 py-1 text-xs text-white" />
+                  <select value={newEventType} onChange={e => setNewEventType(e.target.value)}
+                    className="bg-dark border border-[rgba(212,175,55,0.15)] rounded-lg px-2 py-1 text-xs text-white">
+                    <option value="goal">⚽ هدف</option>
+                    <option value="yellow_card">🟨 أصفر</option>
+                    <option value="red_card">🟥 أحمر</option>
+                  </select>
+                  <select value={newEventTeam} onChange={e => setNewEventTeam(e.target.value as "home" | "away")}
+                    className="bg-dark border border-[rgba(212,175,55,0.15)] rounded-lg px-2 py-1 text-xs text-white">
+                    <option value="home">{m.homeTeam.shortName}</option>
+                    <option value="away">{m.awayTeam.shortName}</option>
+                  </select>
+                  <button onClick={() => addEvent(m.id)}
+                    className="px-2 py-1 text-xs bg-[#D4AF37] text-black font-bold rounded-lg">إضافة</button>
+                </div>
+              </motion.div>
+            )}
+          </div>
         ))}
       </div>
     </div>
